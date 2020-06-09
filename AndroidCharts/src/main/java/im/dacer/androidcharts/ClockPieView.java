@@ -87,6 +87,8 @@ public class ClockPieView extends View {
         leftTextWidth = textPaint.measureText("18");
         rightTextWidth = textPaint.measureText("6");
         topTextHeight = textRect.height();
+
+        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
     }
 
     public void setDate(ArrayList<ClockPieHelper> helperList) {
