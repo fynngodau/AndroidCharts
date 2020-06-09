@@ -19,8 +19,8 @@ public class ClockPieHelper {
     }
 
     public ClockPieHelper(int startHour, int startMin, int endHour, int endMin) {
-        start = 270 + startHour * 15 + startMin * 15 / 60;
-        end = 270 + endHour * 15 + endMin * 15 / 60;
+        start = 270f + startHour * 15 + startMin * 15 / 60f;
+        end = 270f + endHour * 15 + endMin * 15 / 60f;
         while (end < start) {
             end += 360;
         }
@@ -28,8 +28,8 @@ public class ClockPieHelper {
 
     public ClockPieHelper(int startHour, int startMin, int startSec, int endHour, int endMin,
             int endSec) {
-        start = 270 + startHour * 15 + startMin * 15 / 60 + startSec * 15 / 3600;
-        end = 270 + endHour * 15 + endMin * 15 / 60 + endSec * 15 / 3600;
+        start = 270f + startHour * 15 + startMin * 15 / 60f + startSec * 15 / 3600f;
+        end = 270f + endHour * 15 + endMin * 15 / 60f + endSec * 15 / 3600f;
         while (end < start) {
             end += 360;
         }
