@@ -46,10 +46,13 @@ public class BarFragment extends Fragment {
 
         // Draw vertical lines aligning with 3 bars
         List<Integer> lineValues = new ArrayList<>();
+        List<String> labels = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             int randomPosition = (int) (Math.random() * random);
             lineValues.add(barDataList.get(randomPosition));
+            labels.add(String.valueOf(barDataList.get(randomPosition)));
         }
         barView.setVerticalLines(lineValues, 100);
+        barView.setVerticalLineLabels(labels);
     }
 }

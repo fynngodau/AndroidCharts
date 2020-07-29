@@ -27,10 +27,13 @@ public class BarView extends View {
     private int bottomTextDescent;
     private boolean autoSetWidth = true;
     private int topMargin;
+    private int leftMargin;
     private int bottomTextHeight;
     private List<String> bottomTextList = new ArrayList<String>();
+    private final int textSize;
     private List<Typeface> typefaces = new ArrayList<>();
     private List<Float> verticalLines = new ArrayList<>();
+    private List<String> verticalLineLabels = new ArrayList<>();
     private Runnable animator = new Runnable() {
         @Override public void run() {
             boolean needNewFrame = false;
@@ -66,7 +69,7 @@ public class BarView extends View {
         fgPaint.setColor(FOREGROUND_COLOR);
         rect = new Rect();
         topMargin = MyUtils.dip2px(context, 5);
-        int textSize = MyUtils.sp2px(context, 15);
+        textSize = MyUtils.sp2px(context, 15);
         barWidth = MyUtils.dip2px(context, 22);
         MINI_BAR_WIDTH = MyUtils.dip2px(context, 22);
         BAR_SIDE_MARGIN = MyUtils.dip2px(context, 22);
@@ -155,6 +158,26 @@ public class BarView extends View {
     }
 
     /**
+     * Set labels for vertical lines, which can function as a scale or legend for the chart.
+     *
+     * @param values Lables in the order of the values passed to {@link #setVerticalLines(List, int)}
+     */
+    public void setVerticalLineLabels(List<String> values) {
+        verticalLineLabels = values;
+
+        Rect r = new Rect();
+        leftMargin = 0;
+        for (String s : verticalLineLabels) {
+            textPaint.getTextBounds(s, 0, s.length(), r);
+            if (leftMargin < r.width()) {
+                leftMargin = r.width();
+            }
+        }
+
+        postInvalidate();
+    }
+
+    /**
      * @param list The List of Integer with the range of [0-max].
      */
     public void setDataList(List<Integer> list, int max) {
@@ -191,6 +214,8 @@ public class BarView extends View {
         paint.setStrokeWidth(MyUtils.dip2px(getContext(), 1f));
         paint.setColor(LineView.BACKGROUND_LINE_COLOR);
 
+        textPaint.setTextAlign(Paint.Align.LEFT);
+
         Path path = new Path();
         for (int i = 0; i < verticalLines.size(); i++) {
 
@@ -199,17 +224,23 @@ public class BarView extends View {
                     - bottomTextHeight
                     - TEXT_TOP_MARGIN) * (1f - verticalLines.get(i)));
 
+            if (verticalLineLabels.size() > i) {
+                canvas.drawText(verticalLineLabels.get(i), TEXT_TOP_MARGIN, y - textSize / 2f, textPaint);
+            }
+
             path.moveTo(0, y);
             path.lineTo(getWidth(), y);
             canvas.drawPath(path, paint);
         }
 
+        textPaint.setTextAlign(Paint.Align.CENTER);
+
         // Draw bars
         int i = 1;
         if (percentList != null && !percentList.isEmpty()) {
             for (Float f : percentList) {
-                rect.set(BAR_SIDE_MARGIN * i + barWidth * (i - 1), topMargin,
-                        (BAR_SIDE_MARGIN + barWidth) * i,
+                rect.set(leftMargin + BAR_SIDE_MARGIN * i + barWidth * (i - 1), topMargin,
+                        leftMargin + (BAR_SIDE_MARGIN + barWidth) * i,
                         getHeight() - bottomTextHeight - TEXT_TOP_MARGIN);
                 canvas.drawRect(rect, bgPaint);
                 /*rect.set(BAR_SIDE_MARGIN*i+barWidth*(i-1),
@@ -220,11 +251,11 @@ public class BarView extends View {
                  * The correct total height is "getHeight()-topMargin-bottomTextHeight-TEXT_TOP_MARGIN",not "getHeight()-topMargin".
                  * fix by zhenghuiy@gmail.com on 11/11/13.
                  */
-                rect.set(BAR_SIDE_MARGIN * i + barWidth * (i - 1), topMargin + (int) ((getHeight()
+                rect.set(leftMargin + BAR_SIDE_MARGIN * i + barWidth * (i - 1), topMargin + (int) ((getHeight()
                                 - topMargin
                                 - bottomTextHeight
                                 - TEXT_TOP_MARGIN) * percentList.get(i - 1)),
-                        (BAR_SIDE_MARGIN + barWidth) * i,
+                        leftMargin + (BAR_SIDE_MARGIN + barWidth) * i,
                         getHeight() - bottomTextHeight - TEXT_TOP_MARGIN);
                 canvas.drawRect(rect, fgPaint);
                 i++;
@@ -240,7 +271,7 @@ public class BarView extends View {
                     textPaint.setTypeface(typefaces.get(j));
                 }
 
-                canvas.drawText(s, BAR_SIDE_MARGIN * i + barWidth * (i - 1) + barWidth / 2,
+                canvas.drawText(s, leftMargin + BAR_SIDE_MARGIN * i + barWidth * (i - 1) + barWidth / 2,
                         getHeight() - bottomTextDescent, textPaint);
                 i++;
             }
@@ -256,7 +287,7 @@ public class BarView extends View {
     private int measureWidth(int measureSpec) {
         int preferred = 0;
         if (bottomTextList != null) {
-            preferred = bottomTextList.size() * (barWidth + BAR_SIDE_MARGIN) + BAR_SIDE_MARGIN;
+            preferred = bottomTextList.size() * (barWidth + BAR_SIDE_MARGIN) + BAR_SIDE_MARGIN + leftMargin;
         }
         return getMeasurement(measureSpec, preferred);
     }
