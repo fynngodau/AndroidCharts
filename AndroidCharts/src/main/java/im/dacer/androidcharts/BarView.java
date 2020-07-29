@@ -225,7 +225,7 @@ public class BarView extends View {
                     - TEXT_TOP_MARGIN) * (1f - verticalLines.get(i)));
 
             if (verticalLineLabels.size() > i) {
-                canvas.drawText(verticalLineLabels.get(i), TEXT_TOP_MARGIN, y - textSize / 2f, textPaint);
+                canvas.drawText(verticalLineLabels.get(i), TEXT_TOP_MARGIN, y + textSize + TEXT_TOP_MARGIN, textPaint);
             }
 
             path.moveTo(0, y);
