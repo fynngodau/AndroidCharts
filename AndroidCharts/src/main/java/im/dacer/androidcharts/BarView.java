@@ -113,6 +113,25 @@ public class BarView extends View {
     }
 
     /**
+     * Sets typefaces to Typeface.DEFAULT except for the position-th typeface,
+     * which will be set to Typeface.DEFAULT_BOLD
+     *
+     * @param position Position in bottom text list which should be bolded
+     */
+    public void setBoldPosition(int position) {
+        typefaces.clear();
+        for (int i = 0; i <= position + 1; i++) {
+            if (i == position) {
+                typefaces.add(Typeface.DEFAULT_BOLD);
+            } else {
+                typefaces.add(Typeface.DEFAULT);
+            }
+        }
+
+        postInvalidate();
+    }
+
+    /**
      * @param list The List of Integer with the range of [0-max].
      */
     public void setDataList(List<Integer> list, int max) {
