@@ -2,7 +2,6 @@ package im.dacer.androidcharts;
 
 import android.content.Context;
 import android.graphics.*;
-import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
 import java.util.ArrayList;
@@ -31,6 +30,7 @@ public class BarView extends View {
     private int bottomTextHeight;
     private List<String> bottomTextList = new ArrayList<String>();
     private List<Typeface> typefaces = new ArrayList<>();
+    private List<Float> verticalLines = new ArrayList<>();
     private Runnable animator = new Runnable() {
         @Override public void run() {
             boolean needNewFrame = false;
@@ -132,6 +132,29 @@ public class BarView extends View {
     }
 
     /**
+     * Draw vertical background lines to these values if max is the maximum
+     */
+    public void setVerticalLines(List<Integer> values, int max) {
+
+        verticalLines.clear();
+
+        for (Integer value : values) {
+            verticalLines.add((float) value / (float) max);
+        }
+
+        postInvalidate();
+    }
+
+    /**
+     * Draw vertical background lines to these percentages of the maximum
+     */
+    public void setVerticalLinesByPercentage(List<Float> percentages) {
+        this.verticalLines = percentages;
+
+        postInvalidate();
+    }
+
+    /**
      * @param list The List of Integer with the range of [0-max].
      */
     public void setDataList(List<Integer> list, int max) {
@@ -160,6 +183,28 @@ public class BarView extends View {
     }
 
     @Override protected void onDraw(Canvas canvas) {
+
+        // Draw vertical background lines
+
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(MyUtils.dip2px(getContext(), 1f));
+        paint.setColor(LineView.BACKGROUND_LINE_COLOR);
+
+        Path path = new Path();
+        for (int i = 0; i < verticalLines.size(); i++) {
+
+            int y = topMargin + (int) ((getHeight()
+                    - topMargin
+                    - bottomTextHeight
+                    - TEXT_TOP_MARGIN) * (1f - verticalLines.get(i)));
+
+            path.moveTo(0, y);
+            path.lineTo(getWidth(), y);
+            canvas.drawPath(path, paint);
+        }
+
+        // Draw bars
         int i = 1;
         if (percentList != null && !percentList.isEmpty()) {
             for (Float f : percentList) {

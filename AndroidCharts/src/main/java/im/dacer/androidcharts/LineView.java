@@ -39,7 +39,7 @@ public class LineView extends View {
     private final int MIN_TOP_LINE_LENGTH = MyUtils.dip2px(getContext(), 12);
     private final int MIN_VERTICAL_GRID_NUM = 4;
     private final int MIN_HORIZONTAL_GRID_NUM = 1;
-    private final int BACKGROUND_LINE_COLOR = Color.parseColor("#EEEEEE");
+    final static int BACKGROUND_LINE_COLOR = Color.parseColor("#EEEEEE");
     private final int BOTTOM_TEXT_COLOR = Color.parseColor("#9B9A9B");
     private final Point tmpPoint = new Point();
 
