@@ -1,10 +1,8 @@
 package im.dacer.androidcharts;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
+import android.graphics.*;
+import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
 import java.util.ArrayList;
@@ -32,6 +30,7 @@ public class BarView extends View {
     private int topMargin;
     private int bottomTextHeight;
     private List<String> bottomTextList = new ArrayList<String>();
+    private List<Typeface> typefaces = new ArrayList<>();
     private Runnable animator = new Runnable() {
         @Override public void run() {
             boolean needNewFrame = false;
@@ -107,6 +106,12 @@ public class BarView extends View {
         postInvalidate();
     }
 
+    public void setTypefaces(List<Typeface> typefaces) {
+        this.typefaces = typefaces;
+
+        postInvalidate();
+    }
+
     /**
      * @param list The List of Integer with the range of [0-max].
      */
@@ -164,7 +169,13 @@ public class BarView extends View {
 
         if (bottomTextList != null && !bottomTextList.isEmpty()) {
             i = 1;
-            for (String s : bottomTextList) {
+            for (int j = 0; j < bottomTextList.size(); j++) {
+                String s = bottomTextList.get(j);
+
+                if (typefaces.size() > j) {
+                    textPaint.setTypeface(typefaces.get(j));
+                }
+
                 canvas.drawText(s, BAR_SIDE_MARGIN * i + barWidth * (i - 1) + barWidth / 2,
                         getHeight() - bottomTextDescent, textPaint);
                 i++;
