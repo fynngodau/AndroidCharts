@@ -256,7 +256,7 @@ public class BarView extends View {
     private int measureWidth(int measureSpec) {
         int preferred = 0;
         if (bottomTextList != null) {
-            preferred = bottomTextList.size() * (barWidth + BAR_SIDE_MARGIN);
+            preferred = bottomTextList.size() * (barWidth + BAR_SIDE_MARGIN) + BAR_SIDE_MARGIN;
         }
         return getMeasurement(measureSpec, preferred);
     }
