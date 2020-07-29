@@ -215,6 +215,7 @@ public class BarView extends View {
         paint.setColor(LineView.BACKGROUND_LINE_COLOR);
 
         textPaint.setTextAlign(Paint.Align.LEFT);
+        textPaint.setTypeface(Typeface.DEFAULT);
 
         Path path = new Path();
         for (int i = 0; i < verticalLines.size(); i++) {
