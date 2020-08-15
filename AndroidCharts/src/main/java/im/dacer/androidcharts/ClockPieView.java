@@ -38,21 +38,6 @@ public class ClockPieView extends View {
     private RectF cirRect;
     private Rect textRect;
     private ArrayList<ClockPieHelper> pieArrayList = new ArrayList<ClockPieHelper>();
-    private Runnable animator = new Runnable() {
-        @Override public void run() {
-            boolean needNewFrame = false;
-            for (ClockPieHelper pie : pieArrayList) {
-                pie.update();
-                if (!pie.isAtRest()) {
-                    needNewFrame = true;
-                }
-            }
-            if (needNewFrame) {
-                postDelayed(this, 10);
-            }
-            invalidate();
-        }
-    };
 
     public ClockPieView(Context context) {
         this(context, null);
@@ -97,9 +82,9 @@ public class ClockPieView extends View {
             for (int i = 0; i < helperList.size(); i++) {
                 if (i > pieSize - 1) {
                     //                    float mStart = helperList.get(i).getStart();
-                    pieArrayList.add(new ClockPieHelper(0, 0, helperList.get(i)));
+                    pieArrayList.add(new ClockPieHelper(helperList.get(i)));
                 } else {
-                    pieArrayList.set(i, pieArrayList.get(i).setTarget(helperList.get(i)));
+                    pieArrayList.set(i, pieArrayList.get(i).set(helperList.get(i)));
                 }
             }
             int temp = pieArrayList.size() - helperList.size();
@@ -110,8 +95,12 @@ public class ClockPieView extends View {
             pieArrayList.clear();
         }
 
-        removeCallbacks(animator);
-        post(animator);
+        post(new Runnable() {
+            @Override
+            public void run() {
+                invalidate();
+            }
+        });
     }
 
     @Override protected void onDraw(Canvas canvas) {

@@ -5,17 +5,12 @@ package im.dacer.androidcharts;
  */
 public class ClockPieHelper {
 
-    int velocity = 5;
     private float start;
     private float end;
-    private float targetStart;
-    private float targetEnd;
 
-    ClockPieHelper(float startDegree, float endDegree, ClockPieHelper targetPie) {
-        start = startDegree;
-        end = endDegree;
-        targetStart = targetPie.getStart();
-        targetEnd = targetPie.getEnd();
+    ClockPieHelper(ClockPieHelper targetPie) {
+        start = targetPie.getStart();
+        end = targetPie.getEnd();
     }
 
     public ClockPieHelper(int startHour, int startMin, int endHour, int endMin) {
@@ -35,25 +30,10 @@ public class ClockPieHelper {
         }
     }
 
-    ClockPieHelper setTarget(float targetStart, float targetEnd) {
-        this.targetStart = targetStart;
-        this.targetEnd = targetEnd;
+    ClockPieHelper set(ClockPieHelper targetPie) {
+        start = targetPie.getStart();
+        end = targetPie.getEnd();
         return this;
-    }
-
-    ClockPieHelper setTarget(ClockPieHelper targetPie) {
-        targetStart = targetPie.getStart();
-        targetEnd = targetPie.getEnd();
-        return this;
-    }
-
-    boolean isAtRest() {
-        return (start == targetStart) && (end == targetEnd);
-    }
-
-    void update() {
-        start = updateSelf(start, targetStart, velocity);
-        end = updateSelf(end, targetEnd, velocity);
     }
 
     public float getSweep() {
@@ -66,17 +46,5 @@ public class ClockPieHelper {
 
     public float getEnd() {
         return end;
-    }
-
-    private float updateSelf(float origin, float target, int velocity) {
-        if (origin < target) {
-            origin += velocity;
-        } else if (origin > target) {
-            origin -= velocity;
-        }
-        if (Math.abs(target - origin) < velocity) {
-            origin = target;
-        }
-        return origin;
     }
 }
