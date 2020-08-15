@@ -18,7 +18,7 @@ public class ClockPieView extends View {
 
     private final int TEXT_COLOR = Color.parseColor("#9B9A9B");
     private final int GRAY_COLOR = Color.parseColor("#D4D3D4");
-    private final int RED_COLOR = Color.argb(50, 255, 0, 51);
+    private final int SEGMENT_COLOR = Color.parseColor("#FC496D");
     private Paint textPaint;
     private Paint redPaint;
     private Paint linePaint;
@@ -59,7 +59,7 @@ public class ClockPieView extends View {
         textRect = new Rect();
         textPaint.getTextBounds("18", 0, 1, textRect);
         redPaint = new Paint(textPaint);
-        redPaint.setColor(RED_COLOR);
+        redPaint.setColor(SEGMENT_COLOR);
         linePaint = new Paint(textPaint);
         linePaint.setColor(GRAY_COLOR);
         linePaint.setStrokeWidth(lineThickness);
