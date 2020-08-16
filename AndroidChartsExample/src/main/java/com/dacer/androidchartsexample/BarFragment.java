@@ -39,6 +39,8 @@ public class BarFragment extends Fragment {
         }
         barView.setData(values, 100);
 
+        barView.setBoldPosition(5);
+
         // Draw vertical lines aligning with 3 bars
         List<Integer> lineValues = new ArrayList<>();
         List<String> labels = new ArrayList<>();

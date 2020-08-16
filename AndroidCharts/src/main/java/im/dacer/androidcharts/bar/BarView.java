@@ -47,7 +47,6 @@ public class BarView extends View {
     private int valueLabelHeight;
     private int labelTextHeight;
 
-    private List<Typeface> typefaces = new ArrayList<>();
     private List<Float> verticalLines = new ArrayList<>();
     private List<String> verticalLineLabels = new ArrayList<>();
 
@@ -115,27 +114,17 @@ public class BarView extends View {
     }
 
     /**
-     * @param typefaces An ordered list of typefaces
-     */
-    public void setTypefaces(List<Typeface> typefaces) {
-        this.typefaces = typefaces;
-
-        postInvalidate();
-    }
-
-    /**
-     * Sets typefaces to Typeface.DEFAULT except for the position-th typeface,
-     * which will be set to Typeface.DEFAULT_BOLD
+     * Sets typefaces to <code>Typeface.DEFAULT</code> except for the position-th typeface,
+     * which will be set to <code>Typeface.DEFAULT_BOLD</code>
      *
      * @param position Position in bottom text list which should be bolded
      */
     public void setBoldPosition(int position) {
-        typefaces.clear();
-        for (int i = 0; i <= position + 1; i++) {
+        for (int i = 0; i < bars.length; i++) {
             if (i == position) {
-                typefaces.add(Typeface.DEFAULT_BOLD);
+                bars[i].getValue().setLabelTypeface(Typeface.DEFAULT_BOLD);
             } else {
-                typefaces.add(Typeface.DEFAULT);
+                bars[i].getValue().setLabelTypeface(Typeface.DEFAULT);
             }
         }
 
@@ -291,6 +280,10 @@ public class BarView extends View {
             // Draw bar label if present
             String label = bars[i].getValue().getLabel();
             if (label != null) {
+
+                // Use provided typeface
+                textPaint.setTypeface(bars[i].getValue().getLabelTypeface());
+
                 canvas.drawText(label, leftMargin + BAR_SIDE_MARGIN * (i + 1) + barWidth * i + barWidth / 2f,
                         getHeight() - valueLabelDescent, textPaint);
             }

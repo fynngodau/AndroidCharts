@@ -1,9 +1,12 @@
 package im.dacer.androidcharts.bar;
 
+import android.graphics.Typeface;
+
 public class Value {
 
     private final int value;
     private final String label;
+    private Typeface labelTypeface = Typeface.DEFAULT;
 
     /**
      * @param value Value to display in bar
@@ -35,5 +38,17 @@ public class Value {
 
     public String getLabel() {
         return label;
+    }
+
+    /**
+     * Set typeface to render label with
+     * @param labelTypeface
+     */
+    public void setLabelTypeface(Typeface labelTypeface) {
+        this.labelTypeface = labelTypeface;
+    }
+
+    Typeface getLabelTypeface() {
+        return labelTypeface;
     }
 }
