@@ -39,15 +39,14 @@ public class BarView extends View {
 
     private final Rect rect;
     private int barWidth;
-    private int bottomTextDescent;
+    private int valueLabelDescent;
 
     private final int topMargin;
     private int leftMargin;
 
-    private int bottomTextHeight;
+    private int valueLabelHeight;
     private int labelTextHeight;
 
-    private List<String> bottomTextList = new ArrayList<>();
     private List<Typeface> typefaces = new ArrayList<>();
     private List<Float> verticalLines = new ArrayList<>();
     private List<String> verticalLineLabels = new ArrayList<>();
@@ -93,30 +92,26 @@ public class BarView extends View {
     }
 
     /**
-     * Set list of bar labels
-     *
-     * @param bottomStringList An ordered list of Strings
+     * Update {@link #barWidth}, {@link #valueLabelDescent} and {@link #valueLabelHeight}
+     * using labels from the provided values
      */
-    public void setBottomTextList(List<String> bottomStringList) {
-        //        this.dataList = null;
-        this.bottomTextList = bottomStringList;
+    private void updateValueLabelMeasurements(Value[] values) {
+
         Rect r = new Rect();
-        bottomTextDescent = 0;
+        valueLabelDescent = 0;
         barWidth = MIN_BAR_WIDTH;
-        for (String s : bottomTextList) {
-            textPaint.getTextBounds(s, 0, s.length(), r);
-            if (bottomTextHeight < r.height()) {
-                bottomTextHeight = r.height();
+        for (Value s : values) {
+            textPaint.getTextBounds(s.getLabel(), 0, s.getLabel().length(), r);
+            if (valueLabelHeight < r.height()) {
+                valueLabelHeight = r.height();
             }
             if (barWidth < r.width()) {
                 barWidth = r.width();
             }
-            if (bottomTextDescent < (Math.abs(r.bottom))) {
-                bottomTextDescent = Math.abs(r.bottom);
+            if (valueLabelDescent < (Math.abs(r.bottom))) {
+                valueLabelDescent = Math.abs(r.bottom);
             }
         }
-        setMinimumWidth(2);
-        postInvalidate();
     }
 
     /**
@@ -193,14 +188,14 @@ public class BarView extends View {
         postInvalidate();
     }
 
-    public void setDataList(Value[] values) {
-        setDataList(values, 0);
+    public void setData(Value[] values) {
+        setData(values, 0);
     }
 
     /**
      * @param max The top border of the chart, or 0 to use highest value
      */
-    public void setDataList(Value[] values, int max) {
+    public void setData(Value[] values, int max) {
 
         int highestValue = Collections.max(Arrays.asList(values), new Comparator<Value>() {
             @Override
@@ -231,6 +226,8 @@ public class BarView extends View {
 
         bars = newBars;
 
+        updateValueLabelMeasurements(values);
+
         // Why is this call here?
         setMinimumWidth(2);
 
@@ -259,7 +256,7 @@ public class BarView extends View {
 
             int y = topMargin + (int) ((getHeight()
                     - topMargin
-                    - bottomTextHeight
+                    - valueLabelHeight
                     - TEXT_MARGIN) * (1f - verticalLines.get(i)));
 
             if (verticalLineLabels.size() > i) {
@@ -276,39 +273,26 @@ public class BarView extends View {
         // Draw bars
 
         for (int i = 0; i < bars.length; i++) {
+            // Bar background
             rect.set(leftMargin + BAR_SIDE_MARGIN * (i + 1) + barWidth * i, topMargin,
                     leftMargin + (BAR_SIDE_MARGIN + barWidth) * (i + 1),
-                    getHeight() - bottomTextHeight - TEXT_MARGIN);
+                    getHeight() - valueLabelHeight - TEXT_MARGIN);
             canvas.drawRect(rect, bgPaint);
-            /*rect.set(BAR_SIDE_MARGIN*i+barWidth*(i-1),
-                    topMargin+(int)((getHeight()-topMargin)*percentList.get(i-1)),
-                    (BAR_SIDE_MARGIN+barWidth)* i,
-                    getHeight()-bottomTextHeight-TEXT_TOP_MARGIN);*/
-            /**
-             * The correct total height is "getHeight()-topMargin-bottomTextHeight-TEXT_TOP_MARGIN",not "getHeight()-topMargin".
-             * fix by zhenghuiy@gmail.com on 11/11/13.
-             */
+
+            // Bar foreground
             rect.set(leftMargin + BAR_SIDE_MARGIN * (i + 1) + barWidth * i, topMargin + (int) ((getHeight()
                             - topMargin
-                            - bottomTextHeight
+                            - valueLabelHeight
                             - TEXT_MARGIN) * bars[i].getDisplayPercentage()),
                     leftMargin + (BAR_SIDE_MARGIN + barWidth) * (i + 1),
-                    getHeight() - bottomTextHeight - TEXT_MARGIN);
+                    getHeight() - valueLabelHeight - TEXT_MARGIN);
             canvas.drawRect(rect, fgPaint);
-        }
 
-        if (bottomTextList != null && !bottomTextList.isEmpty()) {
-            int i = 1;
-            for (int j = 0; j < bottomTextList.size(); j++) {
-                String s = bottomTextList.get(j);
-
-                if (typefaces.size() > j) {
-                    textPaint.setTypeface(typefaces.get(j));
-                }
-
-                canvas.drawText(s, leftMargin + BAR_SIDE_MARGIN * i + barWidth * (i - 1) + barWidth / 2,
-                        getHeight() - bottomTextDescent, textPaint);
-                i++;
+            // Draw bar label if present
+            String label = bars[i].getValue().getLabel();
+            if (label != null) {
+                canvas.drawText(label, leftMargin + BAR_SIDE_MARGIN * (i + 1) + barWidth * i + barWidth / 2f,
+                        getHeight() - valueLabelDescent, textPaint);
             }
         }
     }
@@ -321,10 +305,7 @@ public class BarView extends View {
     }
 
     private int measureWidth(int measureSpec) {
-        int preferred = 0;
-        if (bottomTextList != null) {
-            preferred = bottomTextList.size() * (barWidth + BAR_SIDE_MARGIN) + BAR_SIDE_MARGIN + leftMargin;
-        }
+        int preferred = bars.length * (barWidth + BAR_SIDE_MARGIN) + BAR_SIDE_MARGIN + leftMargin;
         return getMeasurement(measureSpec, preferred);
     }
 

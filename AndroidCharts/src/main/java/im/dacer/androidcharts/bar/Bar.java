@@ -54,4 +54,8 @@ class Bar {
 
         return false;
     }
+
+    public Value getValue() {
+        return value;
+    }
 }

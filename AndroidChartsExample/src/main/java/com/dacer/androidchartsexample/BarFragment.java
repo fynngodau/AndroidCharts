@@ -31,20 +31,13 @@ public class BarFragment extends Fragment {
     }
 
     private void randomSet(BarView barView) {
-        int random = (int) (Math.random() * 20) + 6;
-        ArrayList<String> test = new ArrayList<String>();
-        for (int i = 0; i < random; i++) {
-            test.add("test");
-            test.add("pqg");
-            //            test.add(String.valueOf(i+1));
-        }
-        barView.setBottomTextList(test);
+        int random = (int) (Math.random() * 40) + 10;
 
-        Value[] values = new Value[random * 2];
-        for (int i = 0; i < random * 2; i++) {
-            values[i] = new Value((int) (Math.random() * 100));
+        Value[] values = new Value[random];
+        for (int i = 0; i < random; i++) {
+            values[i] = new Value((int) (Math.random() * 100), String.valueOf(i + 1));
         }
-        barView.setDataList(values, 100);
+        barView.setData(values, 100);
 
         // Draw vertical lines aligning with 3 bars
         List<Integer> lineValues = new ArrayList<>();
