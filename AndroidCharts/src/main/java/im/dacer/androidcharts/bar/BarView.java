@@ -254,7 +254,7 @@ public class BarView extends View {
                     - valueLabelHeight
                     - TEXT_MARGIN);
             path.moveTo(lineLabelWidth + TEXT_MARGIN + BAR_SIDE_MARGIN, y);
-            path.lineTo(getWidth() - BAR_SIDE_MARGIN, y);
+            path.lineTo(getWidth(), y);
             canvas.drawPath(path, paint);
         }
 
