@@ -13,7 +13,7 @@ import java.util.List;
 public class BarView extends View {
     private final int MINI_BAR_WIDTH;
     private final int BAR_SIDE_MARGIN;
-    private final int TEXT_TOP_MARGIN;
+    private final int TEXT_MARGIN;
     private final int TEXT_COLOR = Color.parseColor("#9B9A9B");
     private final int BACKGROUND_COLOR = Color.parseColor("#F6F6F6");
     private final int FOREGROUND_COLOR = Color.parseColor("#FC496D");
@@ -29,11 +29,12 @@ public class BarView extends View {
     private int topMargin;
     private int leftMargin;
     private int bottomTextHeight;
+    private int labelTextHeight;
     private List<String> bottomTextList = new ArrayList<String>();
-    private final int textSize;
     private List<Typeface> typefaces = new ArrayList<>();
     private List<Float> verticalLines = new ArrayList<>();
     private List<String> verticalLineLabels = new ArrayList<>();
+
     private Runnable animator = new Runnable() {
         @Override public void run() {
             boolean needNewFrame = false;
@@ -69,16 +70,11 @@ public class BarView extends View {
         fgPaint.setColor(FOREGROUND_COLOR);
         rect = new Rect();
         topMargin = MyUtils.dip2px(context, 5);
-        textSize = MyUtils.sp2px(context, 15);
         barWidth = MyUtils.dip2px(context, 22);
         MINI_BAR_WIDTH = MyUtils.dip2px(context, 22);
         BAR_SIDE_MARGIN = MyUtils.dip2px(context, 22);
-        TEXT_TOP_MARGIN = MyUtils.dip2px(context, 5);
-        textPaint = new Paint();
-        textPaint.setAntiAlias(true);
-        textPaint.setColor(TEXT_COLOR);
-        textPaint.setTextSize(textSize);
-        textPaint.setTextAlign(Paint.Align.CENTER);
+        TEXT_MARGIN = MyUtils.dip2px(context, 5);
+        textPaint = CommonPaint.getTextPaint(context);
         percentList = new ArrayList<Float>();
     }
 
@@ -172,6 +168,9 @@ public class BarView extends View {
             if (leftMargin < r.width()) {
                 leftMargin = r.width();
             }
+            if (labelTextHeight < r.height()) {
+                labelTextHeight = r.height();
+            }
         }
 
         postInvalidate();
@@ -223,10 +222,10 @@ public class BarView extends View {
             int y = topMargin + (int) ((getHeight()
                     - topMargin
                     - bottomTextHeight
-                    - TEXT_TOP_MARGIN) * (1f - verticalLines.get(i)));
+                    - TEXT_MARGIN) * (1f - verticalLines.get(i)));
 
             if (verticalLineLabels.size() > i) {
-                canvas.drawText(verticalLineLabels.get(i), TEXT_TOP_MARGIN, y + textSize + TEXT_TOP_MARGIN, textPaint);
+                canvas.drawText(verticalLineLabels.get(i), TEXT_MARGIN, y + labelTextHeight + TEXT_MARGIN, textPaint);
             }
 
             path.moveTo(0, y);
@@ -242,7 +241,7 @@ public class BarView extends View {
             for (Float f : percentList) {
                 rect.set(leftMargin + BAR_SIDE_MARGIN * i + barWidth * (i - 1), topMargin,
                         leftMargin + (BAR_SIDE_MARGIN + barWidth) * i,
-                        getHeight() - bottomTextHeight - TEXT_TOP_MARGIN);
+                        getHeight() - bottomTextHeight - TEXT_MARGIN);
                 canvas.drawRect(rect, bgPaint);
                 /*rect.set(BAR_SIDE_MARGIN*i+barWidth*(i-1),
                         topMargin+(int)((getHeight()-topMargin)*percentList.get(i-1)),
@@ -255,9 +254,9 @@ public class BarView extends View {
                 rect.set(leftMargin + BAR_SIDE_MARGIN * i + barWidth * (i - 1), topMargin + (int) ((getHeight()
                                 - topMargin
                                 - bottomTextHeight
-                                - TEXT_TOP_MARGIN) * percentList.get(i - 1)),
+                                - TEXT_MARGIN) * percentList.get(i - 1)),
                         leftMargin + (BAR_SIDE_MARGIN + barWidth) * i,
-                        getHeight() - bottomTextHeight - TEXT_TOP_MARGIN);
+                        getHeight() - bottomTextHeight - TEXT_MARGIN);
                 canvas.drawRect(rect, fgPaint);
                 i++;
             }
