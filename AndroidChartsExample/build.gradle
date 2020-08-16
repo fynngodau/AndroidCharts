@@ -38,6 +38,8 @@ android {
 }
 
 dependencies {
-    implementation files('libs/android-support-v4.jar')
     implementation project(':AndroidCharts')
+    implementation "androidx.drawerlayout:drawerlayout:1.1.0"
+    implementation "androidx.fragment:fragment:1.2.5"
+    implementation "androidx.legacy:legacy-support-v4:1.0.0"
 }
