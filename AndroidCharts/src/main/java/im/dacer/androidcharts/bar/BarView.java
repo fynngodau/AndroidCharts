@@ -1,9 +1,11 @@
-package im.dacer.androidcharts;
+package im.dacer.androidcharts.bar;
 
 import android.content.Context;
 import android.graphics.*;
 import android.util.AttributeSet;
 import android.view.View;
+import im.dacer.androidcharts.CommonPaint;
+import im.dacer.androidcharts.MyUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -236,7 +238,7 @@ public class BarView extends View {
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(MyUtils.dip2px(getContext(), 1f));
-        paint.setColor(LineView.BACKGROUND_LINE_COLOR);
+        paint.setColor(CommonPaint.BACKGROUND_LINE_COLOR);
 
         textPaint.setTextAlign(Paint.Align.LEFT);
         textPaint.setTypeface(Typeface.DEFAULT);

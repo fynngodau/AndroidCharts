@@ -1,9 +1,11 @@
-package im.dacer.androidcharts;
+package im.dacer.androidcharts.clockpie;
 
 import android.content.Context;
 import android.graphics.*;
 import android.util.AttributeSet;
 import android.view.View;
+import im.dacer.androidcharts.CommonPaint;
+import im.dacer.androidcharts.MyUtils;
 
 import java.util.List;
 

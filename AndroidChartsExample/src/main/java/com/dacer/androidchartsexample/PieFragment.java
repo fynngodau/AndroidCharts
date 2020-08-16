@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import im.dacer.androidcharts.PieHelper;
-import im.dacer.androidcharts.PieView;
+import im.dacer.androidcharts.pie.PieHelper;
+import im.dacer.androidcharts.pie.PieView;
 import java.util.ArrayList;
 
 /**

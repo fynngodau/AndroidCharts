@@ -1,4 +1,4 @@
-package im.dacer.androidcharts;
+package im.dacer.androidcharts.pie;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -9,6 +9,8 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import im.dacer.androidcharts.MyUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 

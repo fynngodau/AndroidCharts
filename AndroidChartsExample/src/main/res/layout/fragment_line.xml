@@ -12,7 +12,7 @@
         android:layout_alignParentRight="true"
         >
         <view
-            class="im.dacer.androidcharts.LineView"
+            class="im.dacer.androidcharts.line.LineView"
             android:id="@+id/line_view_float"
             android:layout_width="wrap_content"
             android:layout_height="200dp"
@@ -27,7 +27,7 @@
         android:layout_alignParentRight="true"
         >
         <view
-            class="im.dacer.androidcharts.LineView"
+            class="im.dacer.androidcharts.line.LineView"
             android:id="@+id/line_view"
             android:layout_width="wrap_content"
             android:layout_height="200dp"

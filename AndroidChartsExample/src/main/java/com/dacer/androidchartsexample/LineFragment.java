@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import im.dacer.androidcharts.LineView;
+import im.dacer.androidcharts.line.LineView;
 import java.util.ArrayList;
 
 /**

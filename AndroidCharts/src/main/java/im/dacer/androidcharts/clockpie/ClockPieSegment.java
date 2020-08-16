@@ -1,4 +1,4 @@
-package im.dacer.androidcharts;
+package im.dacer.androidcharts.clockpie;
 
 /**
  * Created by Dacer on 11/14/13.

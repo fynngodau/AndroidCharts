@@ -6,8 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import im.dacer.androidcharts.ClockPieSegment;
-import im.dacer.androidcharts.ClockPieView;
+import im.dacer.androidcharts.clockpie.ClockPieSegment;
+import im.dacer.androidcharts.clockpie.ClockPieView;
 import java.util.ArrayList;
 
 /**

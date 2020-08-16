@@ -9,6 +9,7 @@ public class CommonPaint {
     private static final int TEXT_COLOR = Color.parseColor("#9B9A9B");
     private static final int FOREGROUND_COLOR = Color.parseColor("#FC496D");
 
+    public static final int BACKGROUND_LINE_COLOR = Color.parseColor("#EEEEEE");
 
     public static Paint getTextPaint(Context context) {
 

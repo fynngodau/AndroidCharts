@@ -1,4 +1,4 @@
-package im.dacer.androidcharts;
+package im.dacer.androidcharts.line;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -16,6 +16,10 @@ import android.graphics.drawable.NinePatchDrawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import im.dacer.androidcharts.CommonPaint;
+import im.dacer.androidcharts.MyUtils;
+import im.dacer.androidcharts.R;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -39,7 +43,6 @@ public class LineView extends View {
     private final int MIN_TOP_LINE_LENGTH = MyUtils.dip2px(getContext(), 12);
     private final int MIN_VERTICAL_GRID_NUM = 4;
     private final int MIN_HORIZONTAL_GRID_NUM = 1;
-    final static int BACKGROUND_LINE_COLOR = Color.parseColor("#EEEEEE");
     private final int BOTTOM_TEXT_COLOR = Color.parseColor("#9B9A9B");
     private final Point tmpPoint = new Point();
 
@@ -421,7 +424,7 @@ public class LineView extends View {
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(MyUtils.dip2px(getContext(), 1f));
-        paint.setColor(BACKGROUND_LINE_COLOR);
+        paint.setColor(CommonPaint.BACKGROUND_LINE_COLOR);
         PathEffect effects = new DashPathEffect(new float[] { 10, 5, 10, 5 }, 1);
 
         //draw vertical lines

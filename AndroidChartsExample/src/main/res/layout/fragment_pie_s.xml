@@ -7,7 +7,7 @@
     >
 
     <view
-        class="im.dacer.androidcharts.PieView"
+        class="im.dacer.androidcharts.pie.PieView"
         android:id="@+id/pie_view"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

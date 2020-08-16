@@ -37,7 +37,7 @@ compile 'im.dacer:AndroidCharts:1.0.4'
         <view
             android:layout_width="wrap_content"
             android:layout_height="300dp"
-            class="im.dacer.androidcharts.LineView"
+            class="im.dacer.androidcharts.line.LineView"
             android:id="@+id/line_view" />
 </HorizontalScrollView>
 ```
@@ -60,7 +60,7 @@ lineView.setDataList(dataLists); //or lineView.setFloatDataList(floatDataLists)
         <view
             android:layout_width="wrap_content"
             android:layout_height="300dp"
-            class="im.dacer.androidcharts.BarView"
+            class="im.dacer.androidcharts.bar.BarView"
             android:id="@+id/bar_view" />
 </HorizontalScrollView>
 ```
@@ -79,7 +79,7 @@ barView.setDataList(dataList,100);
 <view
     android:layout_width="300dp"
     android:layout_height="wrap_content"
-    class="im.dacer.androidcharts.ClockPieView"
+    class="im.dacer.androidcharts.clockpie.ClockPieView"
     android:id="@+id/clock_pie_view" />
 ```
 
@@ -97,7 +97,7 @@ pieView.setDate(pieHelperArrayList);
 <view
     android:layout_width="300dp"
     android:layout_height="wrap_content"
-    class="im.dacer.androidcharts.PieView"
+    class="im.dacer.androidcharts.pie.PieView"
     android:id="@+id/pie_view" />
 ```
 
