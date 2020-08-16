@@ -19,7 +19,7 @@ class Bar {
      * Percentage is only displayed after the animation is
      * complete. This value is the actually displayed percentage.
      */
-    private float displayPercentage = 1f;
+    private float displayPercentage = 0f;
 
     void setValue(Value value, int max) {
         this.value = value;

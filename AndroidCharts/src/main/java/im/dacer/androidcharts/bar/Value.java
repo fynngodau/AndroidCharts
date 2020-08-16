@@ -5,6 +5,9 @@ public class Value {
     private final int value;
     private final String label;
 
+    /**
+     * @param value Value to display in bar
+     */
     public Value(int value) {
         this(value, null);
     }
@@ -19,13 +22,11 @@ public class Value {
     }
 
     /**
-     * Top-to-bottom percentage (0% is at the top)
-     *
      * @param max Maximum value to which to calculate relative percentage
-     * @return Usually a float in the range [0;1]
+     * @return <code>value / max</code>, usually a float in the range [0;1]
      */
     float getPercentage(int max) {
-        return 1 - (float) value / (float) max;
+        return (float) value / (float) max;
     }
 
     public int getValue() {

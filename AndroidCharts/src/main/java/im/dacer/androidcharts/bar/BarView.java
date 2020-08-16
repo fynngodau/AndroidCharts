@@ -283,7 +283,7 @@ public class BarView extends View {
             rect.set(leftMargin + BAR_SIDE_MARGIN * (i + 1) + barWidth * i, topMargin + (int) ((getHeight()
                             - topMargin
                             - valueLabelHeight
-                            - TEXT_MARGIN) * bars[i].getDisplayPercentage()),
+                            - TEXT_MARGIN) * (1f - bars[i].getDisplayPercentage())),
                     leftMargin + (BAR_SIDE_MARGIN + barWidth) * (i + 1),
                     getHeight() - valueLabelHeight - TEXT_MARGIN);
             canvas.drawRect(rect, fgPaint);
