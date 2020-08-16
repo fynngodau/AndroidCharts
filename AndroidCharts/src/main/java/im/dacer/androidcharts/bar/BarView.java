@@ -49,6 +49,8 @@ public class BarView extends View {
 
     private Line[] lines = new Line[0];
 
+    private boolean zeroLineEnabled = true;
+
     private final Runnable animator = new Runnable() {
         @Override
         public void run() {
@@ -161,6 +163,10 @@ public class BarView extends View {
         postInvalidate();
     }
 
+    public void setZeroLineEnabled(boolean enabled) {
+        zeroLineEnabled = enabled;
+    }
+
     public void setData(Value[] values) {
         setData(values, 0);
     }
@@ -238,6 +244,17 @@ public class BarView extends View {
 
             path.moveTo(0, y);
             path.lineTo(getWidth(), y);
+            canvas.drawPath(path, paint);
+        }
+
+        // Draw 0 line
+        if (zeroLineEnabled) {
+            int y = topMargin + (getHeight()
+                    - topMargin
+                    - valueLabelHeight
+                    - TEXT_MARGIN);
+            path.moveTo(lineLabelWidth + TEXT_MARGIN + BAR_SIDE_MARGIN, y);
+            path.lineTo(getWidth() - BAR_SIDE_MARGIN, y);
             canvas.drawPath(path, paint);
         }
 
