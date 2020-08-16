@@ -3,12 +3,12 @@ package im.dacer.androidcharts.bar;
 import android.content.Context;
 import android.graphics.*;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import im.dacer.androidcharts.CommonPaint;
 import im.dacer.androidcharts.MyUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Dacer on 11/11/13.
@@ -31,8 +31,7 @@ public class BarView extends View {
     private static final int BACKGROUND_COLOR = Color.parseColor("#F6F6F6");
     private static final int FOREGROUND_COLOR = Color.parseColor("#FC496D");
 
-    private final List<Float> percentList;
-    private float[] targetPercentList;
+    private Bar[] bars = new Bar[0];
 
     private final Paint textPaint;
     private final Paint bgPaint;
@@ -57,18 +56,11 @@ public class BarView extends View {
         @Override
         public void run() {
             boolean needNewFrame = false;
-            for (int i = 0; i < targetPercentList.length; i++) {
-                if (percentList.get(i) < targetPercentList[i]) {
-                    percentList.set(i, percentList.get(i) + 0.02f);
-                    needNewFrame = true;
-                } else if (percentList.get(i) > targetPercentList[i]) {
-                    percentList.set(i, percentList.get(i) - 0.02f);
-                    needNewFrame = true;
-                }
-                if (Math.abs(targetPercentList[i] - percentList.get(i)) < 0.02f) {
-                    percentList.set(i, targetPercentList[i]);
-                }
+
+            for (Bar bar : bars) {
+                needNewFrame = needNewFrame | bar.animationStep();
             }
+
             if (needNewFrame) {
                 postDelayed(this, 20);
             }
@@ -98,7 +90,6 @@ public class BarView extends View {
         TEXT_MARGIN = MyUtils.dip2px(context, 5);
 
         textPaint = CommonPaint.getTextPaint(context);
-        percentList = new ArrayList<>();
     }
 
     /**
@@ -202,31 +193,51 @@ public class BarView extends View {
         postInvalidate();
     }
 
+    public void setDataList(Value[] values) {
+        setDataList(values, 0);
+    }
+
     /**
-     * @param list The List of Integer with the range of [0-max].
+     * @param max The top border of the chart, or 0 to use highest value
      */
-    public void setDataList(List<Value> list, int max) {
-        targetPercentList = new float[list.size()];
-        if (max == 0) max = 1;
+    public void setDataList(Value[] values, int max) {
 
-        for (int i = 0; i < list.size(); i++) {
-            targetPercentList[i] = (list.get(i).getPercentage(max));
+        int highestValue = Collections.max(Arrays.asList(values), new Comparator<Value>() {
+            @Override
+            public int compare(Value value, Value t1) {
+                return Integer.compare(value.getValue(), t1.getValue());
+            }
+        }).getValue();
+
+        if (max < highestValue) {
+            if (max != 0) {
+                Log.w("BarView", "Inappropriate max! Using highest value as max instead. If you meant to do that, pass 0 to remove this warning.");
+            }
+            max = highestValue;
         }
 
-        // Make sure percentList.size() == targetPercentList.size()
-        if (percentList.isEmpty() || percentList.size() < targetPercentList.length) {
-            int temp = targetPercentList.length - percentList.size();
-            for (int i = 0; i < temp; i++) {
-                percentList.add(1f);
-            }
-        } else if (percentList.size() > targetPercentList.length) {
-            int temp = percentList.size() - targetPercentList.length;
-            for (int i = 0; i < temp; i++) {
-                percentList.remove(percentList.size() - 1);
-            }
+        // Copy references to bars that continue to exist
+        Bar[] newBars = Arrays.copyOf(bars, values.length);
+
+        // Fill remaining with new Bars
+        for (int i = Math.min(values.length, bars.length); i < newBars.length; i++) {
+            newBars[i] = new Bar();
         }
+
+        // Set values to bars
+        for (int i = 0; i < newBars.length; i++) {
+            newBars[i].setValue(values[i], max);
+        }
+
+        bars = newBars;
+
+        // Why is this call here?
         setMinimumWidth(2);
+
+        // Stop ongoing animation
         removeCallbacks(animator);
+
+        // Start new animation
         post(animator);
     }
 
@@ -263,34 +274,31 @@ public class BarView extends View {
         textPaint.setTextAlign(Paint.Align.CENTER);
 
         // Draw bars
-        int i = 1;
-        if (percentList != null && !percentList.isEmpty()) {
-            for (Float f : percentList) {
-                rect.set(leftMargin + BAR_SIDE_MARGIN * i + barWidth * (i - 1), topMargin,
-                        leftMargin + (BAR_SIDE_MARGIN + barWidth) * i,
-                        getHeight() - bottomTextHeight - TEXT_MARGIN);
-                canvas.drawRect(rect, bgPaint);
-                /*rect.set(BAR_SIDE_MARGIN*i+barWidth*(i-1),
-                        topMargin+(int)((getHeight()-topMargin)*percentList.get(i-1)),
-                        (BAR_SIDE_MARGIN+barWidth)* i,
-                        getHeight()-bottomTextHeight-TEXT_TOP_MARGIN);*/
-                /**
-                 * The correct total height is "getHeight()-topMargin-bottomTextHeight-TEXT_TOP_MARGIN",not "getHeight()-topMargin".
-                 * fix by zhenghuiy@gmail.com on 11/11/13.
-                 */
-                rect.set(leftMargin + BAR_SIDE_MARGIN * i + barWidth * (i - 1), topMargin + (int) ((getHeight()
-                                - topMargin
-                                - bottomTextHeight
-                                - TEXT_MARGIN) * percentList.get(i - 1)),
-                        leftMargin + (BAR_SIDE_MARGIN + barWidth) * i,
-                        getHeight() - bottomTextHeight - TEXT_MARGIN);
-                canvas.drawRect(rect, fgPaint);
-                i++;
-            }
+
+        for (int i = 0; i < bars.length; i++) {
+            rect.set(leftMargin + BAR_SIDE_MARGIN * (i + 1) + barWidth * i, topMargin,
+                    leftMargin + (BAR_SIDE_MARGIN + barWidth) * (i + 1),
+                    getHeight() - bottomTextHeight - TEXT_MARGIN);
+            canvas.drawRect(rect, bgPaint);
+            /*rect.set(BAR_SIDE_MARGIN*i+barWidth*(i-1),
+                    topMargin+(int)((getHeight()-topMargin)*percentList.get(i-1)),
+                    (BAR_SIDE_MARGIN+barWidth)* i,
+                    getHeight()-bottomTextHeight-TEXT_TOP_MARGIN);*/
+            /**
+             * The correct total height is "getHeight()-topMargin-bottomTextHeight-TEXT_TOP_MARGIN",not "getHeight()-topMargin".
+             * fix by zhenghuiy@gmail.com on 11/11/13.
+             */
+            rect.set(leftMargin + BAR_SIDE_MARGIN * (i + 1) + barWidth * i, topMargin + (int) ((getHeight()
+                            - topMargin
+                            - bottomTextHeight
+                            - TEXT_MARGIN) * bars[i].getDisplayPercentage()),
+                    leftMargin + (BAR_SIDE_MARGIN + barWidth) * (i + 1),
+                    getHeight() - bottomTextHeight - TEXT_MARGIN);
+            canvas.drawRect(rect, fgPaint);
         }
 
         if (bottomTextList != null && !bottomTextList.isEmpty()) {
-            i = 1;
+            int i = 1;
             for (int j = 0; j < bottomTextList.size(); j++) {
                 String s = bottomTextList.get(j);
 

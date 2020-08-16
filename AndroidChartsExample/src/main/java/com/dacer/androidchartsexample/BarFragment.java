@@ -40,19 +40,19 @@ public class BarFragment extends Fragment {
         }
         barView.setBottomTextList(test);
 
-        ArrayList<Value> barDataList = new ArrayList<>();
+        Value[] values = new Value[random * 2];
         for (int i = 0; i < random * 2; i++) {
-            barDataList.add(new Value((int) (Math.random() * 100)));
+            values[i] = new Value((int) (Math.random() * 100));
         }
-        barView.setDataList(barDataList, 100);
+        barView.setDataList(values, 100);
 
         // Draw vertical lines aligning with 3 bars
         List<Integer> lineValues = new ArrayList<>();
         List<String> labels = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             int randomPosition = (int) (Math.random() * random);
-            lineValues.add(barDataList.get(randomPosition).getValue());
-            labels.add(String.valueOf(barDataList.get(randomPosition).getValue()));
+            lineValues.add(values[randomPosition].getValue());
+            labels.add(String.valueOf(values[randomPosition].getValue()));
         }
         barView.setVerticalLines(lineValues, 100);
         barView.setVerticalLineLabels(labels);
