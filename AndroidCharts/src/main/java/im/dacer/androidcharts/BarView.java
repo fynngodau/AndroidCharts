@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.*;
 import android.util.AttributeSet;
 import android.view.View;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,32 +12,48 @@ import java.util.List;
  * Created by Dacer on 11/11/13.
  */
 public class BarView extends View {
-    private final int MINI_BAR_WIDTH;
+
+    /**
+     * Minimum bar width
+     */
+    private final int MIN_BAR_WIDTH;
+    /**
+     * Margin to the left and right of each bar
+     */
     private final int BAR_SIDE_MARGIN;
+    /**
+     * Margin around text
+     */
     private final int TEXT_MARGIN;
-    private final int TEXT_COLOR = Color.parseColor("#9B9A9B");
-    private final int BACKGROUND_COLOR = Color.parseColor("#F6F6F6");
-    private final int FOREGROUND_COLOR = Color.parseColor("#FC496D");
-    private List<Float> percentList;
+
+    private static final int BACKGROUND_COLOR = Color.parseColor("#F6F6F6");
+    private static final int FOREGROUND_COLOR = Color.parseColor("#FC496D");
+
+    private final List<Float> percentList;
     private List<Float> targetPercentList;
-    private Paint textPaint;
-    private Paint bgPaint;
-    private Paint fgPaint;
-    private Rect rect;
+
+    private final Paint textPaint;
+    private final Paint bgPaint;
+    private final Paint fgPaint;
+
+    private final Rect rect;
     private int barWidth;
     private int bottomTextDescent;
-    private boolean autoSetWidth = true;
-    private int topMargin;
+
+    private final int topMargin;
     private int leftMargin;
+
     private int bottomTextHeight;
     private int labelTextHeight;
-    private List<String> bottomTextList = new ArrayList<String>();
+
+    private List<String> bottomTextList = new ArrayList<>();
     private List<Typeface> typefaces = new ArrayList<>();
     private List<Float> verticalLines = new ArrayList<>();
     private List<String> verticalLineLabels = new ArrayList<>();
 
-    private Runnable animator = new Runnable() {
-        @Override public void run() {
+    private final Runnable animator = new Runnable() {
+        @Override
+        public void run() {
             boolean needNewFrame = false;
             for (int i = 0; i < targetPercentList.size(); i++) {
                 if (percentList.get(i) < targetPercentList.get(i)) {
@@ -66,35 +83,39 @@ public class BarView extends View {
         bgPaint = new Paint();
         bgPaint.setAntiAlias(true);
         bgPaint.setColor(BACKGROUND_COLOR);
+
         fgPaint = new Paint(bgPaint);
         fgPaint.setColor(FOREGROUND_COLOR);
+
         rect = new Rect();
+
         topMargin = MyUtils.dip2px(context, 5);
         barWidth = MyUtils.dip2px(context, 22);
-        MINI_BAR_WIDTH = MyUtils.dip2px(context, 22);
+        MIN_BAR_WIDTH = MyUtils.dip2px(context, 22);
         BAR_SIDE_MARGIN = MyUtils.dip2px(context, 22);
         TEXT_MARGIN = MyUtils.dip2px(context, 5);
+
         textPaint = CommonPaint.getTextPaint(context);
-        percentList = new ArrayList<Float>();
+        percentList = new ArrayList<>();
     }
 
     /**
-     * dataList will be reset when called is method.
+     * Set list of bar labels
      *
-     * @param bottomStringList The String List in the bottom.
+     * @param bottomStringList An ordered list of Strings
      */
     public void setBottomTextList(List<String> bottomStringList) {
         //        this.dataList = null;
         this.bottomTextList = bottomStringList;
         Rect r = new Rect();
         bottomTextDescent = 0;
-        barWidth = MINI_BAR_WIDTH;
+        barWidth = MIN_BAR_WIDTH;
         for (String s : bottomTextList) {
             textPaint.getTextBounds(s, 0, s.length(), r);
             if (bottomTextHeight < r.height()) {
                 bottomTextHeight = r.height();
             }
-            if (autoSetWidth && (barWidth < r.width())) {
+            if (barWidth < r.width()) {
                 barWidth = r.width();
             }
             if (bottomTextDescent < (Math.abs(r.bottom))) {
@@ -105,6 +126,9 @@ public class BarView extends View {
         postInvalidate();
     }
 
+    /**
+     * @param typefaces An ordered list of typefaces
+     */
     public void setTypefaces(List<Typeface> typefaces) {
         this.typefaces = typefaces;
 
@@ -180,7 +204,7 @@ public class BarView extends View {
      * @param list The List of Integer with the range of [0-max].
      */
     public void setDataList(List<Integer> list, int max) {
-        targetPercentList = new ArrayList<Float>();
+        targetPercentList = new ArrayList<>();
         if (max == 0) max = 1;
 
         for (Integer integer : list) {
@@ -204,7 +228,8 @@ public class BarView extends View {
         post(animator);
     }
 
-    @Override protected void onDraw(Canvas canvas) {
+    @Override
+    protected void onDraw(Canvas canvas) {
 
         // Draw vertical background lines
 
@@ -278,7 +303,8 @@ public class BarView extends View {
         }
     }
 
-    @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int mViewWidth = measureWidth(widthMeasureSpec);
         int mViewHeight = measureHeight(heightMeasureSpec);
         setMeasuredDimension(mViewWidth, mViewHeight);
