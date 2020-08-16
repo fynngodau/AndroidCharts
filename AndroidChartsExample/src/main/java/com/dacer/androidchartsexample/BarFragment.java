@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import im.dacer.androidcharts.bar.BarView;
+import im.dacer.androidcharts.bar.Value;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,9 +40,9 @@ public class BarFragment extends Fragment {
         }
         barView.setBottomTextList(test);
 
-        ArrayList<Integer> barDataList = new ArrayList<Integer>();
+        ArrayList<Value> barDataList = new ArrayList<>();
         for (int i = 0; i < random * 2; i++) {
-            barDataList.add((int) (Math.random() * 100));
+            barDataList.add(new Value((int) (Math.random() * 100)));
         }
         barView.setDataList(barDataList, 100);
 
@@ -49,8 +51,8 @@ public class BarFragment extends Fragment {
         List<String> labels = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             int randomPosition = (int) (Math.random() * random);
-            lineValues.add(barDataList.get(randomPosition));
-            labels.add(String.valueOf(barDataList.get(randomPosition)));
+            lineValues.add(barDataList.get(randomPosition).getValue());
+            labels.add(String.valueOf(barDataList.get(randomPosition).getValue()));
         }
         barView.setVerticalLines(lineValues, 100);
         barView.setVerticalLineLabels(labels);

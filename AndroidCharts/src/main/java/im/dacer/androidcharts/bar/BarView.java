@@ -32,7 +32,7 @@ public class BarView extends View {
     private static final int FOREGROUND_COLOR = Color.parseColor("#FC496D");
 
     private final List<Float> percentList;
-    private List<Float> targetPercentList;
+    private float[] targetPercentList;
 
     private final Paint textPaint;
     private final Paint bgPaint;
@@ -57,16 +57,16 @@ public class BarView extends View {
         @Override
         public void run() {
             boolean needNewFrame = false;
-            for (int i = 0; i < targetPercentList.size(); i++) {
-                if (percentList.get(i) < targetPercentList.get(i)) {
+            for (int i = 0; i < targetPercentList.length; i++) {
+                if (percentList.get(i) < targetPercentList[i]) {
                     percentList.set(i, percentList.get(i) + 0.02f);
                     needNewFrame = true;
-                } else if (percentList.get(i) > targetPercentList.get(i)) {
+                } else if (percentList.get(i) > targetPercentList[i]) {
                     percentList.set(i, percentList.get(i) - 0.02f);
                     needNewFrame = true;
                 }
-                if (Math.abs(targetPercentList.get(i) - percentList.get(i)) < 0.02f) {
-                    percentList.set(i, targetPercentList.get(i));
+                if (Math.abs(targetPercentList[i] - percentList.get(i)) < 0.02f) {
+                    percentList.set(i, targetPercentList[i]);
                 }
             }
             if (needNewFrame) {
@@ -205,22 +205,22 @@ public class BarView extends View {
     /**
      * @param list The List of Integer with the range of [0-max].
      */
-    public void setDataList(List<Integer> list, int max) {
-        targetPercentList = new ArrayList<>();
+    public void setDataList(List<Value> list, int max) {
+        targetPercentList = new float[list.size()];
         if (max == 0) max = 1;
 
-        for (Integer integer : list) {
-            targetPercentList.add(1 - (float) integer / (float) max);
+        for (int i = 0; i < list.size(); i++) {
+            targetPercentList[i] = (list.get(i).getPercentage(max));
         }
 
         // Make sure percentList.size() == targetPercentList.size()
-        if (percentList.isEmpty() || percentList.size() < targetPercentList.size()) {
-            int temp = targetPercentList.size() - percentList.size();
+        if (percentList.isEmpty() || percentList.size() < targetPercentList.length) {
+            int temp = targetPercentList.length - percentList.size();
             for (int i = 0; i < temp; i++) {
                 percentList.add(1f);
             }
-        } else if (percentList.size() > targetPercentList.size()) {
-            int temp = percentList.size() - targetPercentList.size();
+        } else if (percentList.size() > targetPercentList.length) {
+            int temp = percentList.size() - targetPercentList.length;
             for (int i = 0; i < temp; i++) {
                 percentList.remove(percentList.size() - 1);
             }
