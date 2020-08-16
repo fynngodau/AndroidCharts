@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import im.dacer.androidcharts.ClockPieHelper;
+import im.dacer.androidcharts.ClockPieSegment;
 import im.dacer.androidcharts.ClockPieView;
 import java.util.ArrayList;
 
@@ -29,21 +29,21 @@ public class ClockPieFragment extends Fragment {
     }
 
     private void randomSet(ClockPieView clockPieView) {
-        ArrayList<ClockPieHelper> clockPieHelperArrayList = new ArrayList<ClockPieHelper>();
+        ArrayList<ClockPieSegment> clockPieSegmentArrayList = new ArrayList<ClockPieSegment>();
         for (int i = 0; i < 20; i++) {
             int startHour = (int) (24 * Math.random());
             int startMin = (int) (60 * Math.random());
             int duration = (int) (50 * Math.random());
-            clockPieHelperArrayList.add(
-                    new ClockPieHelper(startHour, startMin, 0, startHour, startMin + duration, 0));
+            clockPieSegmentArrayList.add(
+                    new ClockPieSegment(startHour, startMin, 0, startHour, startMin + duration, 0));
         }
-        clockPieView.setDate(clockPieHelperArrayList);
+        clockPieView.setData(clockPieSegmentArrayList);
     }
 
     private void set(ClockPieView clockPieView) {
-        ArrayList<ClockPieHelper> clockPieHelperArrayList = new ArrayList<ClockPieHelper>();
-        clockPieHelperArrayList.add(new ClockPieHelper(1, 50, 2, 30));
-        clockPieHelperArrayList.add(new ClockPieHelper(6, 50, 8, 30));
-        clockPieView.setDate(clockPieHelperArrayList);
+        ArrayList<ClockPieSegment> clockPieSegmentArrayList = new ArrayList<ClockPieSegment>();
+        clockPieSegmentArrayList.add(new ClockPieSegment(1, 50, 2, 30));
+        clockPieSegmentArrayList.add(new ClockPieSegment(6, 50, 8, 30));
+        clockPieView.setData(clockPieSegmentArrayList);
     }
 }

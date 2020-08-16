@@ -1,43 +1,42 @@
 package im.dacer.androidcharts;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Point;
-import android.graphics.Rect;
-import android.graphics.RectF;
+import android.graphics.*;
 import android.util.AttributeSet;
 import android.view.View;
-import java.util.ArrayList;
+
+import java.util.List;
 
 /**
  * Created by Dacer on 11/13/13.
  */
 public class ClockPieView extends View {
 
-    private final int TEXT_COLOR = Color.parseColor("#9B9A9B");
-    private final int GRAY_COLOR = Color.parseColor("#D4D3D4");
-    private final int SEGMENT_COLOR = Color.parseColor("#FC496D");
-    private Paint textPaint;
-    private Paint redPaint;
-    private Paint linePaint;
-    private Paint whitePaint;
+    private static final int GRAY_COLOR = Color.parseColor("#D4D3D4");
+
+    private final Paint textPaint;
+    private final Paint foregroundPaint;
+    private final Paint linePaint;
+    private final Paint whitePaint;
+
     private int mViewWidth;
     private int mViewHeight;
-    private int textSize;
+    private final int textSize;
     private int pieRadius;
-    private Point pieCenterPoint;
-    private Point tempPoint;
-    private Point tempPointRight;
-    private int lineLength;
-    private float leftTextWidth;
-    private float rightTextWidth;
-    private float topTextHeight;
-    private int lineThickness;
-    private RectF cirRect;
-    private Rect textRect;
-    private ArrayList<ClockPieHelper> pieArrayList = new ArrayList<ClockPieHelper>();
+
+    private final Point pieCenterPoint;
+    private final Point tempPoint;
+    private final Point tempPointRight;
+
+    private final int lineLength;
+    private final int lineThickness;
+    private final float leftTextWidth;
+    private final float rightTextWidth;
+    private final float topTextHeight;
+
+    private final RectF cirRect;
+
+    private ClockPieSegment[] segments;
 
     public ClockPieView(Context context) {
         this(context, null);
@@ -49,20 +48,17 @@ public class ClockPieView extends View {
         lineThickness = MyUtils.dip2px(context, 1);
         lineLength = MyUtils.dip2px(context, 10);
 
-        textPaint = new Paint();
-        textPaint.setAntiAlias(true);
-        textPaint.setColor(TEXT_COLOR);
-        textPaint.setTextSize(textSize);
-        textPaint.setTextAlign(Paint.Align.CENTER);
-        Paint.FontMetrics fm = new Paint.FontMetrics();
-        textPaint.getFontMetrics(fm);
-        textRect = new Rect();
+        textPaint = CommonPaint.getTextPaint(context);
+
+        Rect textRect = new Rect();
         textPaint.getTextBounds("18", 0, 1, textRect);
-        redPaint = new Paint(textPaint);
-        redPaint.setColor(SEGMENT_COLOR);
+
+        foregroundPaint = CommonPaint.getForegroundPaint();
+
         linePaint = new Paint(textPaint);
         linePaint.setColor(GRAY_COLOR);
         linePaint.setStrokeWidth(lineThickness);
+
         whitePaint = new Paint(linePaint);
         whitePaint.setColor(Color.WHITE);
         tempPoint = new Point();
@@ -76,24 +72,12 @@ public class ClockPieView extends View {
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
     }
 
-    public void setDate(ArrayList<ClockPieHelper> helperList) {
-        if (helperList != null && !helperList.isEmpty()) {
-            int pieSize = pieArrayList.isEmpty() ? 0 : pieArrayList.size();
-            for (int i = 0; i < helperList.size(); i++) {
-                if (i > pieSize - 1) {
-                    //                    float mStart = helperList.get(i).getStart();
-                    pieArrayList.add(new ClockPieHelper(helperList.get(i)));
-                } else {
-                    pieArrayList.set(i, pieArrayList.get(i).set(helperList.get(i)));
-                }
-            }
-            int temp = pieArrayList.size() - helperList.size();
-            for (int i = 0; i < temp; i++) {
-                pieArrayList.remove(pieArrayList.size() - 1);
-            }
-        } else {
-            pieArrayList.clear();
-        }
+    public void setData(List<ClockPieSegment> segments) {
+        setData(segments.toArray(new ClockPieSegment[0]));
+    }
+
+    public void setData(ClockPieSegment[] segments) {
+        this.segments = segments;
 
         post(new Runnable() {
             @Override
@@ -103,11 +87,12 @@ public class ClockPieView extends View {
         });
     }
 
-    @Override protected void onDraw(Canvas canvas) {
+    @Override
+    protected void onDraw(Canvas canvas) {
         drawBackground(canvas);
-        if (pieArrayList != null) {
-            for (ClockPieHelper helper : pieArrayList) {
-                canvas.drawArc(cirRect, helper.getStart(), helper.getSweep(), true, redPaint);
+        if (segments != null) {
+            for (ClockPieSegment helper : segments) {
+                canvas.drawArc(cirRect, helper.getStart(), helper.getSweep(), true, foregroundPaint);
             }
         }
     }
@@ -131,13 +116,14 @@ public class ClockPieView extends View {
         canvas.drawCircle(pieCenterPoint.x, pieCenterPoint.y, pieRadius, whitePaint);
         canvas.drawText("0", pieCenterPoint.x, topTextHeight, textPaint);
         canvas.drawText("12", pieCenterPoint.x, mViewHeight, textPaint);
-        canvas.drawText("18", leftTextWidth / 2, pieCenterPoint.y + textRect.height() / 2,
+        canvas.drawText("18", leftTextWidth / 2, pieCenterPoint.y + topTextHeight / 2,
                 textPaint);
         canvas.drawText("6", mViewWidth - rightTextWidth / 2,
-                pieCenterPoint.y + textRect.height() / 2, textPaint);
+                pieCenterPoint.y + topTextHeight / 2, textPaint);
     }
 
-    @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         mViewWidth = measureWidth(widthMeasureSpec);
         mViewHeight = measureHeight(heightMeasureSpec);
         pieRadius = mViewWidth / 2 - lineLength * 2 - (int) (textPaint.measureText("18") / 2);
