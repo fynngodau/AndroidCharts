@@ -43,11 +43,12 @@ public class BarFragment extends Fragment {
         barView.setBoldPosition(5);
 
         // Draw vertical lines aligning with 3 bars
-        Line[] lines = new Line[3];
+        Line[] lines = new Line[4];
         for (int i = 0; i < 3; i++) {
             int randomPosition = (int) (Math.random() * random);
             lines[i] = new Line(values[randomPosition].getValue(), String.valueOf(values[randomPosition].getValue()));
         }
+        lines[3] = new Line(0, null);
         barView.setVerticalLines(lines, 100);
     }
 }

@@ -145,12 +145,14 @@ public class BarView extends View {
             line.setPercentageByMax(max);
 
             // Calculate maximum width and height of label text
-            textPaint.getTextBounds(line.getLabel(), 0, line.getLabel().length(), r);
-            if (lineLabelWidth < r.width()) {
-                lineLabelWidth = r.width();
-            }
-            if (lineLabelTextHeight < r.height()) {
-                lineLabelTextHeight = r.height();
+            if (line.getLabel() != null) {
+                textPaint.getTextBounds(line.getLabel(), 0, line.getLabel().length(), r);
+                if (lineLabelWidth < r.width()) {
+                    lineLabelWidth = r.width();
+                }
+                if (lineLabelTextHeight < r.height()) {
+                    lineLabelTextHeight = r.height();
+                }
             }
         }
 
