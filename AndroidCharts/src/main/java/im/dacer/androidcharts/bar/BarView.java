@@ -42,13 +42,12 @@ public class BarView extends View {
     private int valueLabelDescent;
 
     private final int topMargin;
-    private int leftMargin;
+    private int lineLabelWidth;
 
     private int valueLabelHeight;
-    private int labelTextHeight;
+    private int lineLabelTextHeight;
 
-    private List<Float> verticalLines = new ArrayList<>();
-    private List<String> verticalLineLabels = new ArrayList<>();
+    private Line[] lines = new Line[0];
 
     private final Runnable animator = new Runnable() {
         @Override
@@ -132,47 +131,30 @@ public class BarView extends View {
     }
 
     /**
-     * Draw vertical background lines to these values if max is the maximum
-     */
-    public void setVerticalLines(List<Integer> values, int max) {
-
-        verticalLines.clear();
-
-        for (Integer value : values) {
-            verticalLines.add((float) value / (float) max);
-        }
-
-        postInvalidate();
-    }
-
-    /**
-     * Draw vertical background lines to these percentages of the maximum
-     */
-    public void setVerticalLinesByPercentage(List<Float> percentages) {
-        this.verticalLines = percentages;
-
-        postInvalidate();
-    }
-
-    /**
-     * Set labels for vertical lines, which can function as a scale or legend for the chart.
+     * Draw vertical background lines
      *
-     * @param values Lables in the order of the values passed to {@link #setVerticalLines(List, int)}
+     * @param max The top border of the chart
      */
-    public void setVerticalLineLabels(List<String> values) {
-        verticalLineLabels = values;
+    public void setVerticalLines(Line[] lines, int max) {
+
+        lineLabelWidth = 0;
 
         Rect r = new Rect();
-        leftMargin = 0;
-        for (String s : verticalLineLabels) {
-            textPaint.getTextBounds(s, 0, s.length(), r);
-            if (leftMargin < r.width()) {
-                leftMargin = r.width();
+
+        for (Line line : lines) {
+            line.setPercentageByMax(max);
+
+            // Calculate maximum width and height of label text
+            textPaint.getTextBounds(line.getLabel(), 0, line.getLabel().length(), r);
+            if (lineLabelWidth < r.width()) {
+                lineLabelWidth = r.width();
             }
-            if (labelTextHeight < r.height()) {
-                labelTextHeight = r.height();
+            if (lineLabelTextHeight < r.height()) {
+                lineLabelTextHeight = r.height();
             }
         }
+
+        this.lines = lines;
 
         postInvalidate();
     }
@@ -241,15 +223,15 @@ public class BarView extends View {
         textPaint.setTypeface(Typeface.DEFAULT);
 
         Path path = new Path();
-        for (int i = 0; i < verticalLines.size(); i++) {
+        for (Line line : lines) {
 
             int y = topMargin + (int) ((getHeight()
                     - topMargin
                     - valueLabelHeight
-                    - TEXT_MARGIN) * (1f - verticalLines.get(i)));
+                    - TEXT_MARGIN) * (1f - line.getPercentage()));
 
-            if (verticalLineLabels.size() > i) {
-                canvas.drawText(verticalLineLabels.get(i), TEXT_MARGIN, y + labelTextHeight + TEXT_MARGIN, textPaint);
+            if (line.getLabel() != null) {
+                canvas.drawText(line.getLabel(), TEXT_MARGIN, y + lineLabelTextHeight + TEXT_MARGIN, textPaint);
             }
 
             path.moveTo(0, y);
@@ -263,17 +245,17 @@ public class BarView extends View {
 
         for (int i = 0; i < bars.length; i++) {
             // Bar background
-            rect.set(leftMargin + BAR_SIDE_MARGIN * (i + 1) + barWidth * i, topMargin,
-                    leftMargin + (BAR_SIDE_MARGIN + barWidth) * (i + 1),
+            rect.set(lineLabelWidth + BAR_SIDE_MARGIN * (i + 1) + barWidth * i, topMargin,
+                    lineLabelWidth + (BAR_SIDE_MARGIN + barWidth) * (i + 1),
                     getHeight() - valueLabelHeight - TEXT_MARGIN);
             canvas.drawRect(rect, bgPaint);
 
             // Bar foreground
-            rect.set(leftMargin + BAR_SIDE_MARGIN * (i + 1) + barWidth * i, topMargin + (int) ((getHeight()
+            rect.set(lineLabelWidth + BAR_SIDE_MARGIN * (i + 1) + barWidth * i, topMargin + (int) ((getHeight()
                             - topMargin
                             - valueLabelHeight
                             - TEXT_MARGIN) * (1f - bars[i].getDisplayPercentage())),
-                    leftMargin + (BAR_SIDE_MARGIN + barWidth) * (i + 1),
+                    lineLabelWidth + (BAR_SIDE_MARGIN + barWidth) * (i + 1),
                     getHeight() - valueLabelHeight - TEXT_MARGIN);
             canvas.drawRect(rect, fgPaint);
 
@@ -284,7 +266,7 @@ public class BarView extends View {
                 // Use provided typeface
                 textPaint.setTypeface(bars[i].getValue().getLabelTypeface());
 
-                canvas.drawText(label, leftMargin + BAR_SIDE_MARGIN * (i + 1) + barWidth * i + barWidth / 2f,
+                canvas.drawText(label, lineLabelWidth + BAR_SIDE_MARGIN * (i + 1) + barWidth * i + barWidth / 2f,
                         getHeight() - valueLabelDescent, textPaint);
             }
         }
@@ -298,7 +280,7 @@ public class BarView extends View {
     }
 
     private int measureWidth(int measureSpec) {
-        int preferred = bars.length * (barWidth + BAR_SIDE_MARGIN) + BAR_SIDE_MARGIN + leftMargin;
+        int preferred = bars.length * (barWidth + BAR_SIDE_MARGIN) + BAR_SIDE_MARGIN + lineLabelWidth;
         return getMeasurement(measureSpec, preferred);
     }
 

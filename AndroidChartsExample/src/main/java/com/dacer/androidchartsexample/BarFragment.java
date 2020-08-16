@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import im.dacer.androidcharts.bar.BarView;
+import im.dacer.androidcharts.bar.Line;
 import im.dacer.androidcharts.bar.Value;
 
 import java.util.ArrayList;
@@ -42,14 +43,11 @@ public class BarFragment extends Fragment {
         barView.setBoldPosition(5);
 
         // Draw vertical lines aligning with 3 bars
-        List<Integer> lineValues = new ArrayList<>();
-        List<String> labels = new ArrayList<>();
+        Line[] lines = new Line[3];
         for (int i = 0; i < 3; i++) {
             int randomPosition = (int) (Math.random() * random);
-            lineValues.add(values[randomPosition].getValue());
-            labels.add(String.valueOf(values[randomPosition].getValue()));
+            lines[i] = new Line(values[randomPosition].getValue(), String.valueOf(values[randomPosition].getValue()));
         }
-        barView.setVerticalLines(lineValues, 100);
-        barView.setVerticalLineLabels(labels);
+        barView.setVerticalLines(lines, 100);
     }
 }
