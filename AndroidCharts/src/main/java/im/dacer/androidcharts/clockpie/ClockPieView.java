@@ -21,8 +21,17 @@ public class ClockPieView extends View {
     private final Paint linePaint;
     private final Paint whitePaint;
 
-    private int mViewWidth;
-    private int mViewHeight;
+    /**
+     * Size the view is drawn in.
+     * <p>Set the the maximum of width and height during {@link #onMeasure(int, int)}.</p>
+     */
+    private int viewSize;
+
+    /**
+     * Pixels the whole view is moved to the right from x = 0,
+     * as the view is drawn centered.
+     */
+    private int offset;
     private final int textSize;
     private int pieRadius;
 
@@ -112,28 +121,33 @@ public class ClockPieView extends View {
             canvas.drawLine(tempPoint.x, tempPoint.y, tempPointRight.x, tempPointRight.y,
                     linePaint);
         }
-        canvas.drawCircle(pieCenterPoint.x, pieCenterPoint.y, pieRadius + lineLength / 2,
+        canvas.drawCircle(pieCenterPoint.x, pieCenterPoint.y, pieRadius + lineLength / 2f,
                 whitePaint);
         canvas.drawCircle(pieCenterPoint.x, pieCenterPoint.y, pieRadius + lineThickness, linePaint);
         canvas.drawCircle(pieCenterPoint.x, pieCenterPoint.y, pieRadius, whitePaint);
-        canvas.drawText("0", pieCenterPoint.x, topTextHeight, textPaint);
-        canvas.drawText("12", pieCenterPoint.x, mViewHeight, textPaint);
-        canvas.drawText("18", leftTextWidth / 2, pieCenterPoint.y + topTextHeight / 2,
-                textPaint);
-        canvas.drawText("6", mViewWidth - rightTextWidth / 2,
+
+        // Don't ask. I'm glad the 0 and 12 are where they are supposed to be.
+        canvas.drawText("0", pieCenterPoint.x, viewSize - 2 * pieRadius - (int) (leftTextWidth) - lineLength * 4 + topTextHeight, textPaint);
+        canvas.drawText("12", pieCenterPoint.x, 2 * pieRadius + (int) (leftTextWidth) + lineLength * 4, textPaint);
+        canvas.drawText("18", offset + leftTextWidth / 2, pieCenterPoint.y + topTextHeight / 2, textPaint);
+        canvas.drawText("6", offset + viewSize - rightTextWidth / 2,
                 pieCenterPoint.y + topTextHeight / 2, textPaint);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        mViewWidth = measureWidth(widthMeasureSpec);
-        mViewHeight = measureHeight(heightMeasureSpec);
-        pieRadius = mViewWidth / 2 - lineLength * 2 - (int) (textPaint.measureText("18") / 2);
-        pieCenterPoint.set(mViewWidth / 2 - (int) rightTextWidth / 2 + (int) leftTextWidth / 2,
-                mViewHeight / 2 + textSize / 2 - (int) (textPaint.measureText("18") / 2));
+        int maxWidth = measureWidth(widthMeasureSpec);
+        int maxHeight = measureHeight(heightMeasureSpec, maxWidth);
+        viewSize = Math.min(maxWidth, maxHeight);
+
+        offset = (maxWidth - viewSize) / 2;
+
+        pieRadius = (viewSize - lineLength * 4 - (int) (leftTextWidth)) / 2;
+        pieCenterPoint.set(maxWidth / 2 - (int) rightTextWidth / 2 + (int) leftTextWidth / 2,
+                viewSize / 2 + textSize / 2 - (int) (leftTextWidth / 2));
         cirRect.set(pieCenterPoint.x - pieRadius, pieCenterPoint.y - pieRadius,
                 pieCenterPoint.x + pieRadius, pieCenterPoint.y + pieRadius);
-        setMeasuredDimension(mViewWidth, mViewHeight);
+        setMeasuredDimension(viewSize, viewSize);
     }
 
     private int measureWidth(int measureSpec) {
@@ -141,8 +155,8 @@ public class ClockPieView extends View {
         return getMeasurement(measureSpec, preferred);
     }
 
-    private int measureHeight(int measureSpec) {
-        int preferred = mViewWidth;
+    private int measureHeight(int measureSpec, int maxWidth) {
+        int preferred = maxWidth;
         return getMeasurement(measureSpec, preferred);
     }
 

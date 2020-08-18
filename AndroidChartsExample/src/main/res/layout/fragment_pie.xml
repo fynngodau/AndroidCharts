@@ -6,13 +6,14 @@
     android:background="#ffffff"
     >
 
-    <view
-        class="im.dacer.androidcharts.clockpie.ClockPieView"
+    <im.dacer.androidcharts.clockpie.ClockPieView
         android:id="@+id/pie_view"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_margin="8dp"
+        android:layout_above="@id/pie_button"
         />
 
 
