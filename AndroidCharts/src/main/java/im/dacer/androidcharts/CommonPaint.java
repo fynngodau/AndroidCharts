@@ -3,6 +3,8 @@ package im.dacer.androidcharts;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
+import android.util.TypedValue;
 
 public class CommonPaint {
 
@@ -24,12 +26,29 @@ public class CommonPaint {
         return textPaint;
     }
 
-    public static Paint getForegroundPaint() {
+    public static Paint getForegroundPaint(Context context) {
 
         Paint foregroundPaint = new Paint();
         foregroundPaint.setAntiAlias(true);
-        foregroundPaint.setColor(FOREGROUND_COLOR);
+        foregroundPaint.setColor(getThemeAccentColor(context));
 
         return foregroundPaint;
+    }
+
+    /**
+     * @see <a href="https://stackoverflow.com/a/36192770">StackOverflow</a>
+     * @return The accent color from the currently set theme
+     */
+    private static int getThemeAccentColor(Context context) {
+        int colorAttr;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            colorAttr = android.R.attr.colorAccent;
+        } else {
+            //Get colorAccent defined for AppCompat
+            colorAttr = context.getResources().getIdentifier("colorAccent", "attr", context.getPackageName());
+        }
+        TypedValue outValue = new TypedValue();
+        context.getTheme().resolveAttribute(colorAttr, outValue, true);
+        return outValue.data;
     }
 }

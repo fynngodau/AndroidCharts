@@ -64,7 +64,7 @@ public class ClockPieView extends View {
         Rect textRect = new Rect();
         textPaint.getTextBounds("18", 0, 1, textRect);
 
-        foregroundPaint = CommonPaint.getForegroundPaint();
+        foregroundPaint = CommonPaint.getForegroundPaint(context);
 
         linePaint = new Paint(textPaint);
         linePaint.setColor(GRAY_COLOR);

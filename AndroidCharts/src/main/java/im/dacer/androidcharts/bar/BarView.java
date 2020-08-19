@@ -77,8 +77,7 @@ public class BarView extends View {
         bgPaint.setAntiAlias(true);
         bgPaint.setColor(BACKGROUND_COLOR);
 
-        fgPaint = new Paint(bgPaint);
-        fgPaint.setColor(FOREGROUND_COLOR);
+        fgPaint = CommonPaint.getForegroundPaint(context);
 
         rect = new Rect();
 
