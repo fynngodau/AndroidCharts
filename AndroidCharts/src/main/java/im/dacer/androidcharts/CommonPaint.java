@@ -9,7 +9,7 @@ import android.util.TypedValue;
 public class CommonPaint {
 
     private static final int TEXT_COLOR = Color.parseColor("#9B9A9B");
-    private static final int FOREGROUND_COLOR = Color.parseColor("#FC496D");
+    private static final int DEFAULT_FOREGROUND_COLOR = Color.parseColor("#FC496D");
 
     public static final int BACKGROUND_LINE_COLOR = Color.parseColor("#EEEEEE");
 
@@ -49,6 +49,11 @@ public class CommonPaint {
         }
         TypedValue outValue = new TypedValue();
         context.getTheme().resolveAttribute(colorAttr, outValue, true);
-        return outValue.data;
+
+        if (outValue.data != 0) {
+            return outValue.data;
+        } else {
+            return DEFAULT_FOREGROUND_COLOR;
+        }
     }
 }
