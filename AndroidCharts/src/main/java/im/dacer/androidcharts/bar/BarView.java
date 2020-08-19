@@ -238,7 +238,7 @@ public class BarView extends View {
             int y = topMargin + (int) ((getHeight()
                     - topMargin
                     - valueLabelHeight
-                    - TEXT_MARGIN) * (1f - line.getPercentage()));
+                    - 2 * TEXT_MARGIN) * (1f - line.getPercentage()));
 
             if (line.getLabel() != null) {
                 canvas.drawText(line.getLabel(), TEXT_MARGIN, y + lineLabelTextHeight + TEXT_MARGIN, textPaint);
@@ -254,7 +254,7 @@ public class BarView extends View {
             int y = topMargin + (getHeight()
                     - topMargin
                     - valueLabelHeight
-                    - TEXT_MARGIN);
+                    - 2 * TEXT_MARGIN);
             path.moveTo(lineLabelWidth + TEXT_MARGIN + BAR_SIDE_MARGIN, y);
             path.lineTo(getWidth(), y);
             canvas.drawPath(path, paint);
@@ -268,16 +268,16 @@ public class BarView extends View {
             // Bar background
             rect.set(lineLabelWidth + BAR_SIDE_MARGIN * (i + 1) + barWidth * i, topMargin,
                     lineLabelWidth + (BAR_SIDE_MARGIN + barWidth) * (i + 1),
-                    getHeight() - valueLabelHeight - TEXT_MARGIN);
+                    getHeight() - valueLabelHeight - 2 * TEXT_MARGIN);
             canvas.drawRect(rect, bgPaint);
 
             // Bar foreground
             rect.set(lineLabelWidth + BAR_SIDE_MARGIN * (i + 1) + barWidth * i, topMargin + (int) ((getHeight()
                             - topMargin
                             - valueLabelHeight
-                            - TEXT_MARGIN) * (1f - bars[i].getDisplayPercentage())),
+                            - 2 * TEXT_MARGIN) * (1f - bars[i].getDisplayPercentage())),
                     lineLabelWidth + (BAR_SIDE_MARGIN + barWidth) * (i + 1),
-                    getHeight() - valueLabelHeight - TEXT_MARGIN);
+                    getHeight() - valueLabelHeight - 2 * TEXT_MARGIN);
             canvas.drawRect(rect, fgPaint);
 
             // Draw bar label if present
@@ -288,7 +288,7 @@ public class BarView extends View {
                 textPaint.setTypeface(bars[i].getValue().getLabelTypeface());
 
                 canvas.drawText(label, lineLabelWidth + BAR_SIDE_MARGIN * (i + 1) + barWidth * i + barWidth / 2f,
-                        getHeight() - valueLabelDescent, textPaint);
+                        getHeight() - valueLabelDescent - TEXT_MARGIN, textPaint);
             }
         }
     }
