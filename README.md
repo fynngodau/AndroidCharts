@@ -1,30 +1,21 @@
 # AndroidCharts
 
-A simple Android charts library.
+This is a fork of the [AndroidCharts](https://github.com/HackPlan/AndroidCharts) library.
 
-## Known Uses in
+### Improvement status
 
-* [Pomotodo](https://play.google.com/store/apps/details?id=com.pomotodo)
+| View | code quality improvement status | new features | other improvements | original example screenshot
+|---|---|---|---|---|
+| `LineView` | unchanged | no new features | none | ![Line Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/line.png)
+| `BarView` | **significantly improved** | background lines for scale (including labels), support for bold / italic labels, zero line (optional) | fix missing margins, colro set to accent color | ![Bar Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/bar.png)
+| `ClockPieView` | **improved** | no new features | support for drawing in views with larger width than height, support for drawing when view is set to `match_parent`, color set to accent color, remove animation as it was too slow | ![Clock Pie Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/pie.png)
+| `PieView` | unchanged | no new features | none | ![Pie Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/pie2.png)
+
+Note: no new screenshots were taken. The clock pie view will have more intense colors.
 
 ## Including in Your Project
 
-#### Eclipse
-
-* Import `/AndroidCharts` folder.
-* Move `/java` folder to `/src` folder.
-* `mkdir libs`, copy `android-support-v4.jar` to `/libs`.
-
-#### Gradle
-
-```groovy
-repositories {
-    jcenter()
-}
-```
-
-```groovy
-compile 'im.dacer:AndroidCharts:1.0.4'
-```
+Please use JitPack for downloading compiled AAR bundles. Sorry. [See how.](https://jitpack.io/#fynngodau/AndroidCharts/)
 
 ## Usage
 
@@ -34,16 +25,15 @@ compile 'im.dacer:AndroidCharts:1.0.4'
 
 ```xml
 <HorizontalScrollView>
-        <view
+        <im.dacer.androidcharts.line.LineView
             android:layout_width="wrap_content"
             android:layout_height="300dp"
-            class="im.dacer.androidcharts.line.LineView"
             android:id="@+id/line_view" />
 </HorizontalScrollView>
 ```
 
 ```java
-LineView lineView = (LineView)findViewById(R.id.line_view);
+LineView lineView = findViewById(R.id.line_view);
 lineView.setDrawDotLine(false); //optional
 lineView.setShowPopup(LineView.SHOW_POPUPS_MAXMIN_ONLY); //optional
 lineView.setBottomTextList(strList);
@@ -57,18 +47,24 @@ lineView.setDataList(dataLists); //or lineView.setFloatDataList(floatDataLists)
 
 ```xml
 <HorizontalScrollView>
-        <view
+        <im.dacer.androidcharts.bar.BarView
             android:layout_width="wrap_content"
             android:layout_height="300dp"
-            class="im.dacer.androidcharts.bar.BarView"
             android:id="@+id/bar_view" />
 </HorizontalScrollView>
 ```
 
 ```java
-BarView barView = (BarView)findViewById(R.id.bar_view);\
-barView.setBottomTextList(strList);
-barView.setDataList(dataList,100);
+BarView barView = findViewById(R.id.bar_view);
+
+// Construct Value object for each bar
+Value[] values = new Value[]{
+    new Value(50, "50")
+};
+barView.setData(values, 100);
+
+// Optionally add vertical lines for scale
+barView.setLines(new Line[]{new Line(25, "25%")});
 ```
 
 #### Clock Pie Chart
@@ -76,17 +72,16 @@ barView.setDataList(dataList,100);
 ![Clock Pie Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/pie.png)
 
 ```xml
-<view
-    android:layout_width="300dp"
-    android:layout_height="wrap_content"
-    class="im.dacer.androidcharts.clockpie.ClockPieView"
+<im.dacer.androidcharts.clockpie.ClockPieView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:id="@+id/clock_pie_view" />
 ```
 
 ```java
-ClockPieView pieView = (ClockPieView)findViewById(R.id.clock_pie_view);
-ArrayList<ClockPieHelper> pieHelperArrayList = new ArrayList<ClockPieHelper>();
-pieView.setDate(pieHelperArrayList);
+ClockPieView pieView = findViewById(R.id.clock_pie_view);
+ArrayList<ClockPieSegment> pieSegments = new ArrayList<ClockPieHelper>();
+pieView.setData(pieSegments);
 ```
 
 #### Pie Chart
@@ -94,15 +89,14 @@ pieView.setDate(pieHelperArrayList);
 ![Pie Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/pie2.png)
 
 ```xml
-<view
+<im.dacer.androidcharts.pie.PieView
     android:layout_width="300dp"
     android:layout_height="wrap_content"
-    class="im.dacer.androidcharts.pie.PieView"
     android:id="@+id/pie_view" />
 ```
 
 ```java
-PieView pieView = (PieView)findViewById(R.id.pie_view);
+PieView pieView = findViewById(R.id.pie_view);
 ArrayList<PieHelper> pieHelperArrayList = new ArrayList<PieHelper>();
 pieView.setDate(pieHelperArrayList);
 pieView.selectedPie(2); //optional
@@ -113,6 +107,8 @@ pieView.showPercentLabel(false); //optional
 ## License
 
 The MIT License (MIT)
+
+Copyright (c) 2020 Fynn Godau
 
 Copyright (c) 2013 Ding Wenhao
 
