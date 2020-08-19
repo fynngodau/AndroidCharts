@@ -101,15 +101,17 @@ public class BarView extends View {
         valueLabelDescent = 0;
         barWidth = MIN_BAR_WIDTH;
         for (Value s : values) {
-            textPaint.getTextBounds(s.getLabel(), 0, s.getLabel().length(), r);
-            if (valueLabelHeight < r.height()) {
-                valueLabelHeight = r.height();
-            }
-            if (barWidth < r.width()) {
-                barWidth = r.width();
-            }
-            if (valueLabelDescent < (Math.abs(r.bottom))) {
-                valueLabelDescent = Math.abs(r.bottom);
+            if (s.getLabel() != null) {
+                textPaint.getTextBounds(s.getLabel(), 0, s.getLabel().length(), r);
+                if (valueLabelHeight < r.height()) {
+                    valueLabelHeight = r.height();
+                }
+                if (barWidth < r.width()) {
+                    barWidth = r.width();
+                }
+                if (valueLabelDescent < (Math.abs(r.bottom))) {
+                    valueLabelDescent = Math.abs(r.bottom);
+                }
             }
         }
     }
