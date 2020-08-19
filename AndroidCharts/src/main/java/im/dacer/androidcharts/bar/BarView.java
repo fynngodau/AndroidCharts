@@ -86,7 +86,7 @@ public class BarView extends View {
         barWidth = MyUtils.dip2px(context, 22);
         MIN_BAR_WIDTH = MyUtils.dip2px(context, 22);
         BAR_SIDE_MARGIN = MyUtils.dip2px(context, 22);
-        TEXT_MARGIN = MyUtils.dip2px(context, 5);
+        TEXT_MARGIN = MyUtils.dip2px(context, 8);
 
         textPaint = CommonPaint.getTextPaint(context);
     }
