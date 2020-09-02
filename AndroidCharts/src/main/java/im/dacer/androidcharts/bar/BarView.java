@@ -249,12 +249,13 @@ public class BarView extends View {
         }
 
         // Draw 0 line
-        if (zeroLineEnabled) {
-            int y = topMargin + (getHeight()
+        if (zeroLineEnabled && lines.length > 1) {
+            float y = topMargin + (getHeight()
                     - topMargin
                     - valueLabelHeight
-                    - 2 * TEXT_MARGIN);
-            path.moveTo(lineLabelWidth + TEXT_MARGIN + BAR_SIDE_MARGIN, y);
+                    - 2 * TEXT_MARGIN)
+                    + paint.getStrokeWidth() / 2;
+            path.moveTo(lineLabelWidth + BAR_SIDE_MARGIN, y);
             path.lineTo(getWidth(), y);
             canvas.drawPath(path, paint);
         }
