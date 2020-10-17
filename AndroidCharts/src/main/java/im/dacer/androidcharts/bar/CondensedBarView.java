@@ -23,6 +23,12 @@ public class CondensedBarView extends BarView {
         textPaint.setStrokeWidth(MyUtils.dip2px(context, 1));
     }
 
+    public void setBarWidth(int dp) {
+        barWidth = MyUtils.dip2px(getContext(), dp);
+
+        postInvalidate();
+    }
+
     @Override
     protected void drawBars(Canvas canvas) {
         textPaint.setTextAlign(Paint.Align.LEFT);
