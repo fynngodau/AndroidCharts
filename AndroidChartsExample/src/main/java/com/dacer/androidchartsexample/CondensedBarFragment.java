@@ -1,9 +1,13 @@
 package com.dacer.androidchartsexample;
 
 import im.dacer.androidcharts.bar.BarView;
+import im.dacer.androidcharts.bar.CondensedBarView;
 import im.dacer.androidcharts.bar.Value;
 
 public class CondensedBarFragment extends BarFragment {
+
+    int mode = 1;
+
     @Override
     protected int getLayout() {
         return R.layout.fragment_bar_condensed;
@@ -28,9 +32,11 @@ public class CondensedBarFragment extends BarFragment {
         // Draw vertical lines aligning with 3 bars
         /*Line[] lines = new Line[3];
         for (int i = 0; i < 3; i++) {
-            int randomPosition = (int) (Math.random() * random);
+            int randomPosition = (int) (Math.random() * amount);
             lines[i] = new Line(values[randomPosition].getValue(), String.valueOf(values[randomPosition].getValue()));
         }
         barView.setVerticalLines(lines, 100);*/
+
+        ((CondensedBarView) barView).setLabelIndicatorMode(CondensedBarView.LabelIndicatorMode.values()[mode++ % 3]);
     }
 }

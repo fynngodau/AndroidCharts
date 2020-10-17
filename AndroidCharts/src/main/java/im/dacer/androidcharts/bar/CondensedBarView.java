@@ -11,6 +11,8 @@ public class CondensedBarView extends BarView {
 
     private final int TEXT_LEFT_MARGIN;
 
+    private LabelIndicatorMode labelIndicatorMode = LabelIndicatorMode.BELOW_CHART;
+
     public CondensedBarView(Context context) {
         this(context, null);
     }
@@ -27,6 +29,10 @@ public class CondensedBarView extends BarView {
         barWidth = MyUtils.dip2px(getContext(), dp);
 
         postInvalidate();
+    }
+
+    public void setLabelIndicatorMode(LabelIndicatorMode labelIndicatorMode) {
+        this.labelIndicatorMode = labelIndicatorMode;
     }
 
     @Override
@@ -61,13 +67,19 @@ public class CondensedBarView extends BarView {
                 canvas.drawText(label, lineLabelWidth + BAR_SIDE_MARGIN * (i + 1) + barWidth * i + TEXT_LEFT_MARGIN,
                         getHeight() - valueLabelDescent - TEXT_MARGIN, textPaint);
 
-                // Draw indicator left to text
-                canvas.drawLine(lineLabelWidth + BAR_SIDE_MARGIN * (i + 1) + barWidth * i,
-                        getHeight() - valueLabelHeight - 2 * TEXT_MARGIN,
-                        lineLabelWidth + BAR_SIDE_MARGIN * (i + 1) + barWidth * i,
-                        getHeight(),
-                        textPaint
-                );
+                if (labelIndicatorMode != LabelIndicatorMode.HIDDEN) {
+
+                    int start = labelIndicatorMode == LabelIndicatorMode.BELOW_CHART?
+                            getHeight() - valueLabelHeight - 2 * TEXT_MARGIN : topMargin;
+
+                    // Draw indicator left to text
+                    canvas.drawLine(lineLabelWidth + BAR_SIDE_MARGIN * (i + 1) + barWidth * i,
+                            start,
+                            lineLabelWidth + BAR_SIDE_MARGIN * (i + 1) + barWidth * i,
+                            getHeight(),
+                            textPaint
+                    );
+                }
             }
         }
     }
@@ -94,5 +106,20 @@ public class CondensedBarView extends BarView {
                 }
             }
         }
+    }
+
+    public enum LabelIndicatorMode {
+        /**
+         * Do not draw label indicators
+         */
+        HIDDEN,
+        /**
+         * Draw label indicators below the chart
+         */
+        BELOW_CHART,
+        /**
+         * Draw label indicators below as well as through the chart
+         */
+        IN_CHART
     }
 }
