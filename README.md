@@ -7,7 +7,7 @@ This is a fork of the [AndroidCharts](https://github.com/HackPlan/AndroidCharts)
 | View | code quality improvement status | new features | other improvements | original example screenshot
 |---|---|---|---|---|
 | `LineView` | unchanged | no new features | none | ![Line Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/line.png)
-| `BarView` | **significantly improved** | background lines for scale (including labels), support for bold / italic labels, zero line (optional) | fix missing margins, color set to accent color | ![Bar Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/bar.png)
+| `BarView` | **significantly improved** | background lines for scale (including labels), support for bold / italic labels, zero line (optional), condensed variant (`CondensedBarView`) | fix missing margins, color set to accent color | ![Bar Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/bar.png)
 | `ClockPieView` | **improved** | gray out background partially (e.g. to display time as not passed yet) | support for drawing in views with larger width than height, support for drawing when view is set to `match_parent`, color set to accent color, remove animation as it was too slow | ![Clock Pie Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/pie.png)
 | `PieView` | unchanged | no new features | none | ![Pie Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/pie2.png)
 

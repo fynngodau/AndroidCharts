@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import androidx.annotation.LayoutRes;
 import im.dacer.androidcharts.bar.BarView;
 import im.dacer.androidcharts.bar.Line;
 import im.dacer.androidcharts.bar.Value;
@@ -19,7 +20,7 @@ import java.util.List;
 public class BarFragment extends Fragment {
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_bar, container, false);
+        View rootView = inflater.inflate(getLayout(), container, false);
         final BarView barView = (BarView) rootView.findViewById(R.id.bar_view);
         Button button = (Button) rootView.findViewById(R.id.bar_button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -31,7 +32,11 @@ public class BarFragment extends Fragment {
         return rootView;
     }
 
-    private void randomSet(BarView barView) {
+    protected @LayoutRes int getLayout() {
+        return R.layout.fragment_bar;
+    }
+
+    protected void randomSet(BarView barView) {
         int random = (int) (Math.random() * 40) + 10;
 
         Value[] values = new Value[random];

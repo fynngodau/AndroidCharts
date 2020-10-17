@@ -16,35 +16,35 @@ import java.util.*;
 public class BarView extends View {
 
     /**
-     * Minimum bar width
+     * Minimum bar width (not used by subclasses with own implementation of
+     * {@link #updateValueLabelMeasurements(Value[])})
      */
     private final int MIN_BAR_WIDTH;
     /**
      * Margin to the left and right of each bar
      */
-    private final int BAR_SIDE_MARGIN;
+    protected int BAR_SIDE_MARGIN;
     /**
      * Margin around text
      */
-    private final int TEXT_MARGIN;
+    protected final int TEXT_MARGIN;
 
     private static final int BACKGROUND_COLOR = Color.parseColor("#F6F6F6");
-    private static final int FOREGROUND_COLOR = Color.parseColor("#FC496D");
 
-    private Bar[] bars = new Bar[0];
+    protected Bar[] bars = new Bar[0];
 
-    private final Paint textPaint;
-    private final Paint bgPaint;
-    private final Paint fgPaint;
+    protected final Paint textPaint;
+    protected final Paint bgPaint;
+    protected final Paint fgPaint;
 
-    private final Rect rect;
-    private int barWidth;
-    private int valueLabelDescent;
+    protected final Rect rect;
+    protected int barWidth;
+    protected int valueLabelDescent;
 
-    private final int topMargin;
-    private int lineLabelWidth;
+    protected final int topMargin;
+    protected int lineLabelWidth;
 
-    private int valueLabelHeight;
+    protected int valueLabelHeight;
     private int lineLabelTextHeight;
 
     private Line[] lines = new Line[0];
@@ -94,7 +94,7 @@ public class BarView extends View {
      * Update {@link #barWidth}, {@link #valueLabelDescent} and {@link #valueLabelHeight}
      * using labels from the provided values
      */
-    private void updateValueLabelMeasurements(Value[] values) {
+    protected void updateValueLabelMeasurements(Value[] values) {
 
         Rect r = new Rect();
         valueLabelDescent = 0;
@@ -260,9 +260,12 @@ public class BarView extends View {
             canvas.drawPath(path, paint);
         }
 
-        textPaint.setTextAlign(Paint.Align.CENTER);
-
         // Draw bars
+        drawBars(canvas);
+    }
+
+    protected void drawBars(Canvas canvas) {
+        textPaint.setTextAlign(Paint.Align.CENTER);
 
         for (int i = 0; i < bars.length; i++) {
             // Bar background
