@@ -36,6 +36,7 @@ public class BarView extends View {
     protected final Paint textPaint;
     protected final Paint bgPaint;
     protected final Paint fgPaint;
+    protected final Paint linePaint;
 
     protected final Rect rect;
     protected int barWidth;
@@ -78,6 +79,7 @@ public class BarView extends View {
         bgPaint.setColor(BACKGROUND_COLOR);
 
         fgPaint = CommonPaint.getForegroundPaint(context);
+        linePaint = CommonPaint.getBackgroundLinePaint(context);
 
         rect = new Rect();
 
@@ -223,10 +225,7 @@ public class BarView extends View {
 
         // Draw vertical background lines
 
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(MyUtils.dip2px(getContext(), 1f));
-        paint.setColor(CommonPaint.BACKGROUND_LINE_COLOR);
+
 
         textPaint.setTextAlign(Paint.Align.LEFT);
         textPaint.setTypeface(Typeface.DEFAULT);
@@ -245,7 +244,7 @@ public class BarView extends View {
 
             path.moveTo(0, y);
             path.lineTo(getWidth(), y);
-            canvas.drawPath(path, paint);
+            canvas.drawPath(path, linePaint);
         }
 
         // Draw 0 line
@@ -254,10 +253,10 @@ public class BarView extends View {
                     - topMargin
                     - valueLabelHeight
                     - 2 * TEXT_MARGIN)
-                    + paint.getStrokeWidth() / 2;
+                    + linePaint.getStrokeWidth() / 2;
             path.moveTo(lineLabelWidth + BAR_SIDE_MARGIN, y);
             path.lineTo(getWidth(), y);
-            canvas.drawPath(path, paint);
+            canvas.drawPath(path, linePaint);
         }
 
         // Draw bars

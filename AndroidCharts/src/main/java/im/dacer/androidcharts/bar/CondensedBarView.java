@@ -77,7 +77,7 @@ public class CondensedBarView extends BarView {
                             start,
                             lineLabelWidth + BAR_SIDE_MARGIN * (i + 1) + barWidth * i,
                             getHeight(),
-                            textPaint
+                            linePaint
                     );
                 }
             }

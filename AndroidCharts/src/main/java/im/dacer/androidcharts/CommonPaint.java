@@ -35,6 +35,14 @@ public class CommonPaint {
         return foregroundPaint;
     }
 
+    public static Paint getBackgroundLinePaint(Context context) {
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(MyUtils.dip2px(context, 1f));
+        paint.setColor(CommonPaint.BACKGROUND_LINE_COLOR);
+        return paint;
+    }
+
     /**
      * @see <a href="https://stackoverflow.com/a/36192770">StackOverflow</a>
      * @return The accent color from the currently set theme
