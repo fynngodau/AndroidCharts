@@ -49,6 +49,8 @@ public class ClockPieView extends View {
 
     private ClockPieSegment[] segments;
 
+    private ClockPieSegment backgroundSegment = new ClockPieSegment(0, 0, 24, 0);
+
     public ClockPieView(Context context) {
         this(context, null);
     }
@@ -98,6 +100,21 @@ public class ClockPieView extends View {
         });
     }
 
+    /**
+     * Sets a segment used for drawing the clock's background. Times outside of this segment
+     * are drawn gray.
+     */
+    public void setBackgroundSegment(ClockPieSegment segment) {
+        this.backgroundSegment = segment;
+
+        post(new Runnable() {
+            @Override
+            public void run() {
+                invalidate();
+            }
+        });
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         drawBackground(canvas);
@@ -121,10 +138,29 @@ public class ClockPieView extends View {
             canvas.drawLine(tempPoint.x, tempPoint.y, tempPointRight.x, tempPointRight.y,
                     linePaint);
         }
-        canvas.drawCircle(pieCenterPoint.x, pieCenterPoint.y, pieRadius + lineLength / 2f,
-                whitePaint);
+
+        canvas.drawArc(
+                /* For some reason drawArc wants rectangle coordinates to draw the arc into (instead
+                 * of a center point), so we are calculating the rectangle using center point and
+                 * radius (`pieRadius + lineLength / 2f`(. The first four parameters are rectangle
+                 * coordinates.
+                 */
+                pieCenterPoint.x - (pieRadius  + lineLength / 2f), // top left x
+                pieCenterPoint.y - (pieRadius + lineLength / 2f), // top left y
+                pieCenterPoint.x + pieRadius + lineLength / 2f, // bottom right x
+                pieCenterPoint.y + pieRadius + lineLength / 2f, // bottom right y
+                backgroundSegment.getStart(), backgroundSegment.getSweep(),
+                true, whitePaint
+        );
+
         canvas.drawCircle(pieCenterPoint.x, pieCenterPoint.y, pieRadius + lineThickness, linePaint);
-        canvas.drawCircle(pieCenterPoint.x, pieCenterPoint.y, pieRadius, whitePaint);
+
+
+        canvas.drawArc(
+                cirRect,
+                backgroundSegment.getStart(), backgroundSegment.getSweep(),
+                true, whitePaint
+        );
 
         // Don't ask. I'm glad the 0 and 12 are where they are supposed to be.
         canvas.drawText("0", pieCenterPoint.x, viewSize - 2 * pieRadius - (int) (leftTextWidth) - lineLength * 4 + topTextHeight, textPaint);
