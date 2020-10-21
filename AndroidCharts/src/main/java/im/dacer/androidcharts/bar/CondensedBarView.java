@@ -129,12 +129,17 @@ public class CondensedBarView extends BarView {
             int textStartPosition = lineLabelWidth + BAR_SIDE_MARGIN * (lastBarWithValueIndex + 1)
                     + barWidth * lastBarWithValueIndex + TEXT_LEFT_MARGIN;
 
-            // End position is start position plus text plus a second margin
-            int textEndPosition = textStartPosition + rect.width() + TEXT_LEFT_MARGIN;
+            // End position is start position plus text
+            int textEndPosition = textStartPosition + rect.width();
 
-            return Math.max(
-                    super.measurePreferredWidth(),
-                    textEndPosition
+            int chartWidth = super.measurePreferredWidth();
+
+            // Test if adding margin would add a white space to the end of the graph that is smaller than margin
+            if (chartWidth >= textEndPosition && chartWidth < textEndPosition + TEXT_LEFT_MARGIN) {
+                return chartWidth;
+            } else return Math.max(
+                    chartWidth,
+                    textEndPosition + TEXT_LEFT_MARGIN // Add right margin
             );
         } else {
             return super.measurePreferredWidth();

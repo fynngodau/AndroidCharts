@@ -15,7 +15,9 @@ public class CondensedBarFragment extends BarFragment {
 
     @Override
     protected void randomSet(BarView barView) {
-        int amount = 75;
+        int amount = 156;
+
+        ((CondensedBarView) barView).setBarWidth(8);
 
         Value[] values = new Value[amount];
         for (int i = 0; i < amount; i++) {
