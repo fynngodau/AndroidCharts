@@ -297,19 +297,13 @@ public class BarView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int mViewWidth = measureWidth(widthMeasureSpec);
-        int mViewHeight = measureHeight(heightMeasureSpec);
+        int mViewWidth = getMeasurement(widthMeasureSpec, measurePreferredWidth());
+        int mViewHeight = getMeasurement(heightMeasureSpec, 222);
         setMeasuredDimension(mViewWidth, mViewHeight);
     }
 
-    private int measureWidth(int measureSpec) {
-        int preferred = bars.length * (barWidth + BAR_SIDE_MARGIN) + BAR_SIDE_MARGIN + lineLabelWidth;
-        return getMeasurement(measureSpec, preferred);
-    }
-
-    private int measureHeight(int measureSpec) {
-        int preferred = 222;
-        return getMeasurement(measureSpec, preferred);
+    protected int measurePreferredWidth() {
+        return bars.length * (barWidth + BAR_SIDE_MARGIN) + BAR_SIDE_MARGIN + lineLabelWidth;
     }
 
     private int getMeasurement(int measureSpec, int preferred) {

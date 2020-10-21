@@ -87,24 +87,57 @@ public class CondensedBarView extends BarView {
     /**
      * Compared to superclass, this method does not set the bar width according to the width
      * of the label
-     * @param values
      */
     @Override
     protected void updateValueLabelMeasurements(Value[] values) {
 
-        Rect r = new Rect();
         valueLabelDescent = 0;
 
         for (Value s : values) {
             if (s.getLabel() != null) {
-                textPaint.getTextBounds(s.getLabel(), 0, s.getLabel().length(), r);
-                if (valueLabelHeight < r.height()) {
-                    valueLabelHeight = r.height();
+                textPaint.getTextBounds(s.getLabel(), 0, s.getLabel().length(), rect);
+                if (valueLabelHeight < rect.height()) {
+                    valueLabelHeight = rect.height();
                 }
-                if (valueLabelDescent < (Math.abs(r.bottom))) {
-                    valueLabelDescent = Math.abs(r.bottom);
+                if (valueLabelDescent < (Math.abs(rect.bottom))) {
+                    valueLabelDescent = Math.abs(rect.bottom);
                 }
             }
+        }
+    }
+
+    @Override
+    protected int measurePreferredWidth() {
+
+        // Find last value with label
+        int lastBarWithValueIndex = -1;
+
+        for (int i = 0; i < bars.length; i++) {
+            Bar bar = bars[i];
+            if (bar.getValue().getLabel() != null) {
+                lastBarWithValueIndex = i;
+            }
+        }
+
+        if (lastBarWithValueIndex >= 0) {
+
+
+            // Draw text
+            String label = bars[lastBarWithValueIndex].getValue().getLabel();
+            textPaint.getTextBounds(label, 0, label.length(), rect);
+
+            int textStartPosition = lineLabelWidth + BAR_SIDE_MARGIN * (lastBarWithValueIndex + 1)
+                    + barWidth * lastBarWithValueIndex + TEXT_LEFT_MARGIN;
+
+            // End position is start position plus text plus a second margin
+            int textEndPosition = textStartPosition + rect.width() + TEXT_LEFT_MARGIN;
+
+            return Math.max(
+                    super.measurePreferredWidth(),
+                    textEndPosition
+            );
+        } else {
+            return super.measurePreferredWidth();
         }
     }
 
