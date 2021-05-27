@@ -35,9 +35,7 @@ public class ClockPieView extends View {
     private final int textSize;
     private int pieRadius;
 
-    private final Point pieCenterPoint;
-    private final Point tempPoint;
-    private final Point tempPointRight;
+    private final Point pieCenterPoint = new Point();
 
     /**
      * Length of the 12 lines that surround the clock
@@ -49,11 +47,23 @@ public class ClockPieView extends View {
      */
     private final int lineThickness;
 
+    /*
+     * Measured variables
+     */
     private final float leftTextWidth;
     private final float rightTextWidth;
     private final float topTextHeight;
 
-    private final RectF cirRect;
+    /**
+     * Helper rectangle with width = height = radius * 2 & center = pieCenterPoint
+     */
+    private final RectF helperRectangle = new RectF();
+
+    /*
+     * Helper points
+     */
+    private final Point tempPoint = new Point();
+    private final Point tempPointRight = new Point();
 
     private ClockPieSegment[] segments;
 
@@ -82,10 +92,6 @@ public class ClockPieView extends View {
 
         whitePaint = new Paint(linePaint);
         whitePaint.setColor(Color.WHITE);
-        tempPoint = new Point();
-        pieCenterPoint = new Point();
-        tempPointRight = new Point();
-        cirRect = new RectF();
         leftTextWidth = textPaint.measureText("18");
         rightTextWidth = textPaint.measureText("6");
         topTextHeight = textRect.height();
@@ -128,7 +134,7 @@ public class ClockPieView extends View {
         drawBackground(canvas);
         if (segments != null) {
             for (ClockPieSegment helper : segments) {
-                canvas.drawArc(cirRect, helper.getStart(), helper.getSweep(), true, foregroundPaint);
+                canvas.drawArc(helperRectangle, helper.getStart(), helper.getSweep(), true, foregroundPaint);
             }
         }
     }
@@ -148,15 +154,7 @@ public class ClockPieView extends View {
         }
 
         canvas.drawArc(
-                /* For some reason drawArc wants rectangle coordinates to draw the arc into (instead
-                 * of a center point), so we are calculating the rectangle using center point and
-                 * radius (`pieRadius + lineLength / 2f`). The first four parameters are rectangle
-                 * coordinates.
-                 */
-                pieCenterPoint.x - pieRadius, // top left x
-                pieCenterPoint.y - pieRadius, // top left y
-                pieCenterPoint.x + pieRadius, // bottom right x
-                pieCenterPoint.y + pieRadius, // bottom right y
+                helperRectangle,
                 backgroundSegment.getStart(), backgroundSegment.getSweep(),
                 true, whitePaint
         );
@@ -165,7 +163,7 @@ public class ClockPieView extends View {
 
 
         canvas.drawArc(
-                cirRect,
+                helperRectangle,
                 backgroundSegment.getStart(), backgroundSegment.getSweep(),
                 true, whitePaint
         );
@@ -189,7 +187,7 @@ public class ClockPieView extends View {
         pieRadius = (viewSize - lineLength * 4 - (int) (leftTextWidth)) / 2;
         pieCenterPoint.set(maxWidth / 2 - (int) rightTextWidth / 2 + (int) leftTextWidth / 2,
                 viewSize / 2 + textSize / 2 - (int) (leftTextWidth / 2));
-        cirRect.set(pieCenterPoint.x - pieRadius, pieCenterPoint.y - pieRadius,
+        helperRectangle.set(pieCenterPoint.x - pieRadius, pieCenterPoint.y - pieRadius,
                 pieCenterPoint.x + pieRadius, pieCenterPoint.y + pieRadius);
         setMeasuredDimension(viewSize, viewSize);
     }
