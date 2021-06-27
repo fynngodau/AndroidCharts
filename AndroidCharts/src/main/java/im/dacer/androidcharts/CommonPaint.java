@@ -2,6 +2,7 @@ package im.dacer.androidcharts;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.os.Build;
 import android.util.TypedValue;
@@ -12,6 +13,7 @@ public class CommonPaint {
     private static final int DEFAULT_FOREGROUND_COLOR = Color.parseColor("#FC496D");
 
     public static final int BACKGROUND_LINE_COLOR = Color.parseColor("#EEEEEE");
+    private static final int BACKGROUND_COLOR = Color.parseColor("#D0D0D0");
 
     public static Paint getTextPaint(Context context) {
 
@@ -35,12 +37,33 @@ public class CommonPaint {
         return foregroundPaint;
     }
 
-    public static Paint getBackgroundLinePaint(Context context) {
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(MyUtils.dip2px(context, 1f));
-        paint.setColor(CommonPaint.BACKGROUND_LINE_COLOR);
+    public static Paint getForegroundLinePaint(Context context) {
+        Paint foregroundPaint = getForegroundPaint(context);
+        foregroundPaint.setStyle(Paint.Style.STROKE);
+        foregroundPaint.setStrokeWidth(MyUtils.dip2px(context, 1f));
+        return foregroundPaint;
+    }
+
+    public static Paint getDashedForegroundLinePaint(Context context) {
+        Paint paint = getForegroundLinePaint(context);
+
+        float[] dashIntervals = new float[]{
+                MyUtils.dip2px(context, 4),
+                MyUtils.dip2px(context, 8)
+        };
+
+        paint.setPathEffect(
+                new DashPathEffect(dashIntervals, dashIntervals[0])
+        );
         return paint;
+    }
+
+    public static Paint getBackgroundPaint() {
+        Paint backgroundPaint = new Paint();
+        backgroundPaint.setAntiAlias(true);
+        backgroundPaint.setColor(BACKGROUND_COLOR);
+        backgroundPaint.setAlpha(51);
+        return backgroundPaint;
     }
 
     /**
@@ -52,7 +75,7 @@ public class CommonPaint {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             colorAttr = android.R.attr.colorAccent;
         } else {
-            //Get colorAccent defined for AppCompat
+            // Get colorAccent defined for AppCompat
             colorAttr = context.getResources().getIdentifier("colorAccent", "attr", context.getPackageName());
         }
         TypedValue outValue = new TypedValue();

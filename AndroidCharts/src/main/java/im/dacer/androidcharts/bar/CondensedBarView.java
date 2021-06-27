@@ -39,21 +39,25 @@ public class CondensedBarView extends BarView {
     protected void drawBars(Canvas canvas) {
         textPaint.setTextAlign(Paint.Align.LEFT);
 
+        int barBottomY = getHeight() - valueLabelHeight - 2 * TEXT_MARGIN;
+
         // Bar background
         rect.set(lineLabelWidth, topMargin,
                 lineLabelWidth + (BAR_SIDE_MARGIN + barWidth) * bars.length,
-                getHeight() - valueLabelHeight - 2 * TEXT_MARGIN);
+                barBottomY);
         canvas.drawRect(rect, bgPaint);
 
         for (int i = 0; i < bars.length; i++) {
 
+            int barStartX = lineLabelWidth + BAR_SIDE_MARGIN * (i + 1) + barWidth * i;
+
             // Bar foreground
-            rect.set(lineLabelWidth + BAR_SIDE_MARGIN * (i + 1) + barWidth * i, topMargin + (int) ((getHeight()
+            rect.set(barStartX, topMargin + (int) ((getHeight()
                             - topMargin
                             - valueLabelHeight
                             - 2 * TEXT_MARGIN) * (1f - bars[i].getDisplayPercentage())),
                     lineLabelWidth + (BAR_SIDE_MARGIN + barWidth) * (i + 1),
-                    getHeight() - valueLabelHeight - 2 * TEXT_MARGIN);
+                    barBottomY);
             canvas.drawRect(rect, fgPaint);
 
             // Draw bar label if present
@@ -64,21 +68,29 @@ public class CondensedBarView extends BarView {
                 textPaint.setTypeface(bars[i].getValue().getLabelTypeface());
 
                 // Draw text
-                canvas.drawText(label, lineLabelWidth + BAR_SIDE_MARGIN * (i + 1) + barWidth * i + TEXT_LEFT_MARGIN,
+                canvas.drawText(label, barStartX + TEXT_LEFT_MARGIN,
                         getHeight() - valueLabelDescent - TEXT_MARGIN, textPaint);
 
-                if (labelIndicatorMode != LabelIndicatorMode.HIDDEN) {
+                // Draw indicator left of text
+                switch (labelIndicatorMode) {
+                    case IN_CHART:
+                        canvas.drawLine(barStartX,
+                                barBottomY,
+                                barStartX,
+                                topMargin,
+                                dashedLinePaint
+                        );
 
-                    int start = labelIndicatorMode == LabelIndicatorMode.BELOW_CHART?
-                            getHeight() - valueLabelHeight - 2 * TEXT_MARGIN : topMargin;
+                    case BELOW_CHART:
+                        canvas.drawLine(barStartX,
+                                barBottomY,
+                                barStartX,
+                                getHeight(),
+                                linePaint
+                        );
+                        break;
 
-                    // Draw indicator left to text
-                    canvas.drawLine(lineLabelWidth + BAR_SIDE_MARGIN * (i + 1) + barWidth * i,
-                            start,
-                            lineLabelWidth + BAR_SIDE_MARGIN * (i + 1) + barWidth * i,
-                            getHeight(),
-                            linePaint
-                    );
+                    case HIDDEN:
                 }
             }
         }

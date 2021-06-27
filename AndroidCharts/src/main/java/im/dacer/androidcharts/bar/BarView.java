@@ -29,14 +29,13 @@ public class BarView extends View {
      */
     protected final int TEXT_MARGIN;
 
-    private static final int BACKGROUND_COLOR = Color.parseColor("#F6F6F6");
-
     protected Bar[] bars = new Bar[0];
 
     protected final Paint textPaint;
     protected final Paint bgPaint;
     protected final Paint fgPaint;
     protected final Paint linePaint;
+    protected final Paint dashedLinePaint;
 
     protected final Rect rect;
     protected int barWidth;
@@ -74,12 +73,11 @@ public class BarView extends View {
 
     public BarView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        bgPaint = new Paint();
-        bgPaint.setAntiAlias(true);
-        bgPaint.setColor(BACKGROUND_COLOR);
 
+        bgPaint = CommonPaint.getBackgroundPaint();
         fgPaint = CommonPaint.getForegroundPaint(context);
-        linePaint = CommonPaint.getBackgroundLinePaint(context);
+        linePaint = CommonPaint.getForegroundLinePaint(context);
+        dashedLinePaint = CommonPaint.getDashedForegroundLinePaint(context);
 
         rect = new Rect();
 
@@ -244,11 +242,13 @@ public class BarView extends View {
 
             path.moveTo(0, y);
             path.lineTo(getWidth(), y);
-            canvas.drawPath(path, linePaint);
+            canvas.drawPath(path, dashedLinePaint);
         }
 
+        path = new Path();
+
         // Draw 0 line
-        if (zeroLineEnabled && lines.length > 1) {
+        if (zeroLineEnabled) {
             float y = topMargin + (getHeight()
                     - topMargin
                     - valueLabelHeight
