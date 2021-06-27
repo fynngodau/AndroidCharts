@@ -14,6 +14,7 @@ public class CommonPaint {
 
     public static final int BACKGROUND_LINE_COLOR = Color.parseColor("#EEEEEE");
     private static final int BACKGROUND_COLOR = Color.parseColor("#D0D0D0");
+    public static final int BACKGROUND_ALPHA = 51;
 
     public static Paint getTextPaint(Context context) {
 
@@ -62,7 +63,7 @@ public class CommonPaint {
         Paint backgroundPaint = new Paint();
         backgroundPaint.setAntiAlias(true);
         backgroundPaint.setColor(BACKGROUND_COLOR);
-        backgroundPaint.setAlpha(51);
+        backgroundPaint.setAlpha(BACKGROUND_ALPHA);
         return backgroundPaint;
     }
 

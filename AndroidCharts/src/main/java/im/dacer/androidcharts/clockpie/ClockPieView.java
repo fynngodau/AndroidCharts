@@ -14,12 +14,14 @@ import java.util.List;
  */
 public class ClockPieView extends View {
 
-    private static final int GRAY_COLOR = Color.parseColor("#D4D3D4");
-
     private final Paint textPaint;
     private final Paint foregroundPaint;
-    private final Paint linePaint;
-    private final Paint whitePaint;
+
+    /**
+     * Paint for background and lines
+     */
+    private final Paint backgroundPaint;
+    private final Paint backgroundSegmentPaint;
 
     /**
      * Size the view is drawn in.
@@ -38,12 +40,12 @@ public class ClockPieView extends View {
     private final Point pieCenterPoint = new Point();
 
     /**
-     * Length of the 12 lines that surround the clock
+     * Length of the 24 lines that surround the clock
      */
     private final int lineLength;
 
     /**
-     * Thickness of the 12 lines that surround the clock
+     * Thickness of the 24 lines that surround the clock
      */
     private final int lineThickness;
 
@@ -62,8 +64,8 @@ public class ClockPieView extends View {
     /*
      * Helper points
      */
-    private final Point tempPoint = new Point();
-    private final Point tempPointRight = new Point();
+    private final Point outerTempPoint = new Point();
+    private final Point innerTempPoint = new Point();
 
     private ClockPieSegment[] segments;
 
@@ -86,12 +88,15 @@ public class ClockPieView extends View {
 
         foregroundPaint = CommonPaint.getForegroundPaint(context);
 
-        linePaint = new Paint(textPaint);
-        linePaint.setColor(GRAY_COLOR);
-        linePaint.setStrokeWidth(lineThickness);
+        backgroundPaint = CommonPaint.getBackgroundPaint();
+        backgroundPaint.setAlpha(CommonPaint.BACKGROUND_ALPHA * 2);
 
-        whitePaint = new Paint(linePaint);
-        whitePaint.setColor(Color.WHITE);
+        backgroundPaint.setStrokeWidth(lineThickness);
+
+        backgroundSegmentPaint = new Paint(backgroundPaint);
+        backgroundSegmentPaint.setColor(Color.WHITE);
+        backgroundSegmentPaint.setAlpha(CommonPaint.BACKGROUND_ALPHA * 2);
+
         leftTextWidth = textPaint.measureText("18");
         rightTextWidth = textPaint.measureText("6");
         topTextHeight = textRect.height();
@@ -140,33 +145,61 @@ public class ClockPieView extends View {
     }
 
     private void drawBackground(Canvas canvas) {
+
+        backgroundPaint.setStyle(Paint.Style.FILL);
+
+        // Draw lines
+        // 1 through 12
         for (int i = 0; i < 12; i++) {
-            tempPoint.set(pieCenterPoint.x - (int) (Math.sin(Math.PI / 12 * i) * (pieRadius
-                    + lineLength)), pieCenterPoint.y - (int) (Math.cos(Math.PI / 12 * i) * (
-                    pieRadius
-                            + lineLength)));
-            tempPointRight.set(pieCenterPoint.x + (int) (Math.sin(Math.PI / 12 * i) * (pieRadius
-                    + lineLength)), pieCenterPoint.y + (int) (Math.cos(Math.PI / 12 * i) * (
-                    pieRadius
-                            + lineLength)));
-            canvas.drawLine(tempPoint.x, tempPoint.y, tempPointRight.x, tempPointRight.y,
-                    linePaint);
+            outerTempPoint.set(
+                    pieCenterPoint.x
+                            - (int) (Math.sin(Math.PI / 12 * i) * (pieRadius + lineLength)),
+                    pieCenterPoint.y
+                            - (int) (Math.cos(Math.PI / 12 * i) * (pieRadius + lineLength))
+            );
+            innerTempPoint.set(
+                    pieCenterPoint.x
+                            - (int) (Math.sin(Math.PI / 12 * i) * (pieRadius + lineThickness)),
+                    pieCenterPoint.y
+                            - (int) (Math.cos(Math.PI / 12 * i) * (pieRadius + lineThickness))
+            );
+            canvas.drawLine(outerTempPoint.x, outerTempPoint.y, innerTempPoint.x, innerTempPoint.y,
+                    backgroundPaint);
         }
 
+        // 13 through 24
+        for (int i = 0; i < 12; i++) {
+            outerTempPoint.set(
+                    pieCenterPoint.x
+                            + (int) (Math.sin(Math.PI / 12 * i) * (pieRadius + lineLength)),
+                    pieCenterPoint.y
+                            + (int) (Math.cos(Math.PI / 12 * i) * (pieRadius + lineLength))
+            );
+            innerTempPoint.set(
+                    pieCenterPoint.x
+                            + (int) (Math.sin(Math.PI / 12 * i) * (pieRadius + lineThickness)),
+                    pieCenterPoint.y
+                            + (int) (Math.cos(Math.PI / 12 * i) * (pieRadius + lineThickness))
+            );
+            canvas.drawLine(outerTempPoint.x, outerTempPoint.y, innerTempPoint.x, innerTempPoint.y,
+                    backgroundPaint);
+        }
+
+        // gray-ish non-segment background arc
+        canvas.drawArc(helperRectangle,
+                backgroundSegment.getStart() + backgroundSegment.getSweep(), 360 - backgroundSegment.getSweep(), true,
+                backgroundPaint);
+
+        // white-ish background segment
         canvas.drawArc(
                 helperRectangle,
                 backgroundSegment.getStart(), backgroundSegment.getSweep(),
-                true, whitePaint
+                true, backgroundSegmentPaint
         );
 
-        canvas.drawCircle(pieCenterPoint.x, pieCenterPoint.y, pieRadius + lineThickness, linePaint);
-
-
-        canvas.drawArc(
-                helperRectangle,
-                backgroundSegment.getStart(), backgroundSegment.getSweep(),
-                true, whitePaint
-        );
+        // gray-ish circle around clock
+        backgroundPaint.setStyle(Paint.Style.STROKE);
+        canvas.drawCircle(pieCenterPoint.x, pieCenterPoint.y, pieRadius, backgroundPaint);
 
         // Don't ask. I'm glad the 0 and 12 are where they are supposed to be.
         canvas.drawText("0", pieCenterPoint.x, viewSize - 2 * pieRadius - (int) (leftTextWidth) - lineLength * 4 + topTextHeight, textPaint);
