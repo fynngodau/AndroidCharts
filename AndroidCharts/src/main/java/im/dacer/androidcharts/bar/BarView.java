@@ -223,8 +223,6 @@ public class BarView extends View {
 
         // Draw vertical background lines
 
-
-
         textPaint.setTextAlign(Paint.Align.LEFT);
         textPaint.setTypeface(Typeface.DEFAULT);
 
@@ -255,7 +253,7 @@ public class BarView extends View {
                     - 2 * TEXT_MARGIN)
                     + linePaint.getStrokeWidth() / 2;
             path.moveTo(lineLabelWidth + BAR_SIDE_MARGIN, y);
-            path.lineTo(getWidth(), y);
+            path.lineTo(getWidth() - BAR_SIDE_MARGIN, y);
             canvas.drawPath(path, linePaint);
         }
 
