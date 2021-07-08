@@ -1,6 +1,7 @@
 package com.dacer.androidchartsexample;
 
 import android.app.Fragment;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,10 @@ public class ClockPieFragment extends Fragment {
             int duration = (int) (50 * Math.random());
             clockPieSegmentArrayList.add(
                     new ClockPieSegment(startHour, startMin, startHour, startMin + duration));
+
+            if (i % 2 == 0) {
+                clockPieSegmentArrayList.get(i).setColor(Color.MAGENTA);
+            }
         }
         clockPieView.setData(clockPieSegmentArrayList);
 

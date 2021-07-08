@@ -1,5 +1,7 @@
 package im.dacer.androidcharts.clockpie;
 
+import android.graphics.Color;
+
 /**
  * Created by Dacer on 11/14/13.
  */
@@ -7,6 +9,8 @@ public class ClockPieSegment {
 
     private final float start;
     private float end;
+
+    private Integer color = null;
 
     public ClockPieSegment(int startHour, int startMin, int endHour, int endMin) {
         this(startHour, startMin, 0, endHour, endMin, 0);
@@ -35,5 +39,16 @@ public class ClockPieSegment {
 
     float getEnd() {
         return end;
+    }
+
+    public Integer getColor() {
+        return color;
+    }
+
+    /**
+     * Set color that this segment should be drawn in. Not supported for background segments
+     */
+    public void setColor(int color) {
+        this.color = color;
     }
 }

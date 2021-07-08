@@ -15,7 +15,8 @@ import java.util.List;
 public class ClockPieView extends View {
 
     private final Paint textPaint;
-    private final Paint foregroundPaint;
+    private final int defaultForegroundColor;
+    private final Paint variousColorPaint;
 
     /**
      * Paint for background and lines
@@ -86,7 +87,8 @@ public class ClockPieView extends View {
         Rect textRect = new Rect();
         textPaint.getTextBounds("18", 0, 1, textRect);
 
-        foregroundPaint = CommonPaint.getForegroundPaint(context);
+        variousColorPaint = new Paint(CommonPaint.getForegroundPaint(context));
+        defaultForegroundColor = variousColorPaint.getColor();
 
         backgroundPaint = CommonPaint.getBackgroundPaint();
         backgroundPaint.setAlpha(CommonPaint.BACKGROUND_ALPHA * 2);
@@ -138,8 +140,15 @@ public class ClockPieView extends View {
     protected void onDraw(Canvas canvas) {
         drawBackground(canvas);
         if (segments != null) {
-            for (ClockPieSegment helper : segments) {
-                canvas.drawArc(helperRectangle, helper.getStart(), helper.getSweep(), true, foregroundPaint);
+            for (ClockPieSegment segment : segments) {
+
+                if (segment.getColor() != null) {
+                    variousColorPaint.setColor(segment.getColor());
+                } else {
+                    variousColorPaint.setColor(defaultForegroundColor);
+                }
+
+                canvas.drawArc(helperRectangle, segment.getStart(), segment.getSweep(), true, variousColorPaint);
             }
         }
     }
