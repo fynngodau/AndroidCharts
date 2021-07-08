@@ -37,7 +37,14 @@ public class BarView extends View {
     protected final Paint linePaint;
     protected final Paint dashedLinePaint;
 
+    private final Paint variousColorPaint;
+
+    /**
+     * Used for rendering
+     */
     protected final Rect rect;
+    private final Rect drawMultiValueRect;
+
     protected int barWidth;
     protected int valueLabelDescent;
 
@@ -78,16 +85,18 @@ public class BarView extends View {
         fgPaint = CommonPaint.getForegroundPaint(context);
         linePaint = CommonPaint.getForegroundLinePaint(context);
         dashedLinePaint = CommonPaint.getDashedForegroundLinePaint(context);
+        textPaint = CommonPaint.getTextPaint(context);
+
+        variousColorPaint = new Paint(fgPaint);
 
         rect = new Rect();
+        drawMultiValueRect = new Rect();
 
         topMargin = MyUtils.dip2px(context, 5);
         barWidth = MyUtils.dip2px(context, 22);
         MIN_BAR_WIDTH = MyUtils.dip2px(context, 22);
         BAR_SIDE_MARGIN = MyUtils.dip2px(context, 22);
         TEXT_MARGIN = MyUtils.dip2px(context, 8);
-
-        textPaint = CommonPaint.getTextPaint(context);
     }
 
     /**
@@ -278,7 +287,7 @@ public class BarView extends View {
                             - 2 * TEXT_MARGIN) * (1f - bars[i].getDisplayPercentage())),
                     lineLabelWidth + (BAR_SIDE_MARGIN + barWidth) * (i + 1),
                     getHeight() - valueLabelHeight - 2 * TEXT_MARGIN);
-            canvas.drawRect(rect, fgPaint);
+            drawValueInRectangle(canvas, rect, bars[i].getValue());
 
             // Draw bar label if present
             String label = bars[i].getValue().getLabel();
@@ -290,6 +299,37 @@ public class BarView extends View {
                 canvas.drawText(label, lineLabelWidth + BAR_SIDE_MARGIN * (i + 1) + barWidth * i + barWidth / 2f,
                         getHeight() - valueLabelDescent - TEXT_MARGIN, textPaint);
             }
+        }
+    }
+
+    /**
+     * Specifically to deal with {@link MultiValue}s, which define percentages
+     * of the bar that should be colored in specific colors, this method is
+     * responsible for rendering the <code>value</code> into the space that
+     * <code>rect</code> defines on <code>canvas</code> somehow.
+     */
+    protected void drawValueInRectangle(Canvas canvas, Rect rect, Value value) {
+        if (value instanceof MultiValue) {
+            MultiValue multiValue = (MultiValue) value;
+
+            drawMultiValueRect.left = rect.left;
+            drawMultiValueRect.right = rect.right;
+
+            int size = rect.top - rect.bottom;
+
+            // Track percentage of bottom edge
+            float percentageUntilNow = 0;
+            for (int i = 0; i < multiValue.getValuePercentages().length; i++) {
+                drawMultiValueRect.bottom = rect.bottom + Math.round(size * percentageUntilNow);
+                percentageUntilNow += multiValue.getValuePercentages()[i];
+                drawMultiValueRect.top = rect.bottom + Math.round(size * percentageUntilNow);
+
+
+                variousColorPaint.setColor(multiValue.getColors()[i]);
+                canvas.drawRect(drawMultiValueRect, variousColorPaint);
+            }
+        } else {
+            canvas.drawRect(rect, fgPaint);
         }
     }
 

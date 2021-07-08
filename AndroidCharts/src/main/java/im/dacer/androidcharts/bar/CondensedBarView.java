@@ -58,7 +58,7 @@ public class CondensedBarView extends BarView {
                             - 2 * TEXT_MARGIN) * (1f - bars[i].getDisplayPercentage())),
                     lineLabelWidth + (BAR_SIDE_MARGIN + barWidth) * (i + 1),
                     barBottomY);
-            canvas.drawRect(rect, fgPaint);
+            drawValueInRectangle(canvas, rect, bars[i].getValue());
 
             // Draw bar label if present
             String label = bars[i].getValue().getLabel();

@@ -1,7 +1,9 @@
 package com.dacer.androidchartsexample;
 
+import android.graphics.Color;
 import im.dacer.androidcharts.bar.BarView;
 import im.dacer.androidcharts.bar.CondensedBarView;
+import im.dacer.androidcharts.bar.MultiValue;
 import im.dacer.androidcharts.bar.Value;
 
 public class CondensedBarFragment extends BarFragment {
@@ -24,7 +26,11 @@ public class CondensedBarFragment extends BarFragment {
             if (i % 8 == 0) {
                 values[i] = new Value((int) (Math.random() * 100), String.valueOf(i + 1));
             } else {
-                values[i] = new Value((int) (Math.random() * 100));
+                values[i] = new MultiValue(
+                        new float[]{0.5f, 0.5f},
+                        (int) (Math.random() * 100),
+                        new int[]{Color.BLUE, Color.RED}
+                );
             }
         }
         barView.setData(values, 100);

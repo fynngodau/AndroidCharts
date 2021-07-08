@@ -1,6 +1,7 @@
 package com.dacer.androidchartsexample;
 
 import android.app.Fragment;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import androidx.annotation.LayoutRes;
 import im.dacer.androidcharts.bar.BarView;
 import im.dacer.androidcharts.bar.Line;
+import im.dacer.androidcharts.bar.MultiValue;
 import im.dacer.androidcharts.bar.Value;
 
 import java.util.ArrayList;
@@ -40,8 +42,16 @@ public class BarFragment extends Fragment {
         int random = (int) (Math.random() * 40) + 10;
 
         Value[] values = new Value[random];
-        for (int i = 0; i < random; i++) {
+        for (int i = 0; i < random; i += 2) {
             values[i] = new Value((int) (Math.random() * 100), String.valueOf(i + 1));
+        }
+        for (int i = 1; i < random; i += 2) {
+            values[i] = new MultiValue(
+                    new float[]{0.5f, 0.5f},
+                    (int) (Math.random() * 100),
+                    new int[]{Color.BLUE, Color.RED},
+                    String.valueOf(i + 1)
+            );
         }
         barView.setData(values, 100);
 
