@@ -27,9 +27,9 @@ public class CondensedBarFragment extends BarFragment {
                 values[i] = new Value((int) (Math.random() * 100), String.valueOf(i + 1));
             } else {
                 values[i] = new MultiValue(
-                        new float[]{0.5f, 0.5f},
+                        new float[]{0.4f, 0.4f, 0.2f},
                         (int) (Math.random() * 100),
-                        new int[]{Color.BLUE, Color.RED}
+                        new Integer[]{Color.BLUE, Color.RED, null}
                 );
             }
         }

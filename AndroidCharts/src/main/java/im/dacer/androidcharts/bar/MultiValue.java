@@ -6,24 +6,41 @@ package im.dacer.androidcharts.bar;
 public class MultiValue extends Value {
 
     private final float[] percentages;
-    private final int[] colors;
+    private final Integer[] colors;
 
-    public MultiValue(int[] values, int[] colors) {
+    /**
+     * @param colors Pass <code>null</code> to use default color (theme's accent color)
+     * @param values Must be of same <code>length</code> as <code>colors</code>
+     */
+
+    public MultiValue(int[] values, Integer[] colors) {
         this(values, colors, null);
     }
 
-    public MultiValue(float[] percentages, int total, int[] colors) {
+    /**
+     * @param colors      Pass <code>null</code> to use default color (theme's accent color)
+     * @param percentages Must be of same <code>length</code> as <code>colors</code>
+     */
+    public MultiValue(float[] percentages, int total, Integer[] colors) {
         this(percentages, total, colors, null);
     }
 
-    public MultiValue(float[] percentages, int total, int[] colors, String label) {
+    /**
+     * @param colors      Pass <code>null</code> to use default color (theme's accent color)
+     * @param percentages Must be of same <code>length</code> as <code>colors</code>
+     */
+    public MultiValue(float[] percentages, int total, Integer[] colors, String label) {
         super(total, label);
 
         this.percentages = percentages;
         this.colors = colors;
     }
 
-    public MultiValue(int[] values, int[] colors, String label) {
+    /**
+     * @param colors Pass <code>null</code> to use default color (theme's accent color)
+     * @param values Must be of same <code>length</code> as <code>colors</code>
+     */
+    public MultiValue(int[] values, Integer[] colors, String label) {
         super(sum(values), label);
 
         if (colors.length != values.length) {
@@ -45,7 +62,7 @@ public class MultiValue extends Value {
         return percentages;
     }
 
-    int[] getColors() {
+    Integer[] getColors() {
         return colors;
     }
 

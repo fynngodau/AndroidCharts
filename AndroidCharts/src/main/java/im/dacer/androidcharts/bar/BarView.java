@@ -325,8 +325,13 @@ public class BarView extends View {
                 drawMultiValueRect.top = rect.bottom + Math.round(size * percentageUntilNow);
 
 
-                variousColorPaint.setColor(multiValue.getColors()[i]);
-                canvas.drawRect(drawMultiValueRect, variousColorPaint);
+                if (multiValue.getColors()[i] == null) {
+                    // Use default color (accent color)
+                    canvas.drawRect(drawMultiValueRect, fgPaint);
+                } else {
+                    variousColorPaint.setColor(multiValue.getColors()[i]);
+                    canvas.drawRect(drawMultiValueRect, variousColorPaint);
+                }
             }
         } else {
             canvas.drawRect(rect, fgPaint);

@@ -49,7 +49,7 @@ public class BarFragment extends Fragment {
             values[i] = new MultiValue(
                     new float[]{0.5f, 0.5f},
                     (int) (Math.random() * 100),
-                    new int[]{Color.BLUE, Color.RED},
+                    new Integer[]{Color.BLUE, Color.RED},
                     String.valueOf(i + 1)
             );
         }
