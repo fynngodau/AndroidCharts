@@ -25,15 +25,15 @@ public class ClockPieSegment {
         }
     }
 
-    public float getSweep() {
+    float getSweep() {
         return end - start;
     }
 
-    public float getStart() {
+    float getStart() {
         return start;
     }
 
-    public float getEnd() {
+    float getEnd() {
         return end;
     }
 }
