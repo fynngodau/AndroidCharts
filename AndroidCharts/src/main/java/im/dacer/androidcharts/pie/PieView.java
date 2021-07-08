@@ -24,18 +24,18 @@ public class PieView extends View {
             Color.parseColor("#33B5E5"), Color.parseColor("#AA66CC"), Color.parseColor("#99CC00"),
             Color.parseColor("#FFBB33"), Color.parseColor("#FF4444")
     };
-    private Paint cirPaint;
-    private Paint whiteLinePaint;
-    private Point pieCenterPoint;
-    private Paint textPaint;
-    private RectF cirRect;
-    private RectF cirSelectedRect;
+    private final Paint cirPaint;
+    private final Paint whiteLinePaint;
+    private final Point pieCenterPoint;
+    private final Paint textPaint;
+    private final RectF cirRect;
+    private final RectF cirSelectedRect;
     private int mViewWidth;
     private int mViewHeight;
     private int margin;
     private int pieRadius;
     private OnPieClickListener onPieClickListener;
-    private ArrayList<PieHelper> pieHelperList;
+    private final ArrayList<PieHelper> pieHelperList;
     private int selectedIndex = NO_SELECTED_INDEX;
     private boolean showPercentLabel = true;
     private Runnable animator = new Runnable() {
