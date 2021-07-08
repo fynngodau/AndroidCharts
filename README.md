@@ -7,8 +7,8 @@ This is a fork of the [AndroidCharts](https://github.com/HackPlan/AndroidCharts)
 | View | code quality improvement status | new features | other improvements | original example screenshot
 |---|---|---|---|---|
 | `LineView` | unchanged | no new features | none | ![Line Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/line.png)
-| `BarView` | **significantly improved** | background lines for scale (including labels), support for bold / italic labels, zero line (optional), condensed variant (`CondensedBarView`) | fix missing margins, color set to accent color | ![Bar Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/bar.png)
-| `ClockPieView` | **improved** | gray out background partially (e.g. to display time as not passed yet) | support for drawing in views with larger width than height, support for drawing when view is set to `match_parent`, color set to accent color, remove animation as it was too slow | ![Clock Pie Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/pie.png)
+| `BarView` | **significantly improved** | background lines for scale (including labels), support for bold / italic labels, zero line (optional), condensed variant (`CondensedBarView`), multiple colors in one bar (`MultiValue`) | fix missing margins, color set to accent color, support for dark background | ![Bar Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/bar.png)
+| `ClockPieView` | **improved** | gray out background partially (e.g. to display time as not passed yet), colored segments | support for drawing in views with larger width than height, support for drawing when view is set to `match_parent`, color set to accent color, remove animation as it was too slow, support for dark background | ![Clock Pie Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/pie.png)
 | `PieView` | unchanged | no new features | none | ![Pie Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/pie2.png)
 
 Note: no new screenshots were taken. The clock pie view will have more intense colors.
@@ -80,7 +80,7 @@ barView.setLines(new Line[]{new Line(25, "25%")});
 
 ```java
 ClockPieView pieView = findViewById(R.id.clock_pie_view);
-ArrayList<ClockPieSegment> pieSegments = new ArrayList<ClockPieHelper>();
+ArrayList<ClockPieSegment> pieSegments = new ArrayList<ClockPieSegment>();
 pieView.setData(pieSegments);
 ```
 
