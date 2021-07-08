@@ -179,8 +179,8 @@ public class BarView extends View {
 
         int highestValue = Collections.max(Arrays.asList(values), new Comparator<Value>() {
             @Override
-            public int compare(Value value, Value t1) {
-                return Integer.compare(value.getValue(), t1.getValue());
+            public int compare(Value x, Value y) {
+                return (x.getValue() < y.getValue()) ? -1 : ((x.getValue() == y.getValue()) ? 0 : 1);
             }
         }).getValue();
 
