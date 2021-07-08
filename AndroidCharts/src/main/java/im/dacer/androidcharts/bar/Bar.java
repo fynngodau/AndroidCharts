@@ -6,12 +6,12 @@ package im.dacer.androidcharts.bar;
 class Bar {
 
     /**
-     * Value that this bar should currently display
+     * Value that this bar should currently be display
      */
     private Value value;
 
     /**
-     * Percentage of value
+     * Percentage of max
      */
     private float percentage;
 

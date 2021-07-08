@@ -42,7 +42,6 @@ public class Value {
 
     /**
      * Set typeface to render label with
-     * @param labelTypeface
      */
     public void setLabelTypeface(Typeface labelTypeface) {
         this.labelTypeface = labelTypeface;
