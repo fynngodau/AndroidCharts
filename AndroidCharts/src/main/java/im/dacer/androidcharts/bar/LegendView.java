@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.*;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.ColorInt;
 import androidx.recyclerview.widget.RecyclerView;
 import im.dacer.androidcharts.CommonPaint;
 
@@ -17,6 +18,8 @@ class LegendView extends View {
     private final Paint textPaint;
     private final Paint dashedLinePaint;
     private final Path renderPath;
+
+    private final Paint linePaint;
 
     public LegendView(Context context, SingleBarContext barContext) {
         super(context);
@@ -34,6 +37,9 @@ class LegendView extends View {
         dashedLinePaint = CommonPaint.makeCustomDashedPaint(context, CommonPaint.getForegroundLinePaint(context), 0);
 
         renderPath = new Path();
+
+        linePaint = new Paint(CommonPaint.getForegroundLinePaint(context));
+        linePaint.setColor(0x00000000);
     }
 
     void setLines(Line[] lines, int max) {
@@ -65,6 +71,10 @@ class LegendView extends View {
         invalidate();
     }
 
+    void attachBackgroundColor(@ColorInt int color) {
+        linePaint.setColor(color);
+    }
+
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -84,10 +94,15 @@ class LegendView extends View {
 
             renderPath.moveTo(0, y);
             renderPath.lineTo(getWidth(), y);
-            canvas.drawPath(renderPath, dashedLinePaint);
-        }
+            canvas.drawPath(renderPath, linePaint);
+            renderPath.rewind();
 
-        renderPath.rewind();
+            renderPath.moveTo(0, y);
+            renderPath.lineTo(getWidth(), y);
+
+            canvas.drawPath(renderPath, dashedLinePaint);
+            renderPath.rewind();
+        }
 
     }
 

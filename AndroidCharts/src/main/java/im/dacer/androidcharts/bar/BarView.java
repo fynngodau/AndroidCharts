@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.FrameLayout;
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -126,15 +127,20 @@ public class BarView extends FrameLayout {
 
     /**
      * Set to <code>true</code> if the horizontal line should scroll along. This causes
-     * performance issues when many lines are drawn!
+     * performance issues if a transparent background color is passed, and draws incorrect
+     * colors if an incorrect background color is passed. <code>backgroundColor</code>
+     * is ignored if <code>scroll</code> is false.
      */
-    public void setScrollHorizontalLines(boolean scroll) {
+    public void setScrollHorizontalLines(boolean scroll, @ColorInt int backgroundColor) {
         if (scroll) {
             // Attach legend to recycler view
             recycler.addOnScrollListener(scrollListener);
+            legend.attachBackgroundColor(backgroundColor);
         } else {
             recycler.removeOnScrollListener(scrollListener);
+            legend.attachBackgroundColor(0x00000000);
         }
+
     }
 
     public void scrollToEnd() {
