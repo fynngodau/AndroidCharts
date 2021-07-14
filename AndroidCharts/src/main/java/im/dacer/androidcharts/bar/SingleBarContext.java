@@ -88,6 +88,11 @@ public class SingleBarContext {
                 }
             }
         }
+
+        if (valueLabelHeight > 0) {
+            // Add text margin if labels are to be shown
+            valueLabelHeight += 2 * textMargin;
+        }
     }
 
 

@@ -40,15 +40,16 @@ class SingleBarView extends View {
                 0,
                 0,
                 c.barWidth,
-                getHeight() - c.valueLabelHeight - 2 * c.textMargin
+                getHeight() - c.valueLabelHeight
         );
         canvas.drawRect(renderRect, c.bgPaint);
 
         // Bar foreground
         renderRect.set(0,
-                (int) ((getHeight() - c.valueLabelHeight - 2 * c.textMargin) * (1f - bar.getDisplayPercentage())),
+                (int) ((getHeight() - c.valueLabelHeight) * (1f - bar.getDisplayPercentage())),
                 c.barWidth,
-                getHeight() - c.valueLabelHeight - 2 * c.textMargin);
+                getHeight() - c.valueLabelHeight
+        );
         drawValueInRectangle(canvas, renderRect, bar.getValue());
 
         // Draw bar label if present

@@ -36,7 +36,7 @@ public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
         @Override
         public void onDrawOver(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
 
-            int y = parent.getHeight() - barContext.textMargin * 2 - barContext.valueLabelHeight;
+            int y = parent.getHeight() - barContext.valueLabelHeight;
 
             for (int i = 0; i < parent.getChildCount(); i++) {
 

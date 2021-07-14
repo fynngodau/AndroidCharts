@@ -76,7 +76,7 @@ class LegendView extends View {
             int y = c.topMargin + (int) ((getHeight()
                     - c.topMargin
                     - c.valueLabelHeight
-                    - 2 * c.textMargin) * (1f - line.getPercentage()));
+            ) * (1f - line.getPercentage()));
 
             if (line.getLabel() != null) {
                 canvas.drawText(line.getLabel(), c.textMargin, y + lineLabelTextHeight + c.textMargin, textPaint);
