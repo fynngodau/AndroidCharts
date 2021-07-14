@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.FrameLayout;
+import androidx.annotation.CallSuper;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,7 +16,7 @@ import java.util.Comparator;
 
 public class BarView extends FrameLayout {
 
-    private RecyclerView recycler;
+    protected RecyclerView recycler;
     private Adapter adapter;
     private LegendView legend;
     protected SingleBarContext barContext;
@@ -53,7 +54,8 @@ public class BarView extends FrameLayout {
         init();
     }
 
-    private void init() {
+    @CallSuper
+    protected void init() {
         barContext = getBarContext();
         addLegend();
         addRecycler();
@@ -89,6 +91,7 @@ public class BarView extends FrameLayout {
     /**
      * @param max The top border of the chart, or 0 to use highest value
      */
+    @CallSuper
     public void setData(Value[] values, int max) {
 
         int highestValue = Collections.max(Arrays.asList(values), new Comparator<Value>() {
@@ -106,6 +109,7 @@ public class BarView extends FrameLayout {
         }
 
         adapter.setData(values, max);
+        recycler.invalidateItemDecorations();
 
         // Stop ongoing animation
         removeCallbacks(animator);

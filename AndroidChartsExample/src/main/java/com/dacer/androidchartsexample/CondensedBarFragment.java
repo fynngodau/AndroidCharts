@@ -42,6 +42,6 @@ public class CondensedBarFragment extends RecyclerBarFragment {
         barView.setHorizontalLines(lines, 100);
          */
 
-        //((CondensedBarView) barView).setLabelIndicatorMode(ClassicCondensedBarView.LabelIndicatorMode.values()[mode++ % 3]);
+        ((CondensedBarView) barView).setLabelIndicatorMode(CondensedBarView.LabelIndicatorMode.values()[mode++ % 3]);
     }
 }

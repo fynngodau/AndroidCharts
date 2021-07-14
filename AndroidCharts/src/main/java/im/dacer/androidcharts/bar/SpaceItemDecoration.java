@@ -26,7 +26,6 @@ public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
     public static class ZeroLineDecoration extends SpaceItemDecoration {
 
         private final SingleBarContext barContext;
-        private final Path renderPath = new Path();
 
         public ZeroLineDecoration(SingleBarContext barContext) {
             super(barContext.barSideMargin);
