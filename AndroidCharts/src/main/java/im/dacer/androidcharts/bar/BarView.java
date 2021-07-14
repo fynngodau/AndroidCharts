@@ -109,7 +109,7 @@ public class BarView extends FrameLayout {
         post(animator);
     }
 
-    public void setVerticalLines(Line[] lines, int max) {
+    public void setHorizontalLines(Line[] lines, int max) {
         legend.setLines(lines, max);
         recycler.setPadding(barContext.lineLabelWidth + 2 * barContext.textMargin, barContext.topMargin, 0, 0);
     }

@@ -58,7 +58,7 @@ public class RecyclerBarFragment extends Fragment {
             int randomPosition = (int) (Math.random() * random);
             lines[i] = new Line(values[randomPosition].getValue(), String.valueOf(values[randomPosition].getValue()));
         }
-        barView.setVerticalLines(lines, 100);
+        barView.setHorizontalLines(lines, 100);
 
         barView.setZeroLineEnabled(Math.random() > 0.5);
     }
