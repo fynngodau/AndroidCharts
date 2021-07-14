@@ -3,24 +3,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
-    >
+    android:background="#ffffff">
 
-    <HorizontalScrollView
-        android:id="@+id/horizontalScrollView"
-        android:layout_width="fill_parent"
+    <im.dacer.androidcharts.bar.CondensedBarView
+        android:id="@+id/bar_view"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@id/bar_button"
-        >
-        <im.dacer.androidcharts.bar.CondensedBarView
-            android:id="@+id/bar_view"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            />
-    </HorizontalScrollView>
-
+        android:layout_above="@id/bar_button" />
 
     <Button
         android:id="@+id/bar_button"
@@ -28,6 +17,5 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="Random"
-        />
+        android:text="Random" />
 </RelativeLayout>

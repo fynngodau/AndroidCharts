@@ -11,8 +11,6 @@ import im.dacer.androidcharts.MyUtils;
  */
 public class SingleBarContext {
 
-    private final Context context;
-
     /**
      * Minimum bar width (not used by subclasses with own implementation of
      * {@link #updateValueLabelMeasurements(Value[])})
@@ -44,11 +42,9 @@ public class SingleBarContext {
     final Paint linePaint;
     final Paint dashedLinePaint;
 
-
+    final boolean labelInSingleBarView;
 
     public SingleBarContext(Context context) {
-        this.context = context;
-
 
         minBarWidth = MyUtils.dip2px(context, 22);
         barSideMargin = MyUtils.dip2px(context, 22);
@@ -63,6 +59,23 @@ public class SingleBarContext {
         dashedLinePaint = CommonPaint.getDashedForegroundLinePaint(context);
         textPaint = CommonPaint.getTextPaint(context);
 
+
+        labelInSingleBarView = true;
+
+    }
+
+    protected SingleBarContext(Context context, int minBarWidth, int textMargin, int topMargin, Paint textPaint,
+                               Paint bgPaint, Paint fgPaint, Paint linePaint, Paint dashedLinePaint,
+                               boolean labelInSingleBarView) {
+        this.minBarWidth = minBarWidth;
+        this.textMargin = textMargin;
+        this.topMargin = topMargin;
+        this.textPaint = textPaint;
+        this.bgPaint = bgPaint;
+        this.fgPaint = fgPaint;
+        this.linePaint = linePaint;
+        this.dashedLinePaint = dashedLinePaint;
+        this.labelInSingleBarView = labelInSingleBarView;
     }
 
     /**

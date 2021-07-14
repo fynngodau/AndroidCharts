@@ -13,6 +13,7 @@ import java.util.*;
 /**
  * Created by Dacer on 11/11/13.
  */
+@Deprecated
 public class ClassicBarView extends View {
 
     /**

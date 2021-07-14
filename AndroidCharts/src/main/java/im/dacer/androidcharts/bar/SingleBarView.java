@@ -54,7 +54,7 @@ class SingleBarView extends View {
 
         // Draw bar label if present
         String label = bar.getValue().getLabel();
-        if (label != null) {
+        if (label != null & c.labelInSingleBarView) {
 
             // Use provided typeface
             c.textPaint.setTypeface(bar.getValue().getLabelTypeface());

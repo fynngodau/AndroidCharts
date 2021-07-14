@@ -18,7 +18,7 @@ public class BarView extends FrameLayout {
     private RecyclerView recycler;
     private Adapter adapter;
     private LegendView legend;
-    private SingleBarContext barContext;
+    protected SingleBarContext barContext;
 
     private SpaceItemDecoration spaceDecoration;
 
@@ -54,9 +54,13 @@ public class BarView extends FrameLayout {
     }
 
     private void init() {
-        barContext = new SingleBarContext(getContext());
+        barContext = getBarContext();
         addLegend();
         addRecycler();
+    }
+
+    protected SingleBarContext getBarContext() {
+        return new SingleBarContext(getContext());
     }
 
     private void addLegend() {

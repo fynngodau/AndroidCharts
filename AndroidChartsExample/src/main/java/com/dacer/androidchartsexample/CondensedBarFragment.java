@@ -1,12 +1,9 @@
 package com.dacer.androidchartsexample;
 
 import android.graphics.Color;
-import im.dacer.androidcharts.bar.ClassicBarView;
-import im.dacer.androidcharts.bar.CondensedBarView;
-import im.dacer.androidcharts.bar.MultiValue;
-import im.dacer.androidcharts.bar.Value;
+import im.dacer.androidcharts.bar.*;
 
-public class CondensedBarFragment extends BarFragment {
+public class CondensedBarFragment extends RecyclerBarFragment {
 
     int mode = 1;
 
@@ -16,7 +13,7 @@ public class CondensedBarFragment extends BarFragment {
     }
 
     @Override
-    protected void randomSet(ClassicBarView barView) {
+    protected void randomSet(BarView barView) {
         int amount = 156;
 
         ((CondensedBarView) barView).setBarWidth(8);
@@ -45,6 +42,6 @@ public class CondensedBarFragment extends BarFragment {
         }
         barView.setVerticalLines(lines, 100);*/
 
-        ((CondensedBarView) barView).setLabelIndicatorMode(CondensedBarView.LabelIndicatorMode.values()[mode++ % 3]);
+        //((CondensedBarView) barView).setLabelIndicatorMode(ClassicCondensedBarView.LabelIndicatorMode.values()[mode++ % 3]);
     }
 }
