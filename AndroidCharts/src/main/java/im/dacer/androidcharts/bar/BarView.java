@@ -30,6 +30,14 @@ public class BarView extends FrameLayout {
         }
     };
 
+    private final RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+            int x = recyclerView.computeHorizontalScrollOffset();
+            legend.setScrolledX(x);
+        }
+    };
+
     public BarView(Context context) {
         super(context);
         init();
@@ -65,15 +73,6 @@ public class BarView extends FrameLayout {
         recycler.setPadding(0, barContext.topMargin, 0, 0);
 
         recycler.setItemViewCacheSize(10);
-
-        // Attach legend
-        recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                int x = recyclerView.computeHorizontalScrollOffset();
-                legend.setScrolledX(x);
-            }
-        });
 
         addView(recycler);
     }
@@ -123,6 +122,19 @@ public class BarView extends FrameLayout {
                         new SpaceItemDecoration(barContext.barSideMargin)
                         : new SpaceItemDecoration.ZeroLineDecoration(barContext)
         );
+    }
+
+    /**
+     * Set to <code>true</code> if the horizontal line should scroll along. This causes
+     * performance issues when many lines are drawn!
+     */
+    public void setScrollHorizontalLines(boolean scroll) {
+        if (scroll) {
+            // Attach legend to recycler view
+            recycler.addOnScrollListener(scrollListener);
+        } else {
+            recycler.removeOnScrollListener(scrollListener);
+        }
     }
 
     public void scrollToEnd() {
