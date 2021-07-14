@@ -6,19 +6,11 @@
     android:background="#ffffff"
     >
 
-    <HorizontalScrollView
-        android:id="@+id/horizontalScrollView"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        >
-        <im.dacer.androidcharts.bar.ClassicBarView
-            android:id="@+id/bar_view"
-            android:layout_width="wrap_content"
-            android:layout_height="300dp"
-            />
-    </HorizontalScrollView>
+    <im.dacer.androidcharts.bar.BarView
+        android:id="@+id/bar_view"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        />
 
 
     <Button

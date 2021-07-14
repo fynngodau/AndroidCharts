@@ -1,7 +1,7 @@
 package com.dacer.androidchartsexample;
 
 import android.graphics.Color;
-import im.dacer.androidcharts.bar.BarView;
+import im.dacer.androidcharts.bar.ClassicBarView;
 import im.dacer.androidcharts.bar.CondensedBarView;
 import im.dacer.androidcharts.bar.MultiValue;
 import im.dacer.androidcharts.bar.Value;
@@ -16,7 +16,7 @@ public class CondensedBarFragment extends BarFragment {
     }
 
     @Override
-    protected void randomSet(BarView barView) {
+    protected void randomSet(ClassicBarView barView) {
         int amount = 156;
 
         ((CondensedBarView) barView).setBarWidth(8);

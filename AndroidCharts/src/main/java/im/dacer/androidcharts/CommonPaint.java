@@ -46,17 +46,27 @@ public class CommonPaint {
     }
 
     public static Paint getDashedForegroundLinePaint(Context context) {
-        Paint paint = getForegroundLinePaint(context);
+        return makeCustomDashedPaint(context, getForegroundLinePaint(context), -1);
+    }
+
+    /**
+     * @param offsetPx Offset in Pixels, or -1 for the amount of pixels that the first phase is worth
+     * @return Reference to <code>basePaint</code>
+     */
+    public static Paint makeCustomDashedPaint(Context context, Paint basePaint, int offsetPx) {
+
 
         float[] dashIntervals = new float[]{
                 MyUtils.dip2px(context, 4),
                 MyUtils.dip2px(context, 8)
         };
 
-        paint.setPathEffect(
-                new DashPathEffect(dashIntervals, dashIntervals[0])
+        basePaint.setPathEffect(
+                new DashPathEffect(dashIntervals,
+                        offsetPx == -1? dashIntervals[0] : offsetPx)
         );
-        return paint;
+        return basePaint;
+
     }
 
     public static Paint getBackgroundPaint() {

@@ -47,7 +47,7 @@ lineView.setDataList(dataLists); //or lineView.setFloatDataList(floatDataLists)
 
 ```xml
 <HorizontalScrollView>
-        <im.dacer.androidcharts.bar.BarView
+        <im.dacer.androidcharts.bar.ClassicBarView
             android:layout_width="wrap_content"
             android:layout_height="300dp"
             android:id="@+id/bar_view" />

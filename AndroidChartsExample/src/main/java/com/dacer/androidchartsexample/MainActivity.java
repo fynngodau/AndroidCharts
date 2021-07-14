@@ -51,15 +51,20 @@ public class MainActivity extends Activity
                 break;
             case 2:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, new CondensedBarFragment())
+                        .replace(R.id.container, new RecyclerBarFragment())
                         .commit();
                 break;
             case 3:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, new ClockPieFragment())
+                        .replace(R.id.container, new CondensedBarFragment())
                         .commit();
                 break;
             case 4:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, new ClockPieFragment())
+                        .commit();
+                break;
+            case 5:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new PieFragment())
                         .commit();

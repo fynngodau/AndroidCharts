@@ -3,11 +3,10 @@ package im.dacer.androidcharts.bar;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.util.AttributeSet;
 import im.dacer.androidcharts.MyUtils;
 
-public class CondensedBarView extends BarView {
+public class CondensedBarView extends ClassicBarView {
 
     private final int TEXT_LEFT_MARGIN;
 

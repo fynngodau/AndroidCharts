@@ -8,19 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import androidx.annotation.LayoutRes;
-import im.dacer.androidcharts.bar.ClassicBarView;
-import im.dacer.androidcharts.bar.Line;
-import im.dacer.androidcharts.bar.MultiValue;
-import im.dacer.androidcharts.bar.Value;
+import im.dacer.androidcharts.bar.*;
+import im.dacer.androidcharts.bar.BarView;
 
 /**
  * Created by Dacer on 11/15/13.
  */
-public class BarFragment extends Fragment {
+public class RecyclerBarFragment extends Fragment {
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(getLayout(), container, false);
-        final ClassicBarView barView = (ClassicBarView) rootView.findViewById(R.id.bar_view);
+        final BarView barView = rootView.findViewById(R.id.bar_view);
         Button button = (Button) rootView.findViewById(R.id.bar_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
@@ -32,11 +30,11 @@ public class BarFragment extends Fragment {
     }
 
     protected @LayoutRes int getLayout() {
-        return R.layout.fragment_bar;
+        return R.layout.fragment_bar_recycle;
     }
 
-    protected void randomSet(ClassicBarView barView) {
-        int random = (int) (Math.random() * 40) + 10;
+    protected void randomSet(BarView barView) {
+        int random = (int) (Math.random() * 40) + 300;
 
         Value[] values = new Value[random];
         for (int i = 0; i < random; i += 2) {
@@ -52,7 +50,7 @@ public class BarFragment extends Fragment {
         }
         barView.setData(values, 100);
 
-        barView.setBoldPosition(5);
+        //barView.setBoldPosition(5);
 
         // Draw vertical lines aligning with 3 bars
         Line[] lines = new Line[3];
@@ -61,5 +59,7 @@ public class BarFragment extends Fragment {
             lines[i] = new Line(values[randomPosition].getValue(), String.valueOf(values[randomPosition].getValue()));
         }
         barView.setVerticalLines(lines, 100);
+
+        barView.setZeroLineEnabled(Math.random() > 0.5);
     }
 }
