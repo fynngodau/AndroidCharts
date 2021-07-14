@@ -19,7 +19,7 @@ public class RecyclerBarFragment extends Fragment {
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(getLayout(), container, false);
         final BarView barView = rootView.findViewById(R.id.bar_view);
-        Button button = (Button) rootView.findViewById(R.id.bar_button);
+        Button button = rootView.findViewById(R.id.bar_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
                 randomSet(barView);
@@ -55,8 +55,7 @@ public class RecyclerBarFragment extends Fragment {
         // Draw vertical lines aligning with 3 bars
         Line[] lines = new Line[3];
         for (int i = 0; i < 3; i++) {
-            int randomPosition = (int) (Math.random() * random);
-            lines[i] = new Line(values[randomPosition].getValue(), String.valueOf(values[randomPosition].getValue()));
+            lines[i] = new Line(values[i].getValue(), String.valueOf(values[i].getValue()));
         }
         barView.setHorizontalLines(lines, 100);
 

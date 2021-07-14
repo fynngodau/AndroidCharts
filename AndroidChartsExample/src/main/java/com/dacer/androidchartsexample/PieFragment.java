@@ -21,9 +21,9 @@ public class PieFragment extends Fragment {
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_pie_s, container, false);
-        textView = (TextView) rootView.findViewById(R.id.textView);
-        final PieView pieView = (PieView) rootView.findViewById(R.id.pie_view);
-        Button button = (Button) rootView.findViewById(R.id.pie_button);
+        textView = rootView.findViewById(R.id.textView);
+        final PieView pieView = rootView.findViewById(R.id.pie_view);
+        Button button = rootView.findViewById(R.id.pie_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
                 randomSet(pieView);

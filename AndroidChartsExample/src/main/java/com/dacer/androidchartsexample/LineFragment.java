@@ -19,12 +19,12 @@ public class LineFragment extends Fragment {
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_line, container, false);
-        final LineView lineView = (LineView) rootView.findViewById(R.id.line_view);
-        final LineView lineViewFloat = (LineView) rootView.findViewById(R.id.line_view_float);
+        final LineView lineView = rootView.findViewById(R.id.line_view);
+        final LineView lineViewFloat = rootView.findViewById(R.id.line_view_float);
 
         initLineView(lineView);
         initLineView(lineViewFloat);
-        Button lineButton = (Button) rootView.findViewById(R.id.line_button);
+        Button lineButton = rootView.findViewById(R.id.line_button);
         lineButton.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
                 randomSet(lineView, lineViewFloat);

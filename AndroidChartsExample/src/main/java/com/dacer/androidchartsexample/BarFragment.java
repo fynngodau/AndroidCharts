@@ -16,12 +16,13 @@ import im.dacer.androidcharts.bar.Value;
 /**
  * Created by Dacer on 11/15/13.
  */
+@Deprecated
 public class BarFragment extends Fragment {
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(getLayout(), container, false);
-        final ClassicBarView barView = (ClassicBarView) rootView.findViewById(R.id.bar_view);
-        Button button = (Button) rootView.findViewById(R.id.bar_button);
+        final ClassicBarView barView = rootView.findViewById(R.id.bar_view);
+        Button button = rootView.findViewById(R.id.bar_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
                 randomSet(barView);
@@ -57,8 +58,7 @@ public class BarFragment extends Fragment {
         // Draw vertical lines aligning with 3 bars
         Line[] lines = new Line[3];
         for (int i = 0; i < 3; i++) {
-            int randomPosition = (int) (Math.random() * random);
-            lines[i] = new Line(values[randomPosition].getValue(), String.valueOf(values[randomPosition].getValue()));
+            lines[i] = new Line(values[i].getValue(), String.valueOf(values[i].getValue()));
         }
         barView.setVerticalLines(lines, 100);
     }

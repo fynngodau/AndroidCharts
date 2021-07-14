@@ -34,13 +34,13 @@ public class CondensedBarFragment extends RecyclerBarFragment {
 
         //barView.setBoldPosition(5);
 
-        // Draw vertical lines aligning with 3 bars
+        // Draw horizontal lines aligning with 3 bars
         /*Line[] lines = new Line[3];
         for (int i = 0; i < 3; i++) {
-            int randomPosition = (int) (Math.random() * amount);
-            lines[i] = new Line(values[randomPosition].getValue(), String.valueOf(values[randomPosition].getValue()));
+            lines[i] = new Line(values[i].getValue(), String.valueOf(values[i].getValue()));
         }
-        barView.setVerticalLines(lines, 100);*/
+        barView.setHorizontalLines(lines, 100);
+         */
 
         //((CondensedBarView) barView).setLabelIndicatorMode(ClassicCondensedBarView.LabelIndicatorMode.values()[mode++ % 3]);
     }
