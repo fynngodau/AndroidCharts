@@ -3,7 +3,6 @@ package im.dacer.androidcharts.bar;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.View;
 import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -63,7 +62,7 @@ public class BarView extends FrameLayout {
         recycler.addItemDecoration(spaceDecoration = new SpaceItemDecoration(barContext.barSideMargin));
 
         recycler.setAdapter(adapter = new Adapter(barContext));
-        recycler.setPadding(barContext.lineLabelWidth, barContext.topMargin, 0, 0);
+        recycler.setPadding(0, barContext.topMargin, 0, 0);
 
         recycler.setItemViewCacheSize(10);
 
@@ -72,9 +71,7 @@ public class BarView extends FrameLayout {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 int x = recyclerView.computeHorizontalScrollOffset();
-                int totalX = recyclerView.computeHorizontalScrollExtent();
-                int viewX = recyclerView.computeHorizontalScrollRange();
-                legend.setScrolledX(x, viewX, totalX);
+                legend.setScrolledX(x);
             }
         });
 

@@ -11,14 +11,11 @@ class LegendView extends View {
 
     final SingleBarContext c;
     private Line[] lines = new Line[0];
-    private boolean zeroLineEnabled;
 
     private int lineLabelTextHeight;
 
-    private int zeroLineSpace;
-
     private final Paint textPaint;
-    private Paint dashedLinePaint;
+    private final Paint dashedLinePaint;
     private final Path renderPath;
 
     public LegendView(Context context, SingleBarContext barContext) {
@@ -62,15 +59,8 @@ class LegendView extends View {
         invalidate();
     }
 
-    void setZeroLineEnabled(boolean enabled) {
-        this.zeroLineEnabled = enabled;
-        invalidate();
-    }
-
-    void setScrolledX(int x, int viewX, int totalX) {
+    void setScrolledX(int x) {
         CommonPaint.makeCustomDashedPaint(getContext(), dashedLinePaint, x);
-
-        zeroLineSpace = Math.min(totalX - (viewX + x) - c.barSideMargin, 0);
 
         invalidate();
     }
@@ -95,20 +85,6 @@ class LegendView extends View {
             renderPath.moveTo(0, y);
             renderPath.lineTo(getWidth(), y);
             canvas.drawPath(renderPath, dashedLinePaint);
-        }
-
-        renderPath.rewind();
-
-        // Draw 0 line
-        if (zeroLineEnabled) {
-            float y = c.topMargin + (getHeight()
-                    - c.topMargin
-                    - c.valueLabelHeight
-                    - 2 * c.textMargin)
-                    + c.linePaint.getStrokeWidth() / 2;
-            renderPath.moveTo(c.lineLabelWidth + c.barSideMargin, y);
-            renderPath.lineTo(getWidth() - zeroLineSpace, y);
-            canvas.drawPath(renderPath, c.linePaint);
         }
 
         renderPath.rewind();
