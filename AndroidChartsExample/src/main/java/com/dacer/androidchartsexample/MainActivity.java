@@ -46,25 +46,20 @@ public class MainActivity extends Activity
                 break;
             case 1:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, new BarFragment())
+                        .replace(R.id.container, new RecyclerBarFragment())
                         .commit();
                 break;
             case 2:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, new RecyclerBarFragment())
+                        .replace(R.id.container, new CondensedBarFragment())
                         .commit();
                 break;
             case 3:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, new CondensedBarFragment())
-                        .commit();
-                break;
-            case 4:
-                fragmentManager.beginTransaction()
                         .replace(R.id.container, new ClockPieFragment())
                         .commit();
                 break;
-            case 5:
+            case 4:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new PieFragment())
                         .commit();
