@@ -12,8 +12,6 @@ import android.view.View;
 class SingleBarView extends View {
 
     private Bar bar;
-    private final Rect renderRect = new Rect();
-    private final Rect renderMultiValueRect = new Rect();
 
     private final SingleBarContext c;
 
@@ -36,58 +34,59 @@ class SingleBarView extends View {
     protected void onDraw(Canvas canvas) {
 
         // Bar background
-        renderRect.set(
+        canvas.drawRect(
                 0,
                 0,
                 c.barWidth,
-                getHeight()
+                getHeight(),
+                c.bgPaint
         );
-        canvas.drawRect(renderRect, c.bgPaint);
 
-        // Bar foreground
-        renderRect.set(0,
-                (int) ((getHeight()) * (1f - bar.getDisplayPercentage())),
-                c.barWidth,
-                getHeight()
-        );
-        drawValueInRectangle(canvas, renderRect, bar.getValue());
+        // Draw foreground
+        if (bar.getValue() instanceof MultiValue) {
+            MultiValue multiValue = (MultiValue) bar.getValue();
 
-    }
+            // Total bar size in pixels
+            float totalValueSize = getHeight() * bar.getDisplayPercentage();
 
-    /**
-     * Specifically to deal with {@link MultiValue}s, which define percentages
-     * of the bar that should be colored in specific colors, this method is
-     * responsible for rendering the <code>value</code> into the space that
-     * <code>rect</code> defines on <code>canvas</code> somehow.
-     */
-    protected void drawValueInRectangle(Canvas canvas, Rect rect, Value value) {
-        if (value instanceof MultiValue) {
-            MultiValue multiValue = (MultiValue) value;
-
-            renderMultiValueRect.left = rect.left;
-            renderMultiValueRect.right = rect.right;
-
-            int size = rect.top - rect.bottom;
-
-            // Track percentage of bottom edge
+            // Track percentage already drawn from bottom edge
             float percentageUntilNow = 0;
+
+            // Iterate over multi-value's individual values
             for (int i = 0; i < multiValue.getValuePercentages().length; i++) {
-                renderMultiValueRect.bottom = rect.bottom + Math.round(size * percentageUntilNow);
+
+                // Calculate bottom and top values of current individual value
+                float bottom = getHeight() - Math.round(totalValueSize * percentageUntilNow);
                 percentageUntilNow += multiValue.getValuePercentages()[i];
-                renderMultiValueRect.top = rect.bottom + Math.round(size * percentageUntilNow);
+                float top = getHeight() - Math.round(totalValueSize * percentageUntilNow);
 
-
+                // Choose paint
+                final Paint paint;
                 if (multiValue.getColors()[i] == null) {
                     // Use default color (accent color)
-                    canvas.drawRect(renderMultiValueRect, c.fgPaint);
+                    paint = c.fgPaint;
                 } else {
+                    // Use color from individual value
+                    paint = variousColorPaint;
                     variousColorPaint.setColor(multiValue.getColors()[i]);
-                    canvas.drawRect(renderMultiValueRect, variousColorPaint);
                 }
+
+                canvas.drawRect(
+                        0,
+                        top,
+                        c.barWidth,
+                        bottom,
+                        paint
+                );
             }
         } else {
-            canvas.drawRect(rect, c.fgPaint);
+            // Draw simple Value
+            canvas.drawRect(0,
+                    (int) ((getHeight()) * (1f - bar.getDisplayPercentage())),
+                    c.barWidth,
+                    getHeight(), c.fgPaint);
         }
+
     }
 
     @Override

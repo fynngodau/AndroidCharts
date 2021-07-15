@@ -46,6 +46,9 @@ public class MultiValue extends Value {
         if (colors.length != values.length) {
             throw new IllegalArgumentException(
                     "Amount of colors (" + colors.length + ") does not match amount of values (" + values.length + ")!"
+                            + (colors.length < values.length ?
+                            " You may fill up the `colors` array using `null` to choose the default accent color for " +
+                                    "the remaining values." : "")
             );
         }
 
