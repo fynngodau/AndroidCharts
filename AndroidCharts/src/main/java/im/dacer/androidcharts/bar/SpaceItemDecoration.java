@@ -35,6 +35,7 @@ public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
         @Override
         public void onDrawOver(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
 
+            // Draw zero lines for all visible views, but not through parent's padding
             for (int i = 0; i < parent.getChildCount(); i++) {
 
                 View view = parent.getChildAt(i);
@@ -47,9 +48,9 @@ public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
 
                 c.drawLine(
                         Math.max(parent.getPaddingLeft(), view.getLeft()),
-                        parent.getHeight(),
+                        view.getBottom(),
                         xRight,
-                        parent.getHeight(),
+                        view.getBottom(),
                         barContext.linePaint
                 );
             }
