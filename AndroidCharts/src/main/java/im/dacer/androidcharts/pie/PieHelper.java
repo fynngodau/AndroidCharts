@@ -2,7 +2,10 @@ package im.dacer.androidcharts.pie;
 
 /**
  * Created by Dacer on 11/14/13.
+ *
+ * @deprecated Currently unmaintained
  */
+@Deprecated
 public class PieHelper {
 
     int velocity = 5;

@@ -28,7 +28,10 @@ import java.util.List;
  * Created by Dacer on 11/4/13.
  * Edited by Lee youngchan 21/1/14
  * Edited by dector 30-Jun-2014
+ *
+ * @deprecated Currently unmaintained
  */
+@Deprecated
 public class LineView extends View {
     public static final int SHOW_POPUPS_All = 1;
     public static final int SHOW_POPUPS_MAXMIN_ONLY = 2;

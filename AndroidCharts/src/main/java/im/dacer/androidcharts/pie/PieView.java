@@ -16,7 +16,10 @@ import java.util.List;
 
 /**
  * Created by Dacer on 9/26/14.
+ *
+ * @deprecated Currently unmaintained
  */
+@Deprecated
 public class PieView extends View {
 
     public static final int NO_SELECTED_INDEX = -1;
