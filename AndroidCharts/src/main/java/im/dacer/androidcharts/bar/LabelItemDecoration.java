@@ -2,6 +2,7 @@ package im.dacer.androidcharts.bar;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.View;
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
@@ -39,6 +40,10 @@ public abstract class LabelItemDecoration<C extends SingleBarContext> extends Re
             View view = parent.getChildAt(i);
             int valuePos = parent.getChildAdapterPosition(view);
 
+            if ((valuePos < 0) || (valuePos >= values.length)) {
+                // Something bad happened and the value we just wanted to add a label to does not exist any longer
+                return;
+            }
             if (values[valuePos].getLabel() != null) {
                 this.c.textPaint.setTypeface(values[valuePos].getLabelTypeface());
                 drawLabel(c, parent, view, values[valuePos]);
