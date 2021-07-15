@@ -2,6 +2,7 @@ package im.dacer.androidcharts.bar;
 
 import android.content.Context;
 import android.graphics.*;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.ColorInt;
@@ -20,6 +21,8 @@ class LegendView extends View {
     private final Path renderPath;
 
     private final Paint linePaint;
+
+    private RecyclerView recycler;
 
     public LegendView(Context context, SingleBarContext barContext) {
         super(context);
@@ -75,6 +78,9 @@ class LegendView extends View {
         linePaint.setColor(color);
     }
 
+    public void attachRecycler(RecyclerView recycler) {
+        this.recycler = recycler;
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -83,9 +89,16 @@ class LegendView extends View {
 
         for (Line line : lines) {
 
-            int y = c.topMargin + (int) ((getHeight()
-                    - c.topMargin
-            ) * (1f - line.getPercentage()));
+            if (recycler.getChildCount() < 1) {
+                Log.d("LegendView", "Recycler has no children! Cannot draw legend.");
+                postInvalidate();
+                return;
+            }
+
+            View barView = recycler.getChildAt(0);
+
+            int y = barView.getTop()
+                    + (int) ((barView.getBottom() - barView.getTop()) * (1f - line.getPercentage()));
 
             if (line.getLabel() != null) {
                 canvas.drawText(line.getLabel(), c.textMargin, y + lineLabelTextHeight + c.textMargin, textPaint);

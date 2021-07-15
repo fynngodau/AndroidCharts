@@ -60,6 +60,7 @@ public class BarView extends FrameLayout {
         barContext = getBarContext();
         addLegend();
         addRecycler();
+        legend.attachRecycler(recycler);
 
         recycler.addItemDecoration(labelItemDecoration = getLabelItemDecoration(barContext));
     }
