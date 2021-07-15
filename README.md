@@ -1,5 +1,7 @@
 # chartDirect
 
+## MOVED: https://codeberg.org/fynngodau/chartDirect
+
 This is a fork of the [AndroidCharts](https://github.com/HackPlan/AndroidCharts) library. It was created due to necessity for the [usageDirect](https://codeberg.org/fynngodau/usageDirect/) project.
 
 It contains:
