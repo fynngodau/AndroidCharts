@@ -18,7 +18,7 @@ class SingleBarView extends View {
     private final Paint variousColorPaint;
 
 
-    public SingleBarView(Context context, SingleBarContext barContext) {
+    SingleBarView(Context context, SingleBarContext barContext) {
         super(context);
         setMinimumWidth(barContext.barWidth);
         setMinimumHeight(100);

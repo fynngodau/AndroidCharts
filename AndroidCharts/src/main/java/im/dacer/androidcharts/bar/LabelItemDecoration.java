@@ -8,7 +8,7 @@ import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public abstract class LabelItemDecoration<C extends SingleBarContext> extends RecyclerView.ItemDecoration {
+abstract class LabelItemDecoration<C extends SingleBarContext> extends RecyclerView.ItemDecoration {
 
     protected Value[] values = new Value[0];
     protected C c;
@@ -53,7 +53,7 @@ public abstract class LabelItemDecoration<C extends SingleBarContext> extends Re
 
     protected abstract void drawLabel(@NonNull Canvas c, @NonNull RecyclerView parent, View view, Value value);
 
-    public void setValues(Value[] values) {
+    void setValues(Value[] values) {
         this.values = values;
         updateValueLabelMeasurements(values);
     }

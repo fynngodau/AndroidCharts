@@ -6,11 +6,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import godau.fynn.typedrecyclerview.SimpleRecyclerViewAdapter;
 import godau.fynn.typedrecyclerview.PrimitiveViewHolder;
 
-public class Adapter extends SimpleRecyclerViewAdapter<Bar, PrimitiveViewHolder<SingleBarView>> {
+class Adapter extends SimpleRecyclerViewAdapter<Bar, PrimitiveViewHolder<SingleBarView>> {
 
     private final SingleBarContext barContext;
 
-    public Adapter(SingleBarContext barContext) {
+    Adapter(SingleBarContext barContext) {
         this.barContext = barContext;
     }
 
@@ -28,7 +28,7 @@ public class Adapter extends SimpleRecyclerViewAdapter<Bar, PrimitiveViewHolder<
     }
 
 
-    public void setData(Value[] values, int max) {
+    void setData(Value[] values, int max) {
 
         for (int i = 0; i < content.size() && i < values.length; i++) {
             // Set new data to old bar
@@ -57,7 +57,7 @@ public class Adapter extends SimpleRecyclerViewAdapter<Bar, PrimitiveViewHolder<
         }
     }
 
-    public boolean animationStep(RecyclerView recyclerView) {
+    boolean animationStep(RecyclerView recyclerView) {
 
         boolean needNewFrame = false;
         for (Bar bar : content) {

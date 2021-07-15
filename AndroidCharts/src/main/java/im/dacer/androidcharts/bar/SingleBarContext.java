@@ -2,18 +2,16 @@ package im.dacer.androidcharts.bar;
 
 import android.content.Context;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import im.dacer.androidcharts.CommonPaint;
 import im.dacer.androidcharts.MyUtils;
 
 /**
  * Value store for all {@link SingleBarView}s
  */
-public class SingleBarContext {
+class SingleBarContext {
 
     /**
-     * Minimum bar width (not used by subclasses with own implementation of
-     * {@link #updateValueLabelMeasurements(Value[])})
+     * Minimum bar width, independent of labels
      */
     final int minBarWidth;
 
@@ -61,7 +59,7 @@ public class SingleBarContext {
 
     }
 
-    protected SingleBarContext(Context context, int minBarWidth, int textMargin, int topMargin, Paint textPaint,
+    protected SingleBarContext(int minBarWidth, int textMargin, int topMargin, Paint textPaint,
                                Paint bgPaint, Paint fgPaint, Paint linePaint, Paint dashedLinePaint,
                                boolean labelInSingleBarView) {
         this.minBarWidth = minBarWidth;

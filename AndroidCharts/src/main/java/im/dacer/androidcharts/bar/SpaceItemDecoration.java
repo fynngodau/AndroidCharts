@@ -1,17 +1,16 @@
 package im.dacer.androidcharts.bar;
 
 import android.graphics.Canvas;
-import android.graphics.Path;
 import android.graphics.Rect;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
+class SpaceItemDecoration extends RecyclerView.ItemDecoration {
 
     protected final int space;
 
-    public SpaceItemDecoration(int space) {
+    SpaceItemDecoration(int space) {
         this.space = space;
     }
 
@@ -23,7 +22,7 @@ public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
         outRect.right = space;
     }
 
-    public static class ZeroLineDecoration extends SpaceItemDecoration {
+    static class ZeroLineDecoration extends SpaceItemDecoration {
 
         private final SingleBarContext barContext;
 

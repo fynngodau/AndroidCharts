@@ -24,7 +24,7 @@ class LegendView extends View {
 
     private RecyclerView recycler;
 
-    public LegendView(Context context, SingleBarContext barContext) {
+    LegendView(Context context, SingleBarContext barContext) {
         super(context);
         c = barContext;
 
@@ -78,7 +78,7 @@ class LegendView extends View {
         linePaint.setColor(color);
     }
 
-    public void attachRecycler(RecyclerView recycler) {
+    void attachRecycler(RecyclerView recycler) {
         this.recycler = recycler;
     }
 

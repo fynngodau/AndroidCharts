@@ -7,9 +7,9 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class BarLabelItemDecoration extends LabelItemDecoration<SingleBarContext> {
+class BarLabelItemDecoration extends LabelItemDecoration<SingleBarContext> {
 
-    public BarLabelItemDecoration(SingleBarContext context) {
+    BarLabelItemDecoration(SingleBarContext context) {
         super(context);
     }
 

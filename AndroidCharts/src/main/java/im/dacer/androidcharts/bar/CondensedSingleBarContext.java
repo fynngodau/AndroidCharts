@@ -4,13 +4,12 @@ import android.content.Context;
 import im.dacer.androidcharts.CommonPaint;
 import im.dacer.androidcharts.MyUtils;
 
-public class CondensedSingleBarContext extends SingleBarContext {
+class CondensedSingleBarContext extends SingleBarContext {
 
     final int textLeftMargin;
 
     protected CondensedSingleBarContext(Context context) {
         super(
-                context,
                 MyUtils.dip2px(context, 4),
                 MyUtils.dip2px(context, 8),
                 MyUtils.dip2px(context, 5),

@@ -7,11 +7,11 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class CondensedBarLabelItemDecoration extends LabelItemDecoration<CondensedSingleBarContext> {
+class CondensedBarLabelItemDecoration extends LabelItemDecoration<CondensedSingleBarContext> {
 
     CondensedBarView.LabelIndicatorMode labelIndicatorMode = CondensedBarView.LabelIndicatorMode.BELOW_CHART;
 
-    public CondensedBarLabelItemDecoration(CondensedSingleBarContext context) {
+    CondensedBarLabelItemDecoration(CondensedSingleBarContext context) {
         super(context);
     }
 
@@ -108,7 +108,7 @@ public class CondensedBarLabelItemDecoration extends LabelItemDecoration<Condens
         }
     }
 
-    public void setLabelIndicatorMode(CondensedBarView.LabelIndicatorMode labelIndicatorMode) {
+    void setLabelIndicatorMode(CondensedBarView.LabelIndicatorMode labelIndicatorMode) {
         this.labelIndicatorMode = labelIndicatorMode;
     }
 
