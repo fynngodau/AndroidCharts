@@ -30,6 +30,7 @@ public class CondensedBarView extends BarView {
 
     public void setBarWidth(int dp) {
         barContext.barWidth = MyUtils.dip2px(getContext(), dp);
+        invalidate();
     }
 
     public void setLabelIndicatorMode(LabelIndicatorMode labelIndicatorMode) {
