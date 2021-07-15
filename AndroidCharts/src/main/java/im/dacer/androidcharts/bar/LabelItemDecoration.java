@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public abstract class LabelItemDecoration<C extends SingleBarContext> extends RecyclerView.ItemDecoration {
 
-    private Value[] values = new Value[0];
+    protected Value[] values = new Value[0];
     protected C c;
 
     protected Rect rect = new Rect();

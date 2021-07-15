@@ -42,6 +42,36 @@ public class CondensedBarLabelItemDecoration extends LabelItemDecoration<Condens
     @Override
     public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         outRect.bottom = valueLabelHeight;
+
+        if (parent.getChildAdapterPosition(view) == state.getItemCount() - 1) {
+            // Find out whether additional space is required at the very last item
+
+            // Find last value with label
+            int lastBarWithValueIndex = -1;
+
+            for (int i = 0; i < values.length; i++) {
+                Value value = values[i];
+                if (value.getLabel() != null) {
+                    lastBarWithValueIndex = i;
+                }
+            }
+
+            if (lastBarWithValueIndex >= 0) {
+
+                // Calculate text size
+                String label = values[lastBarWithValueIndex].getLabel();
+                super.c.textPaint.getTextBounds(label, 0, label.length(), rect);
+
+                // Calculate space that is available for this view
+                int space = (state.getItemCount() - lastBarWithValueIndex) * (super.c.barSideMargin + super.c.barWidth);
+                int textWidth = rect.width() + super.c.textLeftMargin * 2;
+
+                if (space < textWidth) {
+                    outRect.right = textWidth - space;
+                }
+
+            }
+        }
     }
 
     @Override
