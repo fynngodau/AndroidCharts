@@ -1,75 +1,78 @@
-# AndroidCharts
+# chartDirect
 
-This is a fork of the [AndroidCharts](https://github.com/HackPlan/AndroidCharts) library.
+This is a fork of the [AndroidCharts](https://github.com/HackPlan/AndroidCharts) library. It was created due to necessity for the [usageDirect](https://codeberg.org/fynngodau/usageDirect/) project.
 
-### Improvement status
+It contains:
 
-| View | code quality improvement status | new features | other improvements | original example screenshot
-|---|---|---|---|---|
-| `LineView` | unchanged | no new features | none | ![Line Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/line.png)
-| `BarView` | **significantly improved** | background lines for scale (including labels), support for bold / italic labels, zero line (optional), condensed variant (`CondensedBarView`), multiple colors in one bar (`MultiValue`) | fix missing margins, color set to accent color, support for dark background | ![Bar Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/bar.png)
-| `ClockPieView` | **improved** | gray out background partially (e.g. to display time as not passed yet), colored segments | support for drawing in views with larger width than height, support for drawing when view is set to `match_parent`, color set to accent color, remove animation as it was too slow, support for dark background | ![Clock Pie Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/pie.png)
-| `PieView` | unchanged | no new features | none | ![Pie Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/pie2.png)
+* a bar chart with condensed variant
+* a clock pie chart
+* an ordinary pie chart (unmaintained)
+* a line chart (unmaintained)
 
-Note: no new screenshots were taken. The clock pie view will have more intense colors.
+### Features
+
+The following may not apply to the unmaintained chart types.
+
+* lightweight
+* support for dark background
+* `BarView` and `CondensedBarView` backed by `RecyclerView` for highest performance
+* display different colors in charts
+* accent color as default color
 
 ## Including in Your Project
 
-Please use JitPack for downloading compiled AAR bundles. Sorry. [See how.](https://jitpack.io/#fynngodau/AndroidCharts/)
+Please use JitPack for downloading compiled AAR bundles. Sorry. [See how.](https://jitpack.io/#org.codeberg.fynngodau/chartDirect)
 
 ## Usage
 
-#### Line Chart
+### Bar chart
 
-![Line Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/line.png)
+![Bar Chart](https://codeberg.org/fynngodau/chartDirect/raw/branch/main/pic/bar.png)
 
-```xml
-<HorizontalScrollView>
-        <im.dacer.androidcharts.line.LineView
-            android:layout_width="wrap_content"
-            android:layout_height="300dp"
-            android:id="@+id/line_view" />
-</HorizontalScrollView>
-```
 
-```java
-LineView lineView = findViewById(R.id.line_view);
-lineView.setDrawDotLine(false); //optional
-lineView.setShowPopup(LineView.SHOW_POPUPS_MAXMIN_ONLY); //optional
-lineView.setBottomTextList(strList);
-lineView.setColorArray(new int[]{Color.BLACK,Color.GREEN,Color.GRAY,Color.CYAN});
-lineView.setDataList(dataLists); //or lineView.setFloatDataList(floatDataLists)
-```
-
-#### Bar Chart
-
-![Bar Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/bar.png)
+Include the `BarView` in your layout like this:
 
 ```xml
-<HorizontalScrollView>
-        <im.dacer.androidcharts.bar.ClassicBarView
-            android:layout_width="wrap_content"
-            android:layout_height="300dp"
-            android:id="@+id/bar_view" />
-</HorizontalScrollView>
+<im.dacer.androidcharts.bar.BarView
+    android:layout_width="wrap_content"
+    android:layout_height="300dp"
+    android:id="@+id/bar_view" />
 ```
+
+Set it up using Java:
 
 ```java
 BarView barView = findViewById(R.id.bar_view);
 
 // Construct Value object for each bar
 Value[] values = new Value[]{
-    new Value(50, "50")
+
+    // Single-colored bar
+    new Value(50, "50"),
+
+    // Multi-colored bar
+    new MultiValue(
+        new int[]{20, 40}, new Integer[]{Color.RED, Color.BLUE}
+    )
 };
 barView.setData(values, 100);
 
 // Optionally add vertical lines for scale
-barView.setLines(new Line[]{new Line(25, "25%")});
+barView.setHorizontalLines(new Line[]{new Line(25, "25%")});
+
+// Optionally enable zero line
+barView.setZeroLineEnabled(true);
+
+// Optionally scroll along dashed scale lines
+// (need to pass windowBackground color for performance reasons)
+barView.setScrollHorizontalLines(true, windowBackground)
 ```
 
-#### Clock Pie Chart
+A condensed variant with no margin between bars is also available – simply use `CondensedBarView` instead of `BarView`.
 
-![Clock Pie Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/pie.png)
+### Clock Pie Chart
+
+![Clock Pie Chart](https://codeberg.org/fynngodau/chartDirect/raw/branch/main/pic/pie.png)
 
 ```xml
 <im.dacer.androidcharts.clockpie.ClockPieView
@@ -80,31 +83,42 @@ barView.setLines(new Line[]{new Line(25, "25%")});
 
 ```java
 ClockPieView pieView = findViewById(R.id.clock_pie_view);
-ArrayList<ClockPieSegment> pieSegments = new ArrayList<ClockPieSegment>();
+ClockPieSegment[] pieSegments = new ClockPieSegment[]{
+    new ClockPieSegemnt(14, 30, 17, 45); // from 14:30 until 17:45
+}
 pieView.setData(pieSegments);
 ```
 
-#### Pie Chart
+You may also set a segment that is displayed as a background segment.
 
-![Pie Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/pie2.png)
+### Deprecated classes
 
-```xml
-<im.dacer.androidcharts.pie.PieView
-    android:layout_width="300dp"
-    android:layout_height="wrap_content"
-    android:id="@+id/pie_view" />
-```
+For usage instructions on the deprecated classes, please refer to [the AndroidCharts README](https://github.com/HackPlan/AndroidCharts#line-chart).
 
-```java
-PieView pieView = findViewById(R.id.pie_view);
-ArrayList<PieHelper> pieHelperArrayList = new ArrayList<PieHelper>();
-pieView.setDate(pieHelperArrayList);
-pieView.selectedPie(2); //optional
-pieView.setOnPieClickListener(listener) //optional
-pieView.showPercentLabel(false); //optional
-```
+## Contributing
+
+Any contributions, large or small, major features, bug fixes, and so forth, are welcome.
+
+You are encouraged to utilize the issue tracker to discuss new ideas before working on them.
+
+## Comparison to original AndroidCharts library
+
+| View | code quality improvement status | new features | other improvements | original example screenshot
+|---|---|---|---|---|
+| `LineView` | unchanged | no new features | none | ![Line Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/line.png)
+| `BarView` | **significantly improved** | background lines for scale (including labels), support for bold / italic labels, zero line (optional), condensed variant (`CondensedBarView`), multiple colors in one bar (`MultiValue`), backed by `RecyclerView` | fix missing margins, color set to accent color, support for dark background | ![Bar Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/bar.png)
+| `ClockPieView` | **improved** | gray out background partially (e.g. to display time as not passed yet), colored segments | support for drawing in views with larger width than height, support for drawing when view is set to `match_parent`, color set to accent color, remove animation as it was too slow, support for dark background | ![Clock Pie Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/pie.png)
+| `PieView` | unchanged | no new features | none | ![Pie Chart](https://raw.github.com/dacer/AndroidCharts/master/pic/pie2.png)
+
+
 
 ## License
+
+This library is licensed under the MIT license.
+
+The license text can be seen below.
+
+---
 
 The MIT License (MIT)
 
@@ -129,11 +143,14 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+---
 
-## Contributing
 
-Please fork this repository and contribute back using
-[pull requests](https://github.com/github/android/pulls).
+If you are using [librariesDirect](), you may use this snippet to generate a `Library` class for this library:
 
-Any contributions, large or small, major features, bug fixes, additional
-language translations, unit/integration tests are welcomed
+    new Library("chartDirect", License.MIT_LICENSE, "The MIT License (MIT)\n" +
+        "\n" +
+        "Copyright (c) 2020 Fynn Godau\n" +
+        "\n" +
+        "Copyright (c) 2013 Ding Wenhao", "Fynn Godau and AndroidChart contributors", true, "https://codeberg.org/fynngodau/chartDirect"
+    )
