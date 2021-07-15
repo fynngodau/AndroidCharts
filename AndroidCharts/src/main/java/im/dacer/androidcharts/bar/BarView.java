@@ -21,6 +21,8 @@ public class BarView extends FrameLayout {
     private LegendView legend;
     protected SingleBarContext barContext;
 
+    protected LabelItemDecoration labelItemDecoration;
+
     private SpaceItemDecoration spaceDecoration;
 
     private final Runnable animator = new Runnable() {
@@ -54,15 +56,20 @@ public class BarView extends FrameLayout {
         init();
     }
 
-    @CallSuper
-    protected void init() {
+    private void init() {
         barContext = getBarContext();
         addLegend();
         addRecycler();
+
+        recycler.addItemDecoration(labelItemDecoration = getLabelItemDecoration(barContext));
     }
 
     protected SingleBarContext getBarContext() {
         return new SingleBarContext(getContext());
+    }
+
+    protected LabelItemDecoration<? extends SingleBarContext> getLabelItemDecoration(SingleBarContext barContext) {
+        return new BarLabelItemDecoration(barContext);
     }
 
     private void addLegend() {
@@ -84,15 +91,14 @@ public class BarView extends FrameLayout {
         addView(recycler);
     }
 
-    public void setData(Value[] values) {
+    public final void setData(Value[] values) {
         setData(values, 0);
     }
 
     /**
      * @param max The top border of the chart, or 0 to use highest value
      */
-    @CallSuper
-    public void setData(Value[] values, int max) {
+    public final void setData(Value[] values, int max) {
 
         int highestValue = Collections.max(Arrays.asList(values), new Comparator<Value>() {
             @Override
@@ -109,6 +115,9 @@ public class BarView extends FrameLayout {
         }
 
         adapter.setData(values, max);
+
+        labelItemDecoration.setValues(values);
+
         recycler.invalidateItemDecorations();
 
         // Stop ongoing animation

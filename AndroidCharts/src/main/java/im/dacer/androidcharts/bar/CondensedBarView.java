@@ -6,8 +6,6 @@ import im.dacer.androidcharts.MyUtils;
 
 public class CondensedBarView extends BarView {
 
-    private CondensedBarViewItemDecoration labelItemDecoration;
-
     public CondensedBarView(Context context) {
         super(context);
     }
@@ -26,25 +24,16 @@ public class CondensedBarView extends BarView {
     }
 
     @Override
-    protected void init() {
-        super.init();
-
-        recycler.addItemDecoration(labelItemDecoration = new CondensedBarViewItemDecoration(getBarContext()));
+    protected LabelItemDecoration<? extends SingleBarContext> getLabelItemDecoration(SingleBarContext barContext) {
+        return new CondensedBarLabelItemDecoration((CondensedSingleBarContext) barContext);
     }
 
     public void setBarWidth(int dp) {
         barContext.barWidth = MyUtils.dip2px(getContext(), dp);
     }
 
-    @Override
-    public void setData(Value[] values, int max) {
-
-        labelItemDecoration.setValues(values);
-        super.setData(values, max);
-    }
-
     public void setLabelIndicatorMode(LabelIndicatorMode labelIndicatorMode) {
-        labelItemDecoration.setLabelIndicatorMode(labelIndicatorMode);
+        ((CondensedBarLabelItemDecoration) labelItemDecoration).setLabelIndicatorMode(labelIndicatorMode);
         recycler.invalidateItemDecorations();
     }
 

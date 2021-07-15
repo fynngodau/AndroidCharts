@@ -85,7 +85,6 @@ class LegendView extends View {
 
             int y = c.topMargin + (int) ((getHeight()
                     - c.topMargin
-                    - c.valueLabelHeight
             ) * (1f - line.getPercentage()));
 
             if (line.getLabel() != null) {

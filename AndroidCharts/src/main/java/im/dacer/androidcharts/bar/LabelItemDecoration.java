@@ -40,6 +40,7 @@ public abstract class LabelItemDecoration<C extends SingleBarContext> extends Re
             int valuePos = parent.getChildAdapterPosition(view);
 
             if (values[valuePos].getLabel() != null) {
+                this.c.textPaint.setTypeface(values[valuePos].getLabelTypeface());
                 drawLabel(c, parent, view, values[valuePos]);
             }
         }

@@ -35,8 +35,6 @@ public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
         @Override
         public void onDrawOver(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
 
-            int y = parent.getHeight() - barContext.valueLabelHeight;
-
             for (int i = 0; i < parent.getChildCount(); i++) {
 
                 View view = parent.getChildAt(i);
@@ -49,9 +47,9 @@ public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
 
                 c.drawLine(
                         Math.max(parent.getPaddingLeft(), view.getLeft()),
-                        y,
+                        parent.getHeight(),
                         xRight,
-                        y,
+                        parent.getHeight(),
                         barContext.linePaint
                 );
             }

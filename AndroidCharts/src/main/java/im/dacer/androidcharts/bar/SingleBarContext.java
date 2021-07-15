@@ -31,9 +31,6 @@ public class SingleBarContext {
     final int topMargin;
     int lineLabelWidth;
 
-    int valueLabelHeight;
-    int valueLabelDescent;
-
     int barWidth;
 
     final Paint textPaint;
@@ -76,36 +73,6 @@ public class SingleBarContext {
         this.linePaint = linePaint;
         this.dashedLinePaint = dashedLinePaint;
         this.labelInSingleBarView = labelInSingleBarView;
-    }
-
-    /**
-     * Update {@link #barWidth}, {@link #valueLabelDescent} and {@link #valueLabelHeight}
-     * using labels from the provided values
-     */
-    protected void updateValueLabelMeasurements(Value[] values) {
-
-        Rect r = new Rect();
-        valueLabelDescent = valueLabelHeight = 0;
-        barWidth = minBarWidth;
-        for (Value s : values) {
-            if (s.getLabel() != null) {
-                textPaint.getTextBounds(s.getLabel(), 0, s.getLabel().length(), r);
-                if (valueLabelHeight < r.height()) {
-                    valueLabelHeight = r.height();
-                }
-                if (barWidth < r.width()) {
-                    barWidth = r.width();
-                }
-                if (valueLabelDescent < (Math.abs(r.bottom))) {
-                    valueLabelDescent = Math.abs(r.bottom);
-                }
-            }
-        }
-
-        if (valueLabelHeight > 0) {
-            // Add text margin if labels are to be shown
-            valueLabelHeight += 2 * textMargin;
-        }
     }
 
 

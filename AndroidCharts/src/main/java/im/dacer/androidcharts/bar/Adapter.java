@@ -55,9 +55,6 @@ public class Adapter extends SimpleRecyclerViewAdapter<Bar, PrimitiveViewHolder<
             notifyItemRangeRemoved(values.length, -diff);
 
         }
-
-        barContext.updateValueLabelMeasurements(values);
-
     }
 
     public boolean animationStep(RecyclerView recyclerView) {

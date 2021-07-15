@@ -24,16 +24,7 @@ public class CondensedSingleBarContext extends SingleBarContext {
 
         barSideMargin = 0;
         barWidth = minBarWidth;
-        valueLabelHeight = 0;
 
         textLeftMargin = MyUtils.dip2px(context, 4);
-    }
-
-    /**
-     * Empty override – don't add any space for the bottom labels (decorations handle this)
-     * @param values
-     */
-    @Override
-    protected void updateValueLabelMeasurements(Value[] values) {
     }
 }

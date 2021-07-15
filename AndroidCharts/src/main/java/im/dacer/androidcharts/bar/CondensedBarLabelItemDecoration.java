@@ -7,11 +7,11 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class CondensedBarViewItemDecoration extends LabelItemDecoration<CondensedSingleBarContext> {
+public class CondensedBarLabelItemDecoration extends LabelItemDecoration<CondensedSingleBarContext> {
 
     CondensedBarView.LabelIndicatorMode labelIndicatorMode = CondensedBarView.LabelIndicatorMode.BELOW_CHART;
 
-    public CondensedBarViewItemDecoration(CondensedSingleBarContext context) {
+    public CondensedBarLabelItemDecoration(CondensedSingleBarContext context) {
         super(context);
     }
 
@@ -48,10 +48,6 @@ public class CondensedBarViewItemDecoration extends LabelItemDecoration<Condense
     protected void drawLabel(@NonNull Canvas c, @NonNull RecyclerView parent, View view, Value value) {
 
         super.c.textPaint.setTextAlign(Paint.Align.LEFT);
-
-
-        // Use provided typeface
-        super.c.textPaint.setTypeface(value.getLabelTypeface());
 
         // Draw text
         c.drawText(value.getLabel(), view.getLeft() + super.c.textLeftMargin,

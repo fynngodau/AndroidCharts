@@ -40,29 +40,17 @@ class SingleBarView extends View {
                 0,
                 0,
                 c.barWidth,
-                getHeight() - c.valueLabelHeight
+                getHeight()
         );
         canvas.drawRect(renderRect, c.bgPaint);
 
         // Bar foreground
         renderRect.set(0,
-                (int) ((getHeight() - c.valueLabelHeight) * (1f - bar.getDisplayPercentage())),
+                (int) ((getHeight()) * (1f - bar.getDisplayPercentage())),
                 c.barWidth,
-                getHeight() - c.valueLabelHeight
+                getHeight()
         );
         drawValueInRectangle(canvas, renderRect, bar.getValue());
-
-        // Draw bar label if present
-        String label = bar.getValue().getLabel();
-        if (label != null & c.labelInSingleBarView) {
-
-            // Use provided typeface
-            c.textPaint.setTypeface(bar.getValue().getLabelTypeface());
-
-            canvas.drawText(label, c.barWidth / 2f,
-                    getHeight() - c.valueLabelDescent - c.textMargin, c.textPaint);
-        }
-
 
     }
 
